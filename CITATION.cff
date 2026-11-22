@@ -5,7 +5,7 @@ title: "EgoDepth-Bench"
 version: 1.0.0
 license: Apache-2.0
 repository-code: "https://github.com/Chris004869/EgoDepth-Bench"
-url: "https://chris004869.github.io/EgoDepth-Bench/"
+url: "https://egodepth-bench.github.io/"
 authors:
   - family-names: Gao
     given-names: Yuan
@@ -30,7 +30,7 @@ authors:
     affiliation: GenRobot
 preferred-citation:
   type: unpublished
-  url: "https://chris004869.github.io/EgoDepth-Bench/site-assets/egodepth-bench.pdf"
+  url: "https://egodepth-bench.github.io/site-assets/egodepth-bench.pdf"
   title: "EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation"
   year: 2026
   authors:

@@ -4,11 +4,11 @@
 
 Yuan Gao, Dongchen Wei, Xinyang Lin, Shuhua Cao, Xueliang Guo, Zhuohan Li, Yihao Wang · GenRobot
 
-[Paper (PDF)](https://chris004869.github.io/EgoDepth-Bench/site-assets/egodepth-bench.pdf) · [Project page](https://chris004869.github.io/EgoDepth-Bench/) · [Interactive RGB–depth sequences](https://chris004869.github.io/EgoDepth-Bench/#sequence-gallery) · [Paper results](results/README.md)
+[Paper (PDF)](https://egodepth-bench.github.io/site-assets/egodepth-bench.pdf) · [Project page](https://egodepth-bench.github.io/) · [Interactive RGB–depth sequences](https://egodepth-bench.github.io/#sequence-gallery) · [Paper results](results/README.md)
 
 How accurately can a head-worn camera recover the depth of a moving hand and the object it holds? EgoDepth-Bench pairs six synchronized fisheye RGB views with reference depth for camera 2. We report **error and coverage together**. For example, FoundationStereo achieves a mean absolute depth error of 7.35 cm where it predicts, with 35.4% coverage across the test sites.
 
-[![Three egocentric scenes showing matching RGB and reference depth: hands at a mahjong table, a kitchen worktop and a garment rack.](docs/figures/rgb-depth-sequences.webp)](https://chris004869.github.io/EgoDepth-Bench/#sequence-gallery)
+[![Three egocentric scenes showing matching RGB and reference depth: hands at a mahjong table, a kitchen worktop and a garment rack.](docs/figures/rgb-depth-sequences.webp)](https://egodepth-bench.github.io/#sequence-gallery)
 
 *Camera 2 at the same instant in RGB and reference depth. Select the image to play a sequence and move the RGB–depth divider.*
 
@@ -82,7 +82,7 @@ The default scores metric predictions directly. For relative-depth outputs, the 
   author = {Gao, Yuan and Wei, Dongchen and Lin, Xinyang and Cao, Shuhua
             and Guo, Xueliang and Li, Zhuohan and Wang, Yihao},
   year   = {2026},
-  url    = {https://chris004869.github.io/EgoDepth-Bench/}
+  url    = {https://egodepth-bench.github.io/}
 }
 ```
 
