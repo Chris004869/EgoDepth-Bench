@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from enum import Enum
@@ -86,7 +87,7 @@ class Population:
     def sites(self) -> list:
         # Reuse the split summary to avoid decoding large training manifests.
         summary = self.notes.get("site_mapping_summary")
-        if isinstance(summary, dict) and summary.get("sites"):
+        if isinstance(self.samples, (IndexBackedSampleList, LazySampleList)) and summary and "sites" in summary:
             return list(summary["sites"])
         return sorted({s.physical_site_id for s in self.samples if s.physical_site_id})
 
@@ -313,14 +314,11 @@ class LazySampleList(Sequence):
         return [self._decode(index) for index in range(len(self))]
 
 
-def summarize_mapping_for_samples(samples, mapping, recording_source: tuple) -> dict:
-    """Count sites directly from the indexed recordings or selected JSONL rows."""
-    kind, path = recording_source
+def summarize_mapping_for_samples(samples, mapping) -> dict:
+    """Count recordings and sites from this selection, including a materialized subset."""
     counts: dict = {}
-    if kind == "sqlite":
-        from egodepth_eval.data.manifest_store import ManifestStore
-
-        store = ManifestStore(Path(path).parent)
+    if isinstance(samples, IndexBackedSampleList):
+        store = samples._store
         # Count the rows belonging to the selected recordings inside SQLite.
         recordings = getattr(samples, "recording_filter", None)
         if recordings is not None:
@@ -339,10 +337,10 @@ def summarize_mapping_for_samples(samples, mapping, recording_source: tuple) -> 
                 "SELECT recording_id, COUNT(*) FROM samples GROUP BY recording_id"
             ):
                 counts[recording] = n
+    elif isinstance(samples, LazySampleList):
+        counts = Counter(recording_id_from_line(raw) for raw in samples._lines)
     else:
-        for raw in getattr(samples, "_lines", []):
-            recording = recording_id_from_line(raw)
-            counts[recording] = counts.get(recording, 0) + 1
+        counts = Counter(sample.recording_id for sample in samples)
 
     summary = {"n_mapped": 0, "n_unmapped": 0, "unmapped_examples": [],
                "splits": {}, "sites": set()}
@@ -453,6 +451,11 @@ def resolve_population(
         raise FileNotFoundError(f"Missing samples manifest: {manifest_path}")
     if wants_formal and role == PopulationRole.DEVELOPMENT:
         raise FormalRunBlocked("The development role requires run.status=development")
+    if limit is not None:
+        if wants_formal:
+            raise FormalRunBlocked(f"--limit {limit} is restricted to development runs")
+        if limit <= 0:
+            raise ValueError("--limit must be a positive number of samples")
     content_id = precomputed_manifest_id or manifest_content_id(manifest_path)
     blockers: list = []
     notes: dict = {}
@@ -482,7 +485,7 @@ def resolve_population(
         notes["sample_storage"] = (
             f"sqlite-backed: {len(tokens)} tokens retained, samples decoded on access"
         )
-        recording_source = ("sqlite", index_dir / "index.sqlite")
+        recording_source = "sqlite"
     else:
         lines = load_manifest_lines(manifest_path, keep_recordings=keep)
         samples = LazySampleList(lines, mapping=mapping)
@@ -490,19 +493,16 @@ def resolve_population(
             f"jsonl-backed: {len(lines)} raw lines retained "
             f"({sum(len(line) for line in lines) / 1e6:.0f} MB), decoded on access"
         )
-        recording_source = ("jsonl", manifest_path)
+        recording_source = "jsonl"
 
     notes["n_samples_loaded"] = len(samples)
     notes["recording_prefilter"] = (
         None if keep is None
         else {"split": wanted_split_early, "n_recordings": len(keep),
-              "source": recording_source[0]}
+              "source": recording_source}
     )
 
     if mapping is not None:
-        notes["site_mapping_summary"] = summarize_mapping_for_samples(
-            samples, mapping, recording_source
-        )
         if wants_formal:
             # `require_formal_sites` rejects a non-frozen mapping, a wrong site
             # count, a site spanning two splits, or a test site with recorded
@@ -561,10 +561,6 @@ def resolve_population(
             f"applied as a recording prefilter over {len(keep)} recordings; "
             "the split is a property of the site mapping, not of the sample rows"
         )
-        summary = notes.get("site_mapping_summary") or {}
-        notes["splits_present_after_filter"] = sorted(
-            str(k) for k in (summary.get("splits") or {})
-        )
     else:
         selected = [s for s in samples if s.split == wanted_split]
         present = sorted({str(s.split) for s in samples})
@@ -578,6 +574,17 @@ def resolve_population(
             if wants_formal:
                 raise FormalRunBlocked(message)
             blockers.append(message)
+
+    if limit is not None:
+        notes["n_samples_before_limit"] = len(selected)
+        notes["limit_applied"] = limit
+        selected = selected[:limit]
+
+    if mapping is not None:
+        summary = summarize_mapping_for_samples(selected, mapping)
+        notes["site_mapping_summary"] = summary
+        if keep is not None:
+            notes["splits_present_after_filter"] = sorted(str(k) for k in summary["splits"])
 
     if wants_formal and not len(selected):
         raise FormalRunBlocked(f'Role {role.value} resolved to an empty population from {manifest_path}')
@@ -625,15 +632,6 @@ def resolve_population(
             if wants_formal:
                 raise FormalRunBlocked(message)
             blockers.append(message)
-
-    if limit is not None:
-        selected = selected[:limit]
-        notes["limit_applied"] = limit
-        if wants_formal:
-            raise FormalRunBlocked(
-                f"--limit {limit} truncates the population; a formal run scores the "
-                "complete split"
-            )
 
     formal_ready = wants_formal and not blockers
     if wants_formal and not formal_ready:
