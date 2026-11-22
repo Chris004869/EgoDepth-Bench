@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="EgoDepth-Bench: 941,233 synchronized samples across 37 physical sites, with six calibrated RGB views and native-fisheye metric depth for egocentric manipulation.">
+  <meta name="theme-color" content="#142d45">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation">
+  <meta property="og:description" content="Six synchronized RGB views. Native-fisheye metric depth. Evaluation of accuracy and coverage on real interactions.">
+  <title>EgoDepth-Bench — Metric Depth for Egocentric Manipulation</title>
+  <link rel="stylesheet" href="site-assets/site.css">
+  <script src="site-assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#top" aria-label="EgoDepth-Bench home">EgoDepth<span>-Bench</span></a>
+      <nav aria-label="Main navigation">
+        <a href="#dataset">Dataset</a>
+        <a href="#findings">Findings</a>
+        <a href="#resources">Resources</a>
+        <a href="#citation">Citation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero container" id="top" aria-labelledby="paper-title">
+      <h1 id="paper-title"><span class="title-name">EgoDepth-Bench</span><span class="title-description">Benchmarking Metric Depth<br class="desktop-break"> for Egocentric Manipulation</span></h1>
+      <ul class="authors" aria-label="Authors">
+        <li><a href="mailto:gaoyuan100@outlook.com">Yuan Gao<sup aria-label="corresponding author">*</sup></a></li>
+        <li>Dongchen Wei</li>
+        <li>Xinyang Lin</li>
+        <li>Shuhua Cao</li>
+        <li>Xueliang Guo</li>
+        <li>Zhuohan Li</li>
+        <li>Yihao Wang</li>
+      </ul>
+      <p class="affiliation">GenRobot</p>
+      <p class="hero-summary">Six synchronized cameras capture hands and objects in motion. Each timestamp pairs the RGB views with metric depth in the wearer’s fisheye view.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="site-assets/egodepth-bench.pdf">Read the paper <span class="button-detail">PDF</span></a>
+        <!-- The repository URL is intentionally defined only here. -->
+        <a class="button button-secondary" href="https://github.com/Chris004869/EgoDepth-Bench" target="_blank" rel="noopener noreferrer">Project repository <span class="button-detail">GitHub</span></a>
+      </div>
+    </section>
+
+    <figure class="teaser container">
+      <a class="teaser-image" href="site-assets/teaser.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the full-resolution dataset example">
+        <img src="site-assets/teaser.webp" width="2067" height="1238" fetchpriority="high" alt="A person manipulating objects at a table, shown in camera 2’s fisheye RGB image and its aligned colored Z-depth map, with all six synchronized RGB views below.">
+      </a>
+      <figcaption>A training-set example with six synchronized RGB views and ground-truth optical-axis Z-depth aligned with camera 2’s native fisheye image. Gray pixels have no valid ground truth; the display color scale saturates outside 0.25–2 m.</figcaption>
+    </figure>
+
+    <div class="stats-wrap">
+      <dl class="stats container" aria-label="Dataset and benchmark at a glance">
+        <div><dt>Synchronized timestamps</dt><dd>941,233</dd></div>
+        <div><dt>Calibrated RGB views</dt><dd>6</dd></div>
+        <div><dt>Physical sites</dt><dd>37</dd></div>
+        <div><dt>Models / configurations</dt><dd>18 <span>/</span> 24</dd></div>
+      </dl>
+    </div>
+
+    <section class="section container overview" id="dataset" aria-labelledby="dataset-title">
+      <div class="section-intro">
+        <p class="eyebrow">The dataset</p>
+        <h2 id="dataset-title">Real interactions.<br>Calibrated geometry.</h2>
+        <p>Head motion, moving hands, object occlusion, and wide viewing angles make egocentric depth estimation difficult. EgoDepth-Bench brings these conditions together in <strong>1,155 recordings</strong> of real manipulation.</p>
+        <p>Each timestamp pairs six synchronized RGB images with metric Z-depth and a validity mask for camera 2. Depth is reconstructed from five active-infrared stereo modules and fused into the target camera’s native fisheye coordinates.</p>
+        <p>In an independent ball-bar test, the reconstructed distance between two spheres differed from their known spacing by a median of 1.27 mm.</p>
+      </div>
+      <div class="dataset-detail">
+        <div class="data-contract">
+          <h3>One shared observation, multiple inputs</h3>
+          <dl>
+            <div><dt>RGB</dt><dd>Six synchronized views, each at 512 × 416</dd></div>
+            <div><dt>Reference</dt><dd>Camera-2 optical-axis Z-depth in meters, with explicit validity</dd></div>
+            <div><dt>Geometry</dt><dd>Per-camera calibration and metric camera-to-rig transforms</dd></div>
+          </dl>
+        </div>
+        <div class="split-table-wrap">
+          <table class="split-table">
+            <caption>Physical sites are disjoint across splits</caption>
+            <thead><tr><th scope="col">Split</th><th scope="col">Sites</th><th scope="col">Official anchors</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Train</th><td>24</td><td>61,085</td></tr>
+              <tr><th scope="row">Validation</th><td>5</td><td>4,491</td></tr>
+              <tr><th scope="row">Test</th><td>8</td><td>6,574</td></tr>
+            </tbody>
+          </table>
+          <p class="table-note">Official sampling: 3 Hz for training; 1 Hz for validation and testing. All recordings and revisits of a physical site stay in one split.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="protocol-section" aria-labelledby="protocol-title">
+      <div class="container protocol-inner">
+        <div class="protocol-heading">
+          <p class="eyebrow">The benchmark</p>
+          <h2 id="protocol-title">Measure the geometry.<br>Account for what is missing.</h2>
+        </div>
+        <div class="protocol-points">
+          <div><h3>Accuracy and coverage</h3><p>Depth error is measured where reference and prediction are both valid. Coverage reports how much of the reference domain a method predicts.</p></div>
+          <div><h3>Hands and manipulated objects</h3><p>A frozen diagnostic subset supports region-specific evaluation, alongside analysis by depth, viewing angle, and motion.</p></div>
+          <div><h3>Explicit input and scale conventions</h3><p>Monocular, stereo, and multi-view methods share the same observations. Metric outputs and reference-aligned outputs are reported separately.</p></div>
+        </div>
+      </div>
+      <div class="container protocol-footnote">Scoring range: 0.25–2.0 m · Pixels pooled within each site · Equal weight across sites</div>
+    </section>
+
+    <section class="section container" id="findings" aria-labelledby="findings-title">
+      <div class="section-heading">
+        <p class="eyebrow">Selected findings</p>
+        <h2 id="findings-title">What the benchmark reveals</h2>
+        <p>Results on the held-out test sites, with the evaluation conditions kept explicit.</p>
+      </div>
+
+      <article class="finding coverage-finding" aria-labelledby="coverage-title">
+        <div class="finding-copy">
+          <h3 id="coverage-title">Low error can hide limited coverage.</h3>
+          <p>Calibrated stereo performs well inside its rectified overlap. Its low error comes with predictions on only part of the fisheye reference domain.</p>
+          <p>For example, FoundationStereo reaches <strong>0.068 AbsRel at 35.4% coverage</strong>, while UniDepth v2 reaches <strong>0.201 at 100.0% coverage</strong>. These errors are computed on different prediction supports and should be read together with coverage.</p>
+        </div>
+        <div class="result-panel">
+          <table class="coverage-table">
+            <caption>Public checkpoints · Whole-image evaluation</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">AbsRel <span class="metric-hint">lower is better</span></th><th scope="col">Coverage</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">FoundationStereo<span class="method-detail">Calibrated RGB stereo</span></th><td>0.068</td><td><span class="coverage-number">35.4%</span><span class="coverage-track" aria-hidden="true"><span style="width:35.4%"></span></span></td></tr>
+              <tr><th scope="row">UniDepth v2<span class="method-detail">Metric monocular</span></th><td>0.201</td><td><span class="coverage-number">100.0%</span><span class="coverage-track" aria-hidden="true"><span style="width:100%"></span></span></td></tr>
+            </tbody>
+          </table>
+          <p class="table-note">Coverage is the fraction of reference-valid scoring pixels with valid predictions, aggregated with equal site weights.</p>
+        </div>
+      </article>
+
+      <article class="finding adaptation-finding" aria-labelledby="adaptation-title">
+        <div class="finding-copy">
+          <h3 id="adaptation-title">Training improves more than metric scale.</h3>
+          <p>With six RGB views, calibrated rays, and metric rig poses held fixed, fine-tuning MapAnything reduces metric AbsRel from <strong>0.708 to 0.091</strong>.</p>
+          <p>A fixed scale fitted on training data gives 0.601. Gains also remain after per-output positive scale alignment on shared support: aligned AbsRel falls from <strong>0.327 to 0.072</strong>.</p>
+          <p class="experiment-note">Same six-view rig inputs · Test sites held out from fine-tuning · 100.0% reported coverage for all three metric conditions</p>
+        </div>
+        <div class="result-panel adaptation-panel">
+          <table class="adaptation-table">
+            <caption>MapAnything adaptation · Metric AbsRel</caption>
+            <thead><tr><th scope="col">Training condition</th><th scope="col">AbsRel <span class="metric-hint">lower is better</span></th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Public checkpoint</th><td><span class="error-value">0.708</span><span class="error-track" aria-hidden="true"><span style="width:94.4%"></span></span></td></tr>
+              <tr><th scope="row">Training-set scale calibration</th><td><span class="error-value">0.601</span><span class="error-track" aria-hidden="true"><span style="width:80.1333%"></span></span></td></tr>
+              <tr class="emphasized"><th scope="row">Fine-tuned on EgoDepth-Bench</th><td><span class="error-value">0.091</span><span class="error-track" aria-hidden="true"><span style="width:12.1333%"></span></span></td></tr>
+            </tbody>
+          </table>
+          <p class="table-note">Scale calibration uses training labels and stays fixed across test samples. Fine-tuned results are direct metric predictions, without test-reference alignment.</p>
+        </div>
+      </article>
+      <p class="results-note">Values are rounded as in the paper. See the paper for the complete results and support statistics.</p>
+    </section>
+
+    <section class="resources-section" id="resources" aria-labelledby="resources-title">
+      <div class="container resources-inner">
+        <div>
+          <p class="eyebrow">Work with the benchmark</p>
+          <h2 id="resources-title">Research resources</h2>
+          <p>Read the full paper for the capture setup, scoring protocol, and per-method results.</p>
+          <p class="release-note">The dataset, evaluation code, and fine-tuned weights are being prepared for release.</p>
+        </div>
+        <div class="data-contract">
+          <h3>Reference materials</h3>
+          <p><a href="site-assets/egodepth-bench.pdf">Download the manuscript (PDF)</a></p>
+          <p><a href="#citation">Get the BibTeX citation</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container citation-section" id="citation" aria-labelledby="citation-title">
+      <div class="citation-heading">
+        <div><p class="eyebrow">Citation</p><h2 id="citation-title">Building on EgoDepth-Bench?</h2><p>Please cite the accompanying manuscript.</p></div>
+        <button class="button button-secondary copy-button" type="button" id="copy-citation" hidden>Copy BibTeX</button>
+      </div>
+      <pre class="citation" tabindex="0" aria-label="BibTeX citation"><code id="bibtex">@misc{gao2026egodepthbench,
+  title={EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation},
+  author={Yuan Gao and Dongchen Wei and Xinyang Lin and Shuhua Cao and
+          Xueliang Guo and Zhuohan Li and Yihao Wang},
+  year={2026},
+  note={Manuscript}
+}</code></pre>
+      <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <p><strong>EgoDepth-Bench</strong><span>© 2026 GenRobot</span></p>
+    <p><span>* Corresponding author</span><a href="mailto:gaoyuan100@outlook.com">gaoyuan100@outlook.com</a></p>
+  </footer>
+</body>
+</html>
