@@ -180,3 +180,26 @@ def test_metric_prediction_can_include_native_model_grid(tmp_path):
     np.testing.assert_array_equal(loaded.depth_z, depth)
     with pytest.raises(ValueError, match="raw must share the scoring grid"):
         read_external_prediction(path, depth.shape, "positive_scale")
+
+
+@pytest.mark.parametrize("terminal, interval, counts", [
+    (True, 2, [0, 2, 3]),
+    (True, 500, []),
+    (False, 2, []),
+])
+def test_cli_progress_is_only_for_long_interactive_runs(tmp_path, monkeypatch, capsys,
+                                                        terminal, interval, counts):
+    import io
+    from egodepth_eval.score import external
+
+    _, predictions = create_synthetic_fixture(tmp_path)
+    stderr = io.StringIO()
+    monkeypatch.setattr(stderr, "isatty", lambda: terminal)
+    monkeypatch.setattr(sys, "stderr", stderr)
+    monkeypatch.setattr(external, "PROGRESS_INTERVAL", interval)
+    code = external.main(["--config", str(tmp_path / "synthetic_config.yaml"),
+                          "--predictions-dir", str(predictions), "--method", "example",
+                          "--output", str(tmp_path / "result.json")])
+    assert code == 0
+    assert json.loads(capsys.readouterr().out)["n_samples"] == 3
+    assert stderr.getvalue().splitlines() == [f"Scoring example: {n}/3 frames" for n in counts]

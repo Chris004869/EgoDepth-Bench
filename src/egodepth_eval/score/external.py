@@ -24,6 +24,7 @@ from egodepth_eval.data.reader import SampleReader
 from egodepth_eval.score.prediction_io import PREDICTION_SCHEMA, LoadedPrediction, PredictionContract
 from egodepth_eval.score.scorer import MethodScorer, build_result_document, write_result
 
+PROGRESS_INTERVAL = 500
 ALIGNMENTS = ("none", "positive_scale", "affine_depth", "affine_inverse")
 OUTPUT_SPACES = {"none": "metric_depth_z", "positive_scale": "depth_up_to_scale",
                  "affine_depth": "depth_affine", "affine_inverse": "inverse_depth"}
@@ -122,7 +123,8 @@ def read_external_prediction(
 
 def score_predictions(config: dict, predictions_dir: Path, output: Path, *,
                       method: str, alignment: str = "none", allow_missing: bool = False,
-                      overwrite: bool = False, contract_path: Path | None = None) -> dict:
+                      overwrite: bool = False, contract_path: Path | None = None,
+                      progress: bool = False) -> dict:
     """Use the same MethodScorer and population gate as the paper's model runners."""
     if alignment not in ALIGNMENTS:
         raise ValueError(f"Unsupported alignment: {alignment}")
@@ -202,7 +204,11 @@ def score_predictions(config: dict, predictions_dir: Path, output: Path, *,
     scorer = MethodScorer(alignment_mode=alignment)
     scores = []
     prediction_hashes = {}
-    for sample in population.samples:
+    total = len(tokens)
+    interactive = progress and sys.stderr.isatty() and total >= PROGRESS_INTERVAL
+    if interactive:
+        print(f"Scoring {method}: 0/{total} frames", file=sys.stderr, flush=True)
+    for n, sample in enumerate(population.samples, start=1):
         loaded = reader.load(sample, load_images=False)
         if tuple(loaded.grid_hw) != grid_hw:
             raise ValueError(f"{sample.sample_token}: reference grid disagrees with the prediction contract")
@@ -218,6 +224,8 @@ def score_predictions(config: dict, predictions_dir: Path, output: Path, *,
         masks = region_masks_from_record(record, loaded.grid_hw) if record else None
         scores.append(scorer.score_sample(sample, sample.physical_site_id or f"unmapped::{sample.recording_id}",
             loaded.reference_depth, loaded.reference_valid, prediction, loaded.reference_calibration, roi_masks=masks))
+        if interactive and (n % PROGRESS_INTERVAL == 0 or n == total):
+            print(f"Scoring {method}: {n}/{total} frames", file=sys.stderr, flush=True)
     document = build_result_document(method, contract, scores, identity, extra={
         "external_prediction_evaluation": {
             "alignment": alignment,
@@ -251,7 +259,7 @@ def main(argv=None) -> int:
         config = release_config(args.release_root) if args.release_root else yaml.safe_load(args.config.read_text())
         result = score_predictions(config, args.predictions_dir, args.output, method=args.method,
             alignment=args.alignment, allow_missing=args.allow_missing, overwrite=args.overwrite,
-            contract_path=args.prediction_contract)
+            contract_path=args.prediction_contract, progress=True)
     except (ValueError, OSError, KeyError, FormalRunBlocked) as error:
         print(f"Scoring failed: {error}", file=sys.stderr)
         return 2
