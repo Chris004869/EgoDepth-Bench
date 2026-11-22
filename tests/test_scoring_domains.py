@@ -383,3 +383,22 @@ def test_standardization_reports_strata_dropped_for_lacking_weight():
     result = standardize_by_strata(values, weights)
     assert result["strata_discarded_no_weight"] == ["b"]
     assert result["n_strata_retained"] == 1
+
+
+def test_sparse_strata_report_sites_without_any_eligible_frames():
+    from egodepth_eval.score.scorer import SampleScore, aggregate_scores
+
+    key = "roi::hand"
+    sites = [
+        SampleScore("a0", "a", {key: ScoreAccumulator(n_reference=10, n_scored=5, n_frames=1)}),
+        SampleScore("b0", "b"),
+    ]
+    result = aggregate_scores(sites)[key]
+    assert result["support"] == {
+        "n_sites_total": 1, "n_sites_with_predictions": 1,
+        "n_sites_no_predictions": 0, "n_sites_not_applicable": 1,
+    }
+    assert result["per_site"]["b"]["coverage"] is None
+    assert result["per_site"]["b"]["n_frames"] == 0
+    assert result["metrics"]["coverage"] == 0.5
+    assert result["metrics"]["n_frames"] == 1

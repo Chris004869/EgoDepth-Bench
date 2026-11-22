@@ -115,7 +115,7 @@ def build_ray_field(
 
 
 class RayFieldCache:
-    """Ray fields keyed by (camera_id, grid, DS parameters).
+    """Ray fields keyed by camera, native calibration grid, target grid and intrinsics.
 
     Keying on the parameters and not just the camera id is deliberate: two
     recordings with different calibration for the same camera must not share a
@@ -129,7 +129,8 @@ class RayFieldCache:
 
     def get(self, calibration: DSCalibration, grid_hw: Optional[tuple] = None) -> RayField:
         target = tuple(grid_hw) if grid_hw is not None else (calibration.height, calibration.width)
-        key = (calibration.camera_id, target, tuple(round(v, 9) for v in calibration.ds_params))
+        key = (calibration.camera_id, calibration.height, calibration.width,
+               target, tuple(calibration.ds_params))
         if key not in self._fields:
             field = build_ray_field(calibration, grid_hw=target)
             field.directions.flags.writeable = False

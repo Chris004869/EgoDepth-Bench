@@ -241,13 +241,19 @@ class MethodScorer:
 def aggregate_scores(sample_scores: Sequence[SampleScore]) -> dict:
     """Pool within site, then average sites equally, for every stratum."""
     by_stratum: dict = {}
+    sites = set()
     for score in sample_scores:
+        sites.add(score.site_id)
         for key, accumulator in score.accumulators.items():
             by_stratum.setdefault(key, {}).setdefault(score.site_id, ScoreAccumulator())
             by_stratum[key][score.site_id].add(accumulator)
 
     aggregated: dict = {}
     for key, site_accumulators in by_stratum.items():
+        # A cell may be absent from an entire site. Report that site as having
+        # no reference in the cell, while leaving the applicable-site mean intact.
+        for site in sites - site_accumulators.keys():
+            site_accumulators[site] = ScoreAccumulator()
         aggregated[key] = site_macro(site_accumulators).to_dict()
     return aggregated
 

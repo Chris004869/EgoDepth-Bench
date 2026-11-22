@@ -77,15 +77,24 @@ def verify_macro(stratum, label):
 
 def verify_provenance(results):
     manifest = json.loads((results / "provenance.json").read_text())
+    artifacts = {p for p in (results / "official").glob("*.json")}
+    artifacts.update(p for p in (results / "paper_artifacts").rglob("*") if p.is_file())
+    artifacts.add(results / "training_run.json")
+    verified = set()
     for entry in manifest["files"]:
         relative = Path(entry["path"])
         if relative.is_absolute() or ".." in relative.parts or relative.parts[0] != "results":
             raise ValueError("Unsafe archived artifact path")
         path = results.joinpath(*relative.parts[1:])
+        if path in verified:
+            raise ValueError(f"Duplicate archive checksum: {relative}")
+        verified.add(path)
         observed = hashlib.sha256(path.read_bytes()).hexdigest()
         if observed != entry["public_sha256"]:
             raise ValueError(f"Public archive checksum mismatch: {relative}")
-    return len(manifest["files"])
+    if unverified := artifacts - verified:
+        raise ValueError("Artifacts missing from provenance: " + ", ".join(sorted(str(p) for p in unverified)))
+    return len(verified)
 
 
 def row_from_result(result):
@@ -100,39 +109,54 @@ def row_from_result(result):
         metrics = result["strata"][f"roi::{region}"]["metrics"]
         for metric in ("abs_rel", "mae_z_cm", "coverage", "a_5cm"):
             row[f"{region}_{metric}"] = metrics[metric]
+    row["full_delta_1"] = result["strata"]["roi::full"]["metrics"]["delta_1"]
     return row
 
 
-def markdown(rows):
+def markdown(rows, title):
     lines = [
-        "# Archived results", "",
-        "Equal-weight site averages over eight held-out-from-fine-tuning test sites. "
-        "Full-image metrics use 6,574 anchors. Hand/object metrics use accepted "
-        "v6 AI diagnostic regions, whose support is recorded in the JSON archives.", "",
-        "Rows have different input and scale contracts. Coverage accompanies errors; "
-        "relative-depth rows aligned using reference depth are diagnostic upper bounds.", "",
-        "| Configuration | Views | Scale contract | AbsRel | MAE (cm) | Coverage (%) | Hand MAE (cm) | Object MAE (cm) |",
-        "|---|---:|---|---:|---:|---:|---:|---:|",
+        f"# {title}", "",
+        "Each physical site receives equal weight. Full-image metrics cover the 6,574 test anchors. "
+        "Hand and object metrics use the accepted v6 annotations. ROI cells give "
+        "MAE in centimeters and coverage as a percentage. Coverage uses all eligible reference pixels.", "",
+        "The scale contract identifies any use of reference depth for alignment.", "",
+        "| Configuration | Views | Scale contract | AbsRel ↓ | MAE (cm) ↓ | δ₁ ↑ | Coverage (%) ↑ | Hand MAE / Cov. | Object MAE / Cov. |",
+        "| --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
-    def fmt(value, scale=1):
-        return "—" if value is None else f"{value * scale:.4f}"
+
+    def fmt(value, digits, scale=1):
+        return "—" if value is None else f"{value * scale:.{digits}f}"
+
     for row in rows:
         scale = row["scale_contract"].replace("|", "\\|").replace("\n", " ")
         lines.append(
             f"| {row['method']} | {row['views']} | {scale} | "
-            f"{fmt(row['full_abs_rel'])} | {fmt(row['full_mae_z_cm'])} | "
-            f"{fmt(row['full_coverage'], 100)} | {fmt(row['hand_mae_z_cm'])} | "
-            f"{fmt(row['object_mae_z_cm'])} |"
+            f"{fmt(row['full_abs_rel'], 3)} | {fmt(row['full_mae_z_cm'], 2)} | "
+            f"{fmt(row['full_delta_1'], 3)} | {fmt(row['full_coverage'], 1, 100)} | "
+            f"{fmt(row['hand_mae_z_cm'], 2)} / {fmt(row['hand_coverage'], 1, 100)} | "
+            f"{fmt(row['object_mae_z_cm'], 2)} / {fmt(row['object_coverage'], 1, 100)} |"
         )
+    if "common_support_aligned_abs_rel" in rows[0]:
+        lines.extend([
+            "", "## Per-frame scale alignment on common support", "",
+            "Each of the three adaptation arms fits its own positive scale on the same "
+            "full-image reference and prediction intersection. The object metric reuses that scale. "
+            "The following values come from the archived pixel-level diagnostic.", "",
+            "| Configuration | Aligned AbsRel ↓ | Aligned object MAE (cm) ↓ |",
+            "| --- | ---: | ---: |",
+        ])
+        for row in rows:
+            lines.append(f"| {row['method']} | {fmt(row['common_support_aligned_abs_rel'], 3)} | "
+                         f"{fmt(row['common_support_aligned_object_mae_z_cm'], 2)} |")
     return "\n".join(lines) + "\n"
 
 
-def write_table(output, name, rows):
+def write_table(output, name, title, rows):
     with (output / f"{name}.csv").open("w", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
-    (output / f"{name}.md").write_text(markdown(rows))
+    (output / f"{name}.md").write_text(markdown(rows, title))
 
 
 def main():
@@ -159,13 +183,21 @@ def main():
         rows.append(row_from_result(result))
     if len({row["method"] for row in rows}) != 24:
         raise ValueError("Duplicate archived method names")
+    aligned = json.loads((args.results / "paper_artifacts/export_manifest.json").read_text())["aligned_diagnostic"]
+    arms = ("mapanything_6view_rig", "mapanything_rig_scale_only", "mapanything_rig_ft")
+    if aligned["status"] != "ok" or set(aligned["shared_arms"]) != set(arms):
+        raise ValueError("Expected the completed common-support adaptation diagnostic")
     args.output.mkdir(parents=True, exist_ok=True)
-    write_table(args.output, "all_configurations", rows)
+    write_table(args.output, "all_configurations", "All 24 configurations", rows)
     lookup = {row["method"]: row for row in rows}
-    write_table(args.output, "views", [lookup[name] for name in (
+    write_table(args.output, "views", "MapAnything view and pose conditions", [lookup[name] for name in (
         "mapanything_1view", "mapanything_2view", "mapanything_6view", "mapanything_6view_rig")])
-    write_table(args.output, "adaptation", [lookup[name] for name in (
-        "mapanything_6view_rig", "mapanything_rig_scale_only", "mapanything_rig_ft")])
+    adaptation = [
+        {**lookup[name], "common_support_aligned_abs_rel": aligned[name]["abs_rel"],
+         "common_support_aligned_object_mae_z_cm": aligned[name]["object_mae_z_cm"]}
+        for name in arms
+    ]
+    write_table(args.output, "adaptation", "MapAnything adaptation with rig poses", adaptation)
     report = {
         "status": "passed", "configurations": len(rows), "artifact_checksums_verified": files_checked,
         "strata_recomputed_from_site_summaries": strata_count, "scalar_checks": checks,

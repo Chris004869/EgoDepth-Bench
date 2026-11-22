@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -20,7 +21,7 @@ from egodepth_eval.annotate.pipeline import load_records, region_masks_from_reco
 from egodepth_eval.data.mask_profile import get_profile
 from egodepth_eval.data.population import FormalRunBlocked, PopulationRole, resolve_population
 from egodepth_eval.data.reader import SampleReader
-from egodepth_eval.score.prediction_io import LoadedPrediction, PredictionContract
+from egodepth_eval.score.prediction_io import PREDICTION_SCHEMA, LoadedPrediction, PredictionContract
 from egodepth_eval.score.scorer import MethodScorer, build_result_document, write_result
 
 ALIGNMENTS = ("none", "positive_scale", "affine_depth", "affine_inverse")
@@ -93,9 +94,12 @@ def load_annotations(config: dict) -> dict:
     return records
 
 
-def read_external_prediction(path: Path, grid_hw: tuple, alignment: str) -> LoadedPrediction:
-    """Require explicit support and a native grid instead of guessing conventions."""
-    with np.load(path, allow_pickle=False) as payload:
+def read_external_prediction(
+    path: Path, grid_hw: tuple, alignment: str, *, contents: bytes | None = None
+) -> LoadedPrediction:
+    """Decode the named file or an already captured snapshot of its bytes."""
+    source = path if contents is None else io.BytesIO(contents)
+    with np.load(source, allow_pickle=False) as payload:
         missing = {"depth_z", "valid"} - set(payload.files)
         if missing:
             raise ValueError(f"{path.name}: missing arrays {sorted(missing)}")
@@ -144,7 +148,14 @@ def score_predictions(config: dict, predictions_dir: Path, output: Path, *,
     records = load_annotations(config)
     grid_hw = tuple(config["data"].get("scoring_grid_hw", population.samples[0].depth_shape_hw))
     if contract_path:
-        contract = PredictionContract.from_dict(json.loads(Path(contract_path).read_text()))
+        payload = json.loads(Path(contract_path).read_text())
+        if not isinstance(payload, dict):
+            raise ValueError("Prediction contract must be a JSON object")
+        if "schema" in payload and payload["schema"] != PREDICTION_SCHEMA:
+            raise ValueError(f"Unsupported prediction contract schema: {payload['schema']}")
+        contract = PredictionContract.from_dict(payload)
+        if "contract_hash" in payload and payload["contract_hash"] != contract.identity_hash():
+            raise ValueError("Prediction contract hash disagrees with its declared fields")
         if contract.method != method:
             raise ValueError("The supplied prediction contract names a different method")
         if contract.target_camera_id != 2:
@@ -194,9 +205,13 @@ def score_predictions(config: dict, predictions_dir: Path, output: Path, *,
         if tuple(loaded.grid_hw) != grid_hw:
             raise ValueError(f"{sample.sample_token}: reference grid disagrees with the prediction contract")
         path = predictions_dir / f"{sample.sample_token}.npz"
-        prediction = read_external_prediction(path, loaded.grid_hw, alignment) if path.exists() else None
-        if path.exists():
-            prediction_hashes[sample.sample_token] = hashlib.sha256(path.read_bytes()).hexdigest()
+        prediction = None
+        if sample.sample_token in provided:
+            # Score and identify the same bytes, even if a producer replaces the
+            # file during a long run. A file lost after discovery is an I/O error.
+            contents = path.read_bytes()
+            prediction = read_external_prediction(path, loaded.grid_hw, alignment, contents=contents)
+            prediction_hashes[sample.sample_token] = hashlib.sha256(contents).hexdigest()
         record = records.get(sample.sample_token)
         masks = region_masks_from_record(record, loaded.grid_hw) if record else None
         scores.append(scorer.score_sample(sample, sample.physical_site_id or f"unmapped::{sample.recording_id}",

@@ -128,3 +128,42 @@ def test_release_annotation_pointer_and_portable_masks_reach_real_roi_scoring(tm
     (tmp_path / "annotation_version.json").unlink()
     with pytest.raises(FileNotFoundError):
         release_config(tmp_path)
+
+
+def test_provenance_uses_exact_bytes_scored_during_file_replacement(tmp_path, monkeypatch):
+    import hashlib
+    from egodepth_eval.score import external
+
+    config, predictions = create_synthetic_fixture(tmp_path)
+    path = predictions / "synthetic_a0.npz"
+    expected_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    original_read = external.read_external_prediction
+
+    def read_then_replace(name, *args, **kwargs):
+        decoded = original_read(name, *args, **kwargs)
+        if name == path:
+            np.savez(path, depth_z=np.full_like(decoded.depth_z, 99), valid=decoded.valid)
+        return decoded
+
+    monkeypatch.setattr(external, "read_external_prediction", read_then_replace)
+    result = score_predictions(config, predictions, tmp_path / "result.json", method="synthetic")
+    hashes = result["external_prediction_evaluation"]["prediction_files_sha256"]
+    assert hashes[path.stem] == expected_digest
+    assert hashlib.sha256(path.read_bytes()).hexdigest() != expected_digest
+    assert result["strata"]["roi::full"]["metrics"]["abs_rel"] == pytest.approx(.1875)
+
+
+@pytest.mark.parametrize("field,value,message", [
+    ("checkpoint_content_id", "changed-after-sealing", "contract hash"),
+    ("schema", "unknown-version", "contract schema"),
+])
+def test_supplied_provenance_cannot_be_silently_resealed(tmp_path, field, value, message):
+    config, predictions = create_synthetic_fixture(tmp_path)
+    contract = PredictionContract("synthetic", scoring_grid_hw=(16, 16)).to_dict()
+    contract[field] = value
+    path = tmp_path / "contract.json"
+    path.write_text(json.dumps(contract))
+    with pytest.raises(ValueError, match=message):
+        score_predictions(config, predictions, tmp_path / "result.json", method="synthetic",
+                          contract_path=path)
+    assert not (tmp_path / "result.json").exists()

@@ -234,3 +234,16 @@ def test_field_angles_survive_a_resolution_change():
     assert float(np.nanmax(difference)) < 0.5, (
         "rescaling changed the physical ray directions"
     )
+
+
+def test_cache_distinguishes_native_calibration_grids_on_one_output_grid():
+    from dataclasses import replace
+
+    small = real_calibration(2)
+    large = replace(small, width=small.width * 2, height=small.height * 2)
+    cache = RayFieldCache()
+    output_grid = (26, 32)
+    first = cache.get(small, output_grid)
+    second = cache.get(large, output_grid)
+    assert not np.array_equal(first.directions, second.directions)
+    np.testing.assert_array_equal(second.directions, build_ray_field(large, output_grid).directions)

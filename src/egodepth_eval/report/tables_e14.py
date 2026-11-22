@@ -257,7 +257,7 @@ def generate_views_table(
                  .replace(r'Evaluation & 1 view & 2 views & 6 views \\',
                           r'Evaluation & 1 view & 2 views & 6 views & 6 + rig \\')
                  for line in lines]
-        lines.insert(7, r'  The 6 + rig condition additionally receives known metric camera-to-rig poses.')
+        lines.insert(5, r'  The 6 + rig condition additionally receives known metric camera-to-rig poses.')
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     Path(output_path).write_text("\n".join(lines) + "\n")
     return Path(output_path)
