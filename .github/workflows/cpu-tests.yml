@@ -31,6 +31,7 @@ jobs:
       - name: Score the example with the installed CLI outside the checkout
         working-directory: ${{ runner.temp }}
         run: |
+          python -c 'from egodepth_eval.infer.assets import SOURCES; assert len(SOURCES) == 18'
           egodepth-score --config egodepth-example/synthetic_config.yaml \
             --predictions-dir egodepth-example/synthetic_predictions --method smoke \
             --output egodepth-example/installed-score.json

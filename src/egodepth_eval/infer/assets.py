@@ -1,4 +1,5 @@
 """Portable model locations and content identities; identity checks never download."""
+from importlib.metadata import distribution
 from pathlib import Path
 import hashlib
 import json
@@ -6,8 +7,23 @@ import os
 import subprocess
 from egodepth_eval.score.prediction_io import file_content_digest
 
-ROOT = Path(__file__).resolve().parents[3]
-SOURCES = json.loads((ROOT / 'configs/model_sources.json').read_text())['models']
+# Runner checkouts keep assets next to configs/. Wheel users can supply their
+# own workspace through configure_paths or the EGODEPTH_* environment variables.
+_module = Path(__file__).resolve()
+_checkout = _module.parents[3]
+if _module.parents[2] == _checkout / "src":
+    ROOT = _checkout
+    _registry = ROOT / "configs/model_sources.json"
+else:
+    ROOT = Path.cwd()
+    _shared_registry = Path("share/egodepth-bench/model_sources.json")
+    _dist = distribution("egodepth-bench")
+    _registry = next(
+        (entry.locate() for entry in _dist.files or () if entry.match(_shared_registry.as_posix())
+         and entry.locate().is_file()),
+        _dist.locate_file(_shared_registry),
+    )
+SOURCES = json.loads(_registry.read_text(encoding="utf-8"))["models"]
 
 
 def configure_paths(config):

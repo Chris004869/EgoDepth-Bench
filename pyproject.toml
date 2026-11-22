@@ -35,6 +35,9 @@ egodepth-score = "egodepth_eval.score.external:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.data-files]
+"share/egodepth-bench" = ["configs/model_sources.json"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
