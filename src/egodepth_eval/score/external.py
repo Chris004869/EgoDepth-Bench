@@ -133,6 +133,9 @@ def score_predictions(config: dict, predictions_dir: Path, output: Path, *,
         raise FileExistsError(f"Output exists: {output}; choose a new path or use --overwrite")
     if not predictions_dir.is_dir():
         raise FileNotFoundError(predictions_dir)
+    # Bind provenance when the evaluation starts. A long-running checkout can
+    # change after Python has loaded the implementation used for these frames.
+    code_identity = scoring_source_identity()
     role = PopulationRole.TEST if config.get("run", {}).get("status") == "formal" else PopulationRole.DEVELOPMENT
     population = resolve_population(config, role)
     if not len(population.samples):
@@ -234,7 +237,7 @@ def score_predictions(config: dict, predictions_dir: Path, output: Path, *,
             "n_prediction_files": len(provided), "n_missing_predictions": len(missing),
             "prediction_files_sha256": prediction_hashes,
             "n_annotation_records": len(records),
-            "scoring_code_identity": scoring_source_identity(),
+            "scoring_code_identity": code_identity,
         },
     })
     write_result(output, document, overwrite=overwrite)

@@ -203,3 +203,20 @@ def test_cli_progress_is_only_for_long_interactive_runs(tmp_path, monkeypatch, c
     assert code == 0
     assert json.loads(capsys.readouterr().out)["n_samples"] == 3
     assert stderr.getvalue().splitlines() == [f"Scoring example: {n}/3 frames" for n in counts]
+
+
+def test_long_run_binds_source_identity_before_scoring_frames(tmp_path, monkeypatch):
+    from egodepth_eval.score import external
+
+    config, predictions = create_synthetic_fixture(tmp_path)
+    revision = {"version": "initial"}
+    monkeypatch.setattr(external, "scoring_source_identity", lambda: dict(revision))
+    original_read = external.read_external_prediction
+
+    def update_checkout(*args, **kwargs):
+        revision["version"] = "later"
+        return original_read(*args, **kwargs)
+
+    monkeypatch.setattr(external, "read_external_prediction", update_checkout)
+    result = score_predictions(config, predictions, tmp_path / "result.json", method="synthetic")
+    assert result["external_prediction_evaluation"]["scoring_code_identity"] == {"version": "initial"}
