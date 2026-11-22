@@ -46,7 +46,7 @@ from egodepth_eval.score.prediction_io import (
     save_prediction,
 )
 
-from egodepth_eval.infer.assets import configure_paths
+from egodepth_eval.infer.assets import configure_paths, local_weight_path
 
 def conda_prefix():
     configured = os.environ.get("EGODEPTH_CONDA_PREFIX")
@@ -349,6 +349,15 @@ def build_legacy_contract(
     configure_paths(config)
     weights=weight_identity(spec.name, spec.checkpoint)
     upstream=upstream_identity(spec.name, config.get("paths",{}).get("third_party_dir"))
+    auxiliary = {}
+    if spec.name in {"dac", "foundation_stereo"}:
+        checkpoint = local_weight_path(spec.name)
+        model_config = (checkpoint.with_suffix(".json") if spec.name == "dac"
+                        else checkpoint.with_name("cfg.yaml"))
+        digest = file_content_digest(model_config)
+        if digest is None:
+            raise FileNotFoundError(f"{spec.name}: missing model configuration {model_config}")
+        auxiliary["model_config_content_id"] = digest
     return PredictionContract(
         method=spec.name,
         checkpoint=spec.checkpoint,
@@ -358,6 +367,7 @@ def build_legacy_contract(
         preprocessing={
             "runner": str(spec.runner_path.name),
             "runner_content_id": file_content_digest(spec.runner_path),
+            **auxiliary,
             "conda_env": spec.env,
             "geometry_contract": "full native frame, resampled to the scoring grid",
             "extra_args": list(spec.extra_args),

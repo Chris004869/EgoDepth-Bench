@@ -12,7 +12,7 @@ import tempfile
 import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
-from egodepth_eval.infer.assets import SOURCES, configure_paths, source_path, local_weight_path, hf_model_options
+from egodepth_eval.infer.assets import SOURCES, configure_paths, source_path, local_weight_path, hf_model_options, weight_identity
 
 
 def command(args, dry_run=False, cwd=None):
@@ -110,7 +110,22 @@ def prepare_source(name, dry_run=False):
 def prepare_weights(name, dry_run=False):
     spec = SOURCES[name]
     if name in {'cut3r', 'foundation_stereo'}:
-        raise RuntimeError(f'{name}: download the official checkpoint manually to {local_weight_path(name)}; see docs/MODELS.md (FoundationStereo also needs cfg.yaml)')
+        checkpoint = local_weight_path(name)
+        required = [checkpoint]
+        if name == "foundation_stereo":
+            required.append(checkpoint.with_name("cfg.yaml"))
+        if dry_run:
+            print(f"{name}: provide the official files manually:", *required)
+            return
+        missing = [str(path) for path in required if not path.is_file() or not path.stat().st_size]
+        if missing:
+            raise FileNotFoundError(
+                f"{name}: obtain the official files listed in docs/MODELS.md: {', '.join(missing)}"
+            )
+        if weight_identity(name)["digest"] != spec["paper_checkpoint_content_id"]:
+            raise ValueError(f"{name}: checkpoint differs from the model used in the paper: {checkpoint}")
+        print(f"{name}: found required files and verified the paper checkpoint")
+        return
     if dry_run:
         print('Would download official weights:', name, spec.get('hf_repo'), spec.get('hf_revision') or '(revision not recovered)')
         return
@@ -166,7 +181,7 @@ def main():
         try:
             prepare_source(name, args.dry_run)
             if args.download_weights: prepare_weights(name, args.dry_run)
-        except (RuntimeError, subprocess.CalledProcessError, OSError) as error:
+        except (ValueError, RuntimeError, subprocess.CalledProcessError, OSError) as error:
             failures.append(name)
             print(f'{name}: {error}', file=sys.stderr)
     if failures: raise SystemExit('Incomplete preparation: ' + ', '.join(failures))
