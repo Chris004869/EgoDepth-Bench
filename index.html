@@ -11,8 +11,10 @@
   <meta property="og:description" content="Six synchronized views of real manipulation, with metric depth in the wearer's native fisheye view.">
   <meta property="og:image" content="https://chris004869.github.io/EgoDepth-Bench/site-assets/teaser.webp">
   <link rel="preload" href="site-assets/fonts/stixtwotext.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="site-assets/site.css">
-  <script src="site-assets/site.js" defer></script>
+  <link rel="stylesheet" href="site-assets/site.css?v=76f1d05e">
+  <link rel="stylesheet" href="site-assets/sequences.css">
+  <script src="site-assets/sequence-player.js" defer></script>
+  <script src="site-assets/site.js?v=2270a120" defer></script>
 </head>
 <body id="top">
   <a class="skip" href="#main">Skip to paper</a>
@@ -33,37 +35,101 @@
         </div>
       </header>
 
-      <figure class="observation" aria-label="Explore the training sample from Figure 1">
-        <div class="lightbox">
-          <div class="lightbox-top"><span>Camera 2 <i>/</i> RGB and reference depth</span>
-            <div class="mode-controls" hidden aria-label="Image layout">
-              <button type="button" aria-pressed="true" data-layout="pair">Side by side</button>
-              <button type="button" aria-pressed="false" data-layout="wipe">Wipe</button>
-            </div>
-          </div>
-          <div class="observation-grid">
-            <div class="viewer" id="viewer">
-              <figure class="panel rgb"><img src="site-assets/observation/camera-2.webp" width="512" height="416" fetchpriority="high" alt="Head-worn camera looking down at hands and tiles on a green tabletop."><figcaption>RGB</figcaption></figure>
-              <figure class="panel ref"><img src="site-assets/observation/reference-z.webp" width="512" height="416" alt="Aligned metric depth of the tabletop, hands and surrounding room."><figcaption>Reference Z</figcaption></figure>
-              <div class="wipe-line" aria-hidden="true"><span>‹ ›</span></div>
-              <input class="wipe-input" hidden type="range" min="0" max="100" value="50" aria-label="Depth overlay boundary, from all RGB to all depth">
-            </div>
-            <aside class="rig-strip" aria-label="All six cameras at the same timestamp">
-              <h2>Six RGB views</h2>
-              <div class="rig-images">
-                <a href="site-assets/observation/camera-0.webp" aria-label="Open the full camera 0 RGB image"><img src="site-assets/observation/camera-0.webp" width="512" height="416" alt="Synchronized camera 0 view"><span>0</span></a>
-                <a href="site-assets/observation/camera-1.webp" aria-label="Open the full camera 1 RGB image"><img src="site-assets/observation/camera-1.webp" width="512" height="416" alt="Synchronized camera 1 view"><span>1</span></a>
-                <a href="site-assets/observation/camera-2.webp" aria-label="Open the full camera 2 RGB image"><img src="site-assets/observation/camera-2.webp" width="512" height="416" alt="Synchronized camera 2 view"><span>2</span></a>
-                <a href="site-assets/observation/camera-3.webp" aria-label="Open the full camera 3 RGB image"><img src="site-assets/observation/camera-3.webp" width="512" height="416" alt="Synchronized camera 3 view"><span>3</span></a>
-                <a href="site-assets/observation/camera-4.webp" aria-label="Open the full camera 4 RGB image"><img src="site-assets/observation/camera-4.webp" width="512" height="416" alt="Synchronized camera 4 view"><span>4</span></a>
-                <a href="site-assets/observation/camera-5.webp" aria-label="Open the full camera 5 RGB image"><img src="site-assets/observation/camera-5.webp" width="512" height="416" alt="Synchronized camera 5 view"><span>5</span></a>
+      <section id="sequence-gallery" class="sequence-gallery" aria-label="Explore RGB and reference depth in motion" data-fps="30" data-frames="180">
+        <div class="sequence-layout">
+          <div class="sequence-player">
+            <div class="sequence-top">
+              <div><p class="sequence-camera">Camera 2 · Native fisheye</p><h2 id="sequence-title" aria-live="polite">Mahjong tiles</h2></div>
+              <div class="sequence-modes js-control" role="group" aria-label="Comparison layout">
+                <button type="button" data-mode="wipe" aria-pressed="true">Wipe</button>
+                <button type="button" data-mode="pair" aria-pressed="false">Side by side</button>
               </div>
-            </aside>
+            </div>
+            <div class="sequence-stage">
+              <div class="sequence-frame">
+                <video id="sequence-video" muted playsinline loop preload="none" hidden aria-hidden="true"></video>
+                <img id="sequence-poster" src="site-assets/sequences/mahjong-poster.webp" width="1024" height="416" fetchpriority="high" alt="Synchronized RGB and reference depth of a pair of hands at a mahjong table.">
+                <canvas id="sequence-screen" width="512" height="416" hidden role="img" aria-label="Mahjong tiles, camera 2 RGB and reference depth"></canvas>
+                <div class="sequence-labels js-control" aria-hidden="true"><span id="sequence-left">Reference depth</span><span id="sequence-right">RGB</span></div>
+                <div class="sequence-divider js-control" aria-hidden="true"><span></span></div>
+                <input id="sequence-wipe" class="js-control" type="range" min="0" max="100" value="50" step="1" aria-label="Depth coverage from all RGB to all reference depth">
+              </div>
+            </div>
+            <div class="sequence-transport js-control" role="group" aria-label="Sequence playback">
+              <button type="button" id="sequence-play"><span aria-hidden="true"></span><span class="play-text">Play</span></button>
+              <input id="sequence-seek" type="range" aria-label="Seek in the current sequence" min="0" max="5.966667" step="any" value="0">
+              <span class="sequence-time" id="sequence-time">0.0 / 6.0 s</span>
+              <div class="frame-steps">
+                <button type="button" data-step="-1" aria-label="Previous frame" title="Previous frame">‹</button>
+                <button type="button" data-step="1" aria-label="Next frame" title="Next frame">›</button>
+              </div>
+            </div>
+            <p id="sequence-message" role="status" hidden></p>
           </div>
-          <div class="lightbox-foot"><span>Training sample <i>/</i> native fisheye</span><span class="scale">0.25 m <img src="site-assets/observation/z-scale.png" width="100" height="5" alt="Turbo color scale"> 2 m <b class="invalid-key"></b> Invalid</span></div>
+          <div class="sequence-library">
+            <div class="library-heading"><h3>Scenes</h3><span>7 clips</span></div>
+            <div class="scene-choices js-control" role="group" aria-label="Choose a sequence">
+              <button type="button" data-scene="mahjong" aria-pressed="true">
+                <img src="site-assets/sequences/mahjong-thumb.webp" width="256" height="208" alt="">
+                <span>Mahjong tiles</span>
+              </button>
+              <button type="button" data-scene="kitchen" aria-pressed="false">
+                <img src="site-assets/sequences/kitchen-thumb.webp" width="256" height="208" alt="">
+                <span>Kitchen worktop</span>
+              </button>
+              <button type="button" data-scene="controllers" aria-pressed="false">
+                <img src="site-assets/sequences/controllers-thumb.webp" width="256" height="208" alt="">
+                <span>Remote controls</span>
+              </button>
+              <button type="button" data-scene="garment" aria-pressed="false">
+                <img src="site-assets/sequences/garment-thumb.webp" width="256" height="208" alt="">
+                <span>Garment rack</span>
+              </button>
+              <button type="button" data-scene="towel" aria-pressed="false">
+                <img src="site-assets/sequences/towel-thumb.webp" width="256" height="208" alt="">
+                <span>Bed linens</span>
+              </button>
+              <button type="button" data-scene="bathroom" aria-pressed="false">
+                <img src="site-assets/sequences/bathroom-thumb.webp" width="256" height="208" alt="">
+                <span>Bathroom linens</span>
+              </button>
+              <button type="button" data-scene="tabletop" aria-pressed="false">
+                <img src="site-assets/sequences/tabletop-thumb.webp" width="256" height="208" alt="">
+                <span>Wooden table</span>
+              </button>
+            </div>
+            <noscript><ul class="sequence-downloads">
+                <li><a href="site-assets/sequences/mahjong.mp4">Mahjong tiles</a></li>
+                <li><a href="site-assets/sequences/kitchen.mp4">Kitchen worktop</a></li>
+                <li><a href="site-assets/sequences/controllers.mp4">Remote controls</a></li>
+                <li><a href="site-assets/sequences/garment.mp4">Garment rack</a></li>
+                <li><a href="site-assets/sequences/towel.mp4">Bed linens</a></li>
+                <li><a href="site-assets/sequences/bathroom.mp4">Bathroom linens</a></li>
+                <li><a href="site-assets/sequences/tabletop.mp4">Wooden table</a></li>
+            </ul></noscript>
+            <div class="library-key">
+              <span>Reference depth <i>(m)</i></span>
+              <div class="depth-scale"><span>0.25</span><img src="site-assets/observation/z-scale.png" alt="Color scale from purple through green to red" width="100" height="5"><span>2 m</span><span class="invalid-swatch"></span><span>Invalid</span></div>
+            </div>
+          </div>
         </div>
-        <figcaption class="legend"><span><b>Fig. 1.</b> One timestamp, six synchronized views. The depth map measures optical-axis distance in camera 2. The display saturates outside 0.25–2 m.</span><a href="site-assets/teaser.webp">Original figure</a></figcaption>
-      </figure>
+        <div class="sequence-caption">
+          <p><b>RGB and metric depth in motion.</b> <span class="js-control">Drag the divider during playback or pause to inspect a frame.</span> <noscript>Open a clip to watch the synchronized views side by side.</noscript> Seven clips cover six training sites at 512 × 416 pixels per view and 30 Hz. Colors encode distance along the optical axis and saturate outside 0.25–2 m.</p>
+          <div class="sequence-files"><a id="sequence-original" href="site-assets/sequences/mahjong-poster.webp">Lossless first frame</a><a id="sequence-file" href="site-assets/sequences/mahjong.mp4">Paired MP4</a></div>
+        </div>
+        <details class="sequence-rig">
+          <summary>Paper Fig. 1 · Six synchronized views at 2.0 s in the mahjong clip</summary>
+          <div class="rig-images">
+            <a href="site-assets/observation/camera-0.webp" aria-label="Open the full camera 0 RGB image"><img loading="lazy" src="site-assets/observation/camera-0.webp" width="512" height="416" alt="Synchronized camera 0 view"><span>0</span></a>
+            <a href="site-assets/observation/camera-1.webp" aria-label="Open the full camera 1 RGB image"><img loading="lazy" src="site-assets/observation/camera-1.webp" width="512" height="416" alt="Synchronized camera 1 view"><span>1</span></a>
+            <a href="site-assets/observation/camera-2.webp" aria-label="Open the full camera 2 RGB image"><img loading="lazy" src="site-assets/observation/camera-2.webp" width="512" height="416" alt="Synchronized camera 2 view"><span>2</span></a>
+            <a href="site-assets/observation/camera-3.webp" aria-label="Open the full camera 3 RGB image"><img loading="lazy" src="site-assets/observation/camera-3.webp" width="512" height="416" alt="Synchronized camera 3 view"><span>3</span></a>
+            <a href="site-assets/observation/camera-4.webp" aria-label="Open the full camera 4 RGB image"><img loading="lazy" src="site-assets/observation/camera-4.webp" width="512" height="416" alt="Synchronized camera 4 view"><span>4</span></a>
+            <a href="site-assets/observation/camera-5.webp" aria-label="Open the full camera 5 RGB image"><img loading="lazy" src="site-assets/observation/camera-5.webp" width="512" height="416" alt="Synchronized camera 5 view"><span>5</span></a>
+          </div>
+          <div class="sequence-figure-links"><a href="site-assets/teaser.webp">Open original figure</a><a href="site-assets/observation/reference-z.webp">Camera 2 reference depth</a></div>
+        </details>
+      </section>
 
       <section class="intro text-grid" aria-labelledby="intro-heading">
         <h2 id="intro-heading">The benchmark</h2>

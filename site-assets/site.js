@@ -39,23 +39,6 @@ if (copyButton && citation && copyStatus) {
   });
 }
 
-// A single, aligned camera-2 frame supplies both renderings.
-const viewer = document.querySelector("#viewer");
-const modes = document.querySelector(".mode-controls");
-const handle = viewer.querySelector(".wipe-input");
-modes.hidden = false;
-modes.addEventListener("click", event => {
-  const button = event.target.closest("[data-layout]");
-  if (!button) return;
-  const wipe = button.dataset.layout === "wipe";
-  viewer.classList.toggle("is-wipe", wipe);
-  handle.hidden = !wipe;
-  for (const item of modes.querySelectorAll("button")) {
-    item.setAttribute("aria-pressed", String(item === button));
-  }
-});
-handle.addEventListener("input", () => viewer.style.setProperty("--split", handle.value + "%"));
-
 // Printed pages and visitors without JavaScript keep all scenes and tables.
 for (const group of document.querySelectorAll("[data-switches]")) {
   const buttons = [...group.querySelectorAll("button")];
