@@ -109,11 +109,13 @@ def read_external_prediction(
             raise ValueError(f"{path.name}: depth_z and valid must have shape {tuple(grid_hw)}")
         if depth.dtype.kind != "f" or valid.dtype != np.bool_:
             raise ValueError(f"{path.name}: depth_z must be floating point; valid must be bool")
-        raw = np.asarray(payload["raw"], dtype=np.float32) if "raw" in payload else None
-        if raw is not None and raw.shape != depth.shape:
-            raise ValueError(f"{path.name}: raw must share the scoring grid")
-        if alignment != "none" and raw is None:
-            raise ValueError(f"{path.name}: alignment={alignment} requires an explicit raw array")
+        raw = None
+        if alignment != "none":
+            if "raw" not in payload:
+                raise ValueError(f"{path.name}: alignment={alignment} requires an explicit raw array")
+            raw = np.asarray(payload["raw"], dtype=np.float32)
+            if raw.shape != depth.shape:
+                raise ValueError(f"{path.name}: raw must share the scoring grid")
         return LoadedPrediction(depth.astype(np.float32), valid.copy(), raw=raw,
                                 raw_space=alignment if raw is not None else None)
 

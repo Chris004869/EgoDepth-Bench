@@ -167,3 +167,16 @@ def test_supplied_provenance_cannot_be_silently_resealed(tmp_path, field, value,
         score_predictions(config, predictions, tmp_path / "result.json", method="synthetic",
                           contract_path=path)
     assert not (tmp_path / "result.json").exists()
+
+
+def test_metric_prediction_can_include_native_model_grid(tmp_path):
+    from egodepth_eval.score.external import read_external_prediction
+
+    path = tmp_path / "two-grids.npz"
+    depth = np.ones((16, 16), dtype=np.float32)
+    np.savez(path, depth_z=depth, valid=np.ones_like(depth, dtype=bool),
+             raw=np.full((8, 12), 2.0, dtype=np.float32))
+    loaded = read_external_prediction(path, depth.shape, "none")
+    np.testing.assert_array_equal(loaded.depth_z, depth)
+    with pytest.raises(ValueError, match="raw must share the scoring grid"):
+        read_external_prediction(path, depth.shape, "positive_scale")

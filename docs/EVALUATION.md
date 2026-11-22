@@ -67,6 +67,10 @@ and omit the `annotation` block if ROI scoring is unnecessary. Use
 `egodepth-score --config <your-config.yaml>` in place of `--release-root`;
 the result records its development status.
 
+For a metric evaluation, the scorer reads `depth_z` and `valid` on the target
+grid. A runner can keep an additional model-resolution `raw` array in the NPZ
+for inspection.
+
 For an explicitly oracle-aligned evaluation, also provide a native-grid `raw`
 array and select `--alignment positive_scale`, `affine_depth` or
 `affine_inverse`. These modes use the test reference depth for fitting and must
