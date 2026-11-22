@@ -1,47 +1,84 @@
-# Models and environments
+# Running a baseline
 
-The paper evaluates **18 public models through 24 configurations**: 17 legacy subprocess runners and seven MapAnything conditions (1/2/6 views, rays-only scale calibration, six-view rig, rig scale calibration, and rig fine-tuning). `configs/release.yaml` is the complete protocol template. `configs/training.yaml` contains the final batch-36, 6,000-step training recipe. The old OmniVGGT, RAFT-Stereo and legacy MapAnything runners are not part of this release.
+The paper evaluates **18 models in 24 configurations**. Seventeen models use
+separate inference adapters. MapAnything contributes seven configurations,
+varying the views, rig inputs, scale calibration and fine-tuning. Use a single
+configuration to try a model. The [archived tables](../results/README.md) can
+be reproduced on CPU without these model environments.
 
 ## Prepare one model
 
-Install this repository's Python dependencies first, then generate local paths:
+From the repository root, install the CPU package and Hugging Face download
+client. The example prepares the six-view MapAnything model with known rig poses.
 
 ```bash
-python scripts/configure.py --data-root /path/to/egodepth_v1 --conda-prefix /path/to/miniconda3
-python -m pip install huggingface_hub
-python scripts/prepare_models.py --methods mapanything --config configs/local.yaml --download-weights
+python -m pip install -e . huggingface_hub
+python scripts/configure.py \
+  --data-root /path/to/egodepth_v1 --conda-prefix /path/to/miniconda3
+python scripts/prepare_models.py \
+  --methods mapanything --config configs/local.yaml --download-weights
 EGODEPTH_BOOTSTRAP_PYTHON=python bash envs/setup_method.sh mapanything --config configs/local.yaml
 ```
 
-`configure.py` generates `configs/local.yaml` and `configs/local-training.yaml`; `--output` and `--training-output` override those destinations. It preserves protocol settings and replaces machine paths only. `--third-party-dir`, `--weights-dir`, and `--ft-checkpoint` select other asset locations. Existing generated configs require `--force` to replace them. Use an activated Python with PyYAML for these commands.
+The model ID `mapanything` selects the upstream source and environment.
+The evaluation ID `mapanything_6view_rig` selects the input and scoring
+configuration in [release.yaml](../configs/release.yaml).
+`scripts/configure.py` writes machine paths to `configs/local.yaml` and
+`configs/local-training.yaml`. Use `--third-party-dir`, `--weights-dir` or
+`--ft-checkpoint` to select existing assets. Run the configuration step once.
 
-`prepare_models.py` clones only the selected official repositories at the commits recorded in `configs/model_sources.json`, initializes their submodules, and applies the listed patches. It does not download weights unless `--download-weights` is supplied. `--dry-run` prints the operations. `--methods all` selects all 18 models; manual and gated downloads remain subject to their upstream requirements. Environment setup is per model/group; it does not implicitly install every method.
+## Infer, score and inspect the result
 
-The setup scripts are release recipes adapted from the research environments. **Fresh environment installation and all-model CUDA inference have not been rerun as part of packaging.** The original paper runs are archived separately. Validate a small inference run before launching a complete benchmark. The installer constrains Torch, torchvision, NumPy, timm and both OpenCV distribution names throughout dependency resolution; the final first-party editable install does not resolve dependencies again. Some upstream packages explicitly require `opencv-python`, while this project uses `opencv-python-headless`; if both are installed their release versions are constrained to match. The script runs `pip check` and prints CUDA availability, but that alone does not establish model correctness. DAC's extension additionally needs a compatible CUDA toolkit/compiler.
-
-## Run inference and scoring
-
-After preparing the dataset, source and weights, run MapAnything with its own environment. These commands use the full formal test population; the frozen protocol settings stay in `configs/local.yaml`.
-
-```bash
-TASK_MAP=/path/to/miniconda3/envs/egodepth_mapanything/bin/python
-"$TASK_MAP" scripts/run_eval_pipeline.py preflight --config configs/local.yaml --method mapanything_6view_rig
-"$TASK_MAP" scripts/run_eval_pipeline.py infer --config configs/local.yaml --method mapanything_6view_rig
-"$TASK_MAP" scripts/run_eval_pipeline.py score --config configs/local.yaml --method mapanything_6view_rig
-"$TASK_MAP" scripts/export_paper_artifacts.py --config configs/local.yaml --out_dir outputs/benchmark/paper_artifacts --skip_aligned --skip_examples --no_plots
-```
-
-A single-method export leaves uncomputed rows empty. To regenerate complete artifacts, prepare and run all 24 configured conditions, retain their predictions, then export with `--require-complete`. Aligned/paired diagnostics and qualitative examples additionally need those predictions and reference arrays. The already archived official scores and paper artifacts are available under `results/` without rerunning inference.
-
-For a short smoke run, copy your config, set `run.status: development` and choose a separate `run.out_dir`. To test real held-out samples, point `data.samples_jsonl` in that copy at `protocols/test_1hz.jsonl`. Pass the same `--limit N`, config and method to both `infer` and `score`. The formal protocol requires all 6,574 test anchors.
-
-For a full-population sweep of selected conditions, use the base evaluation interpreter:
+Restore the test metadata, test shards and frozen annotations using the
+[data guide](DATA.md). Run the following from the repository root:
 
 ```bash
-python scripts/run_formal_sweep.py --config configs/local.yaml --gpus 0 --methods depth_anything_v2 mapanything_6view_rig
+MODEL_PYTHON=/path/to/miniconda3/envs/egodepth_mapanything/bin/python
+"$MODEL_PYTHON" scripts/run_eval_pipeline.py preflight --config configs/local.yaml --method mapanything_6view_rig
+"$MODEL_PYTHON" scripts/run_eval_pipeline.py infer --config configs/local.yaml --method mapanything_6view_rig
+"$MODEL_PYTHON" scripts/run_eval_pipeline.py score --config configs/local.yaml --method mapanything_6view_rig
 ```
 
-The sweep checks the dataset and annotations once, then checks the selected conditions. The public MapAnything arms use the upstream weights. A scale-only arm additionally requires its matching train calibration record, and `mapanything_rig_ft` needs the fine-tuned checkpoint. Checkpoint references resolved by a backend at model load time still require the corresponding files or cache. Run `preflight --methods NAME [NAME ...]` for the same subset checks before inference. The sweep launches MapAnything in its configured environment and other methods through their individual subprocess adapters. Use `--export` with the full method set for complete paper tables.
+The default result is `outputs/benchmark/results/mapanything_6view_rig.json`.
+Read `strata["roi::full"]["metrics"]` for the equal-site full-image metrics
+and `sample_status_counts` to check the number of evaluated anchors. Formal
+scoring checks the saved producer contract against its method, camera grid,
+views, scale and test population. See the [evaluation guide](EVALUATION.md)
+for third-party predictions and the [training recipe](TRAINING.md) for adaptation.
+
+For a quick real-data check, copy `configs/local.yaml`, set `run.status` to
+`development`, give the run a separate `run.out_dir`, and set
+`data.samples_jsonl` to the release's `protocols/test_1hz.jsonl`. Run the
+same `infer` and `score` commands with the copied config and `--limit 4` on
+both. This checks four real anchors. The formal paper evaluation uses 6,574.
+
+## Multiple methods and fresh paper exports
+
+The sweep preflights only the selected methods. It runs native MapAnything
+in its own environment and dispatches other models through their adapters:
+
+```bash
+python scripts/run_formal_sweep.py --config configs/local.yaml --gpus 0 \
+  --methods depth_anything_v2 mapanything_6view_rig
+```
+
+To export a table for the methods already scored, run:
+
+```bash
+python scripts/export_paper_artifacts.py --config configs/local.yaml \
+  --skip_aligned --skip_examples --no_plots
+```
+
+Look in `outputs/benchmark/paper_artifacts/`. Absent methods have pending
+cells. Rig and paired comparisons need their respective scored methods and
+saved predictions. For the full paper export, prepare all 24 configurations
+and run the sweep with `--export`, or add `--require-complete` to the exporter after scoring. Install the
+`plot` extra in the exporting interpreter when generating figures. The compatibility option
+`--refresh-tables --require-complete` recomputes diagnostics from the current
+predictions, so replacing pixels under an unchanged model contract cannot
+silently reuse old diagnostic values.
+A scale-only arm needs its training calibration record. The fine-tuned arm
+also needs the selected checkpoint.
 
 ## Exact methods
 
@@ -66,7 +103,7 @@ The sweep checks the dataset and annotations once, then checks the selected cond
 | `moge` | [moge](https://github.com/microsoft/moge/tree/74fbce054ebed49800de42d0ad0e83495065719a) | `egodepth_moge` | `Ruicheng/moge-vitl` (v1 model class) |
 | `mapanything` | [map-anything](https://github.com/facebookresearch/map-anything/tree/3d10cf7a3016fc0f9bb13a071ee66c47b10be0d9) | `egodepth_mapanything` | `facebook/map-anything-apache` |
 
-The twelve environment groups follow the original isolation strategy. `mono` includes UniDepth, UniK3D, Metric3D, DAC and UniDAC; `vggt` includes VGGT and VGGT-Omega; `group_d` includes Depth Anything V2 and Marigold. Other methods have separate environments. To prepare all sources needed by a shared environment, list all those method IDs in `prepare_models.py`. The installer uses Torch 2.4.1/cu124 and torchvision 0.19.1 as its baseline; upstream package resolution and hardware compatibility still require the fresh-install checks described above. It is not a full lockfile of every historical environment.
+The twelve environment groups follow the original isolation strategy. `mono` includes UniDepth, UniK3D, Metric3D, DAC and UniDAC; `vggt` includes VGGT and VGGT-Omega; `group_d` includes Depth Anything V2 and Marigold. Other methods have separate environments. To prepare all sources needed by a shared environment, list all those method IDs in `prepare_models.py`. The installer uses Torch 2.4.1/cu124 and torchvision 0.19.1 as its baseline. The recipes have been checked on representative methods. A fresh CUDA install and inference run for all 24 configurations remain unverified. The installer records the resolved packages in the environment and runs `pip check`. DAC also requires a compatible CUDA compiler.
 
 ## Weight locations and version evidence
 

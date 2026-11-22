@@ -35,8 +35,10 @@ def main():
     unknown = sorted(set(selected) - set(methods))
     if unknown:
         parser.error(f"Unknown methods: {', '.join(unknown)}")
-    if args.export and set(selected) != set(methods):
-        parser.error("--export requires all configured methods")
+    if args.export:
+        paper = yaml.safe_load((ROOT / "configs/release.yaml").read_text())
+        if set(selected) != set(paper["methods"]) or set(methods) != set(paper["methods"]):
+            parser.error("--export requires the formal 24-configuration paper protocol")
     devices = [gpu.strip() for gpu in args.gpus.split(",")]
     if not all(devices) or len(devices) != len(set(devices)):
         parser.error("--gpus requires distinct, nonempty device IDs")
@@ -87,11 +89,13 @@ def main():
         rows = [row for result in executor.map(worker, devices) for row in result]
     ok = len(rows) == len(selected) and all(row["ok"] for row in rows)
     summary = {"ok": ok, "config": str(config_path), "methods": rows}
-    (out_dir / "execution_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     if ok and args.export:
-        return subprocess.run([sys.executable, "scripts/export_paper_artifacts.py", *config_args,
-                               "--require-complete"], cwd=ROOT).returncode
-    return 0 if ok else 1
+        export = subprocess.run([sys.executable, "scripts/export_paper_artifacts.py", *config_args,
+                                 "--require-complete"], cwd=ROOT)
+        summary["export_returncode"] = export.returncode
+        summary["ok"] = export.returncode == 0
+    (out_dir / "execution_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    return 0 if summary["ok"] else 1
 
 
 if __name__ == "__main__":

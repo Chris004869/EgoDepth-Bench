@@ -59,6 +59,8 @@ def command_calibrate(args: argparse.Namespace) -> int:
     # CALIBRATION is pinned to the train split by ROLE_SPLIT, so a config typo
     # cannot point C at val or test.
     population = resolve_population(config, PopulationRole.CALIBRATION, limit=args.limit)
+    if population.status == "formal" and n_samples != 1024:
+        raise FormalRunBlocked("The paper scale control fits 1,024 training anchors. Use development status for a different count.")
     spec = training_spec(config)
     reader = build_reader(config)
     dataset = SixViewTrainingDataset(population.samples, reader, spec, seed=seed)

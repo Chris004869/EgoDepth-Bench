@@ -34,22 +34,20 @@ as described in [DATA.md](DATA.md). Keep the full metadata/protocol package; the
 split-aware resolver selects training and validation populations independently.
 
 ```bash
-python -m pip install -e .
+python -m pip install -e . huggingface_hub
 python scripts/configure.py \
   --data-root /path/to/egodepth_v1_20260912 \
   --conda-prefix /path/to/conda
 python scripts/prepare_models.py --methods mapanything \
   --config configs/local.yaml --download-weights
-bash envs/setup_method.sh mapanything --config configs/local.yaml
+EGODEPTH_BOOTSTRAP_PYTHON=python bash envs/setup_method.sh mapanything --config configs/local.yaml
 ```
 
-The model preparation command obtains the pinned upstream source and public
-initialization. The MapAnything environment is `egodepth_mapanything`; activate
-it and install this checkout there before training:
+If you already prepared MapAnything using [the baseline guide](MODELS.md), use
+the generated training config and activate the same environment:
 
 ```bash
 conda activate /path/to/conda/envs/egodepth_mapanything
-python -m pip install -e .
 torchrun --standalone --nproc_per_node=6 scripts/train_distributed.py \
   --config configs/local-training.yaml \
   --seed 20260912 --output outputs/mapanything

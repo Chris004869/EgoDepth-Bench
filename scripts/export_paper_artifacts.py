@@ -25,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 import numpy as np  # noqa: E402
 import yaml  # noqa: E402
-from egodepth_eval.train.contract import adaptation_arms
+from egodepth_eval.train.contract import adaptation_arms, method_inputs
 
 from egodepth_eval.annotate.pipeline import load_records, region_masks_from_record  # noqa: E402
 from egodepth_eval.annotate.schema import MotionLabel, summarize_statuses  # noqa: E402
@@ -37,6 +37,7 @@ from egodepth_eval.data.population import (  # noqa: E402
     resolve_population,
 )
 from egodepth_eval.data.reader import SampleReader  # noqa: E402
+from egodepth_eval.infer.benchmark_contract import read_formal_contract
 from egodepth_eval.infer.legacy_adapter import E1_METHODS  # noqa: E402
 from egodepth_eval.report.diagnostics import (  # noqa: E402
     compute_aligned_three_arm,
@@ -51,7 +52,6 @@ from egodepth_eval.report.tables_e14 import (  # noqa: E402
     generate_adaptation_table,
     generate_main_table,
     generate_views_table,
-    load_results,
 )
 from egodepth_eval.score.accumulate import (  # noqa: E402
     ScoreAccumulator,
@@ -273,6 +273,67 @@ def collect_examples(config: dict, methods: list, max_examples: int = 2) -> list
     return examples
 
 
+def load_run_results(config: dict, require_complete: bool, population) -> dict:
+    """Read only the selected run files and verify results against their producer."""
+    run_dir = Path(config["run"]["out_dir"])
+    methods = config["methods"]
+    if require_complete:
+        paper_config = Path(__file__).resolve().parents[1] / "configs/release.yaml"
+        paper = yaml.safe_load(paper_config.read_text())
+        if config["run"]["status"] != "formal" or set(methods) != set(paper["methods"]):
+            raise FormalRunBlocked("--require-complete needs the formal 24-configuration paper protocol")
+        if config.get("scoring") != paper["scoring"] or adaptation_arms(config) != adaptation_arms(paper):
+            raise FormalRunBlocked("Scoring settings or adaptation arms differ from the paper protocol")
+        for name, expected in paper["methods"].items():
+            actual = methods[name]
+            if (actual["kind"] != expected["kind"] or actual.get("spec", name) != expected.get("spec", name)
+                    or method_inputs(actual) != method_inputs(expected)
+                    or actual.get("alignment", "none") != expected.get("alignment", "none")):
+                raise FormalRunBlocked(f"{name}: configured model inputs or alignment differ from the paper")
+
+    results = {}
+    identity = population.identity()
+    expected_tokens = set(population.sample_tokens) if require_complete else set()
+    for name, method in methods.items():
+        path = run_dir / "results" / f"{name}.json"
+        if not path.exists():
+            if require_complete:
+                raise FormalRunBlocked(f"Missing result document: {path}")
+            continue
+        result = json.loads(path.read_text())
+        if result.get("method") != name:
+            raise ValueError(f"{path}: result names a different method")
+        if config["run"]["status"] == "formal":
+            produced = read_formal_contract(
+                run_dir / "predictions" / name / "prediction_contract.json", name, method, identity,
+            )
+            recorded = result["prediction_contract"]
+            if (recorded.get("contract_hash") != produced.identity_hash()
+                    or PredictionContract.from_dict(recorded).identity_hash() != produced.identity_hash()):
+                raise FormalRunBlocked(f"{name}: scored result and saved prediction contracts disagree")
+            population_fields = ("token_set_id", "status", "data_version", "n_sites", "split", "annotation_version")
+            if (result.get("n_samples") != len(population.samples)
+                    or any(result["population"].get(key) != identity[key] for key in population_fields)):
+                raise FormalRunBlocked(f"{name}: wrong result population or annotation version")
+        if require_complete:
+            if result.get("sample_status_counts") != {"scored": len(population.samples)}:
+                raise FormalRunBlocked(f"{name}: incomplete scores on the formal population")
+            predicted = {file.stem for file in (run_dir / "predictions" / name).glob("*.npz")}
+            if predicted != expected_tokens:
+                raise FormalRunBlocked(
+                    f"{name}: saved predictions differ from the test population "
+                    f"({len(expected_tokens - predicted)} missing, {len(predicted - expected_tokens)} unexpected)"
+                )
+            if method.get("kind") == "legacy":
+                spec = E1_METHODS[method.get("spec", name)]
+                if recorded["preprocessing"].get("runner_content_id") != file_content_digest(spec.runner_path):
+                    raise FormalRunBlocked(f"{name}: result predates the current model wrapper; rerun before export")
+        results[name] = result
+    if not results:
+        raise ValueError(f"No scored result documents in {run_dir / 'results'}. Run inference and scoring first.")
+    return results
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True)
@@ -283,41 +344,20 @@ def main() -> int:
     parser.add_argument('--no_plots', action='store_true', help='Export verified numerical artifacts for the manuscript plotting script')
     parser.add_argument('--require-complete',action='store_true',help='Reject absent/stale/partial formal result sets before export')
     parser.add_argument('--workers', type=int, default=4, help='Independent CPU diagnostic jobs; each owns a reader')
-    parser.add_argument('--refresh-tables', action='store_true', help='Refresh complete tables, validate cached diagnostics and recompute the selected rig comparison')
+    parser.add_argument('--refresh-tables', action='store_true', help='Refresh complete tables and their diagnostics from saved predictions (requires --require-complete)')
     args = parser.parse_args()
 
     config = load_config(Path(args.config))
     status = str(config.get("run", {}).get("status", "development"))
-    results_dir = Path(config["run"]["out_dir"]) / "results"
+    if args.refresh_tables and not args.require_complete:
+        parser.error("--refresh-tables requires --require-complete")
+    population, _ = build_population_and_reader(config)
+    results = load_run_results(config, args.require_complete, population)
+    if args.figure_methods and (set(args.figure_methods) - set(results)):
+        parser.error("--figure_methods must name methods with scored results in this run")
     out_dir = Path(args.out_dir or Path(config["run"]["out_dir"]) / "paper_artifacts")
     out_dir.mkdir(parents=True, exist_ok=True)
-
-    results = load_results(results_dir)
-    if args.require_complete:
-        missing=set(config['methods'])-set(results)
-        if missing:raise FormalRunBlocked(f'Missing result documents: {sorted(missing)}')
-        expected=build_population_and_reader(config)[0]
-        for name in config['methods']:
-            result=results[name]
-            if result['population'].get('token_set_id')!=expected.token_set_id() or result.get('n_samples')!=len(expected.samples):
-                raise FormalRunBlocked(f'{name}: mismatched result population')
-            if result['population'].get('status')!='formal' or any(k!='scored' and v for k,v in result['sample_status_counts'].items()):
-                raise FormalRunBlocked(f'{name}: development or incomplete scores')
-            if result['population'].get('annotation_version') != config['annotation']['version']:
-                raise FormalRunBlocked(f'{name}: result uses an earlier annotation version')
-            method_config = config['methods'][name]
-            if method_config.get('kind') == 'legacy':
-                spec = E1_METHODS[method_config.get('spec', name)]
-                recorded = result['prediction_contract']['preprocessing'].get('runner_content_id')
-                if recorded != file_content_digest(spec.runner_path):
-                    raise FormalRunBlocked(f'{name}: result predates the current model wrapper; rerun before export')
     print(f"[export] {len(results)} result documents: {sorted(results)}")
-    if not results:
-        print(
-            f"[export] nothing to export: no result documents in {results_dir}. "
-            "Run `run_eval_pipeline.py infer` then `score` first.",
-            file=sys.stderr,
-        )
 
     cost = collect_cost(config)
     manifest: dict = {"status": status, "results_found": sorted(results), "artifacts": {}}
@@ -329,51 +369,13 @@ def main() -> int:
         generate_views_table(results, out_dir / "views_table.tex", cost, status)
     )
 
-    if args.refresh_tables:
-        if not args.require_complete:
-            raise ValueError('--refresh-tables requires --require-complete')
-        prior = json.loads((out_dir / 'export_manifest.json').read_text())
-        expected, rig_reader = build_population_and_reader(config)
-        if prior['scored_population']['token_set_id'] != expected.token_set_id():
-            raise FormalRunBlocked('Cached diagnostics use a different test population')
-        identity = prior['diagnostic_input_identity']
-        if identity['annotation_version'] != config['annotation']['version']:
-            raise FormalRunBlocked('Cached diagnostic annotations changed')
-        for name, digest in identity['prediction_contracts'].items():
-            path = Path(config['run']['out_dir']) / 'predictions' / name / 'prediction_contract.json'
-            if file_content_digest(path) != digest:
-                raise FormalRunBlocked(f'Cached diagnostic predictions changed: {name}')
-        if set(RIG_METHODS).issubset(config["methods"]):
-            # Contracts identify model settings. Scored arrays may have been replaced
-            # under the same settings, including for an old manifest without digests.
-            rig = compare_rig_control(expected, rig_reader, load_annotation_records(config),
-                                      Path(config["run"]["out_dir"]) / "predictions")
-            prior["rig_common_support"] = rig
-            prior["rig_common_support_prediction_contracts"] = rig["input_identity"]["prediction_contracts"]
-        else:
-            prior.pop("rig_common_support", None)
-            prior.pop("rig_common_support_prediction_contracts", None)
-        prior.pop("rig_control_extension", None)
-        aligned = prior['aligned_diagnostic']
-        rows = {arm: aligned[arm] for arm in aligned.get('arms', [])}
-        if tuple(aligned.get('arms', [])) != tuple(n for n in adaptation_arms(config) if n in results):
-            raise FormalRunBlocked('Cached adaptation arms differ from the selected input contract')
-        manifest['artifacts']['adaptation_table'] = str(generate_adaptation_table(results, out_dir / 'adaptation_table.tex', rows, status, methods=list(adaptation_arms(config))))
-        manifest['artifacts']['support_csv'] = str(export_support_csv(results, out_dir / 'support_summary.csv'))
-        prior['artifacts'].update(manifest['artifacts'])
-        prior.update(results_found=sorted(results), complete_final_result_set_verified=True,
-                     final_config=str(Path(args.config).resolve()))
-        (out_dir / 'export_manifest.json').write_text(json.dumps(prior, indent=2, default=str) + '\n')
-        print('[export] complete final tables refreshed')
-        return 0
-
-    population, reader = build_population_and_reader(config)
     records = load_annotation_records(config)
+    manifest["complete_final_result_set_verified"] = args.require_complete
     manifest["scored_population"] = population.identity()
     manifest["n_annotation_records"] = len(records)
 
     # C09: every arm fitted from its own predictions on the shared domain.
-    aligned_arms = tuple(arm for arm in adaptation_arms(config) if arm in config['methods'])
+    aligned_arms = adaptation_arms(config)
     bootstrap_config = config.get("scoring", {}).get("bootstrap", {})
     public_arm, _, ft_arm = adaptation_arms(config)
     figure_primary = [name for name in ('unidepth_v2', 'foundation_stereo', public_arm)
@@ -383,9 +385,12 @@ def main() -> int:
     )) or sorted(results)[:2]
     manifest['figure_primary_methods'] = figure_primary
     subset = diagnostic_subset(population, records)
-    pairs = config.get("scoring", {}).get("common_support_pairs", [])
+    pairs = [pair for pair in config.get("scoring", {}).get("common_support_pairs", [])
+             if all(name in results for name in pair)]
     pred_root = Path(config['run']['out_dir']) / 'predictions'
-    diagnostic_methods = set(aligned_arms) | set(figure_methods) | {name for pair in pairs for name in pair}
+    diagnostic_methods = set(figure_methods) | {name for pair in pairs for name in pair}
+    if not args.skip_aligned and set(aligned_arms).issubset(results):
+        diagnostic_methods.update(aligned_arms)
     manifest['diagnostic_input_identity'] = {
         'annotation_version': config['annotation']['version'],
         'prediction_contracts': {name: file_content_digest(pred_root / name / 'prediction_contract.json')
@@ -397,9 +402,9 @@ def main() -> int:
         return SampleReader([Path(x) for x in config['data']['asset_roots']],
                             get_profile(config['data']['mask_profile']))
     jobs = {}
-    if status == "formal" and set(RIG_METHODS).issubset(config["methods"]):
+    if status == "formal" and set(RIG_METHODS).issubset(results):
         jobs["rig"] = lambda: compare_rig_control(population, fresh_reader(), records, pred_root)
-    if not args.skip_aligned:
+    if not args.skip_aligned and set(aligned_arms).issubset(results):
         jobs['aligned'] = lambda: compute_aligned_three_arm(
             population, fresh_reader(), records, pred_root,
             arms=aligned_arms, shared_arms=aligned_arms, scale_pair=adaptation_arms(config)[:2])

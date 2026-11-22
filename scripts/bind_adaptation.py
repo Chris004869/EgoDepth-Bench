@@ -3,7 +3,6 @@
 
 import argparse, json, sys
 from pathlib import Path
-import numpy as np
 import torch, yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -14,7 +13,7 @@ from egodepth_eval.train.distributed import optimizer_config_identity, training_
 from egodepth_eval.train.contract import (
     adaptation_arms,
     adaptation_inputs,
-    verify_calibration_inputs,
+    validate_fitted_scalar,
 )
 
 p = argparse.ArgumentParser()
@@ -65,9 +64,7 @@ del ckpt
 calibration_path = Path(a.calibration).resolve()
 cal = json.loads(calibration_path.read_text())
 s = cal["s_C"]
-verify_calibration_inputs(cal, inputs)
-if cal["status"] != "formal" or cal["fit"]["status"] != "ok" or not np.isfinite(s) or s <= 0:
-    raise ValueError("Calibration did not complete")
+validate_fitted_scalar(cal, s, inputs)
 if (
     cal["calibration_subset"]["split"] != "train"
     or cal["population"]["token_set_id"] != train.token_set_id()

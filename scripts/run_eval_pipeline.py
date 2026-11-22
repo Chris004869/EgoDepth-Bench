@@ -41,6 +41,7 @@ from egodepth_eval.data.mask_profile import (  # noqa: E402
     is_formal_profile,
 )
 from egodepth_eval.data.reader import SampleReader  # noqa: E402
+from egodepth_eval.infer.benchmark_contract import read_formal_contract
 from egodepth_eval.data.manifest_store import ManifestStore  # noqa: E402
 from egodepth_eval.data.population import (  # noqa: E402
     FormalRunBlocked,
@@ -699,10 +700,12 @@ def command_score(args: argparse.Namespace) -> int:
             print(f"[score] {name}: no predictions at {pred_dir}; skipping")
             continue
         contract_path = pred_dir / "prediction_contract.json"
-        contract = (
-            PredictionContract.from_dict(json.loads(contract_path.read_text()))
-            if contract_path.exists() else PredictionContract(method=name)
-        )
+        if population.status == "formal":
+            contract = read_formal_contract(contract_path, name, method, population.identity())
+        elif contract_path.is_file():
+            contract = PredictionContract.from_dict(json.loads(contract_path.read_text()))
+        else:
+            contract = PredictionContract(method=name)
         # The alignment comes from the declared spec for legacy methods, so a stale
         # YAML cannot override the protocol (Marigold is affine_depth, not
         # affine_inverse).
