@@ -2,9 +2,9 @@
 
 **Benchmarking Metric Depth for Egocentric Manipulation** · GenRobot
 
-**[Open the code and quickstart on `main`](https://github.com/Chris004869/EgoDepth-Bench/tree/main#recreate-the-paper-tables)** · [Project page](https://chris004869.github.io/EgoDepth-Bench/) · [Paper (PDF)](https://chris004869.github.io/EgoDepth-Bench/site-assets/egodepth-bench.pdf)
+**[Open the code and quickstart on `main`](https://github.com/Chris004869/EgoDepth-Bench/tree/main#recreate-the-paper-tables)** · [Project page](https://egodepth-bench.github.io/) · [Paper (PDF)](https://egodepth-bench.github.io/site-assets/egodepth-bench.pdf)
 
-[![Three egocentric manipulation scenes with camera-2 RGB and reference depth side by side.](site-assets/figures/sequence-triptych.webp)](https://chris004869.github.io/EgoDepth-Bench/#sequence-gallery)
+[![Three egocentric manipulation scenes with camera-2 RGB and reference depth side by side.](site-assets/figures/sequence-triptych.webp)](https://egodepth-bench.github.io/#sequence-gallery)
 
 The code on `main` includes the official scorer, 18 baseline models' evaluation adapters and the archived paper results. To reproduce the tables using only Git and Python 3.10+, run
 
