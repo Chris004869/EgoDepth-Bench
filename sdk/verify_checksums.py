@@ -5,6 +5,11 @@ import hashlib
 import json
 from pathlib import Path
 
+if __package__:
+    from .release_paths import inside
+else:
+    from release_paths import inside
+
 
 def sha(path):
     digest = hashlib.sha256()
@@ -12,13 +17,6 @@ def sha(path):
         for block in iter(lambda: stream.read(8 << 20), b''):
             digest.update(block)
     return digest.hexdigest()
-
-
-def inside(root, relative):
-    path = Path(relative)
-    if path.is_absolute() or '..' in path.parts:
-        raise ValueError(f'Unsafe relative path: {relative}')
-    return root / path
 
 
 def main():
@@ -29,10 +27,10 @@ def main():
     parser.add_argument('--workers', type=int, default=4)
     args = parser.parse_args()
     root = Path(args.root)
-    manifest = json.loads((root / 'checksums/metadata_sha256.json').read_text())
+    manifest = json.loads(inside(root, 'checksums/metadata_sha256.json').read_text())
     jobs = list(manifest.items())
     if args.assets != 'none':
-        downloads = json.loads((root / 'downloads/download_manifest.json').read_text())
+        downloads = json.loads(inside(root, 'downloads/download_manifest.json').read_text())
         for shard in downloads['shards']:
             if args.split and Path(shard['restored_path']).parts[1] != args.split:
                 continue

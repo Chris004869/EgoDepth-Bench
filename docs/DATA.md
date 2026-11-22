@@ -1,12 +1,10 @@
 # Reading EgoDepth-Bench
 
-The dataset pairs six synchronized fisheye RGB images with one camera-2 reference
-depth map per timestamp. The code repository contains the SDK and protocol
-configuration; dataset images, depth arrays and split manifests are separate
-data assets. Raw IR/MCAP recordings and the GT production pipeline are not
-included in this code release. The code's Apache-2.0 license does not license
-data assets. Dataset hosting and distribution terms are not assigned in this
-repository yet.
+Each timestamp contains six synchronized fisheye RGB images, six camera
+calibrations, and one reference depth map on camera 2. The [CPU example](../examples/synthetic_smoke.py)
+runs with the code checkout alone. To read real pixels, obtain the starter or
+the full release separately. Dataset availability and terms will be announced
+on the [project page](https://chris004869.github.io/EgoDepth-Bench/).
 
 | Split | Physical sites | Recordings | Dense timestamps | Official anchors |
 |---|---:|---:|---:|---:|
@@ -20,29 +18,22 @@ fine-tuning; some were seen in earlier public-model development evaluations.
 
 ## Start with twelve training anchors
 
-The separate `egodepth-starter.tar.gz` package contains twelve anchors from four
-training sites (6,510,607 bytes). It is a reader example, not a benchmark subset.
-Its original SHA256 is
-`ca71afbc73ea7805f6dbc123b8ed3d8660856b85acce68d6643e225788fbc54f`.
-No download URL is implied by this filename. When the dataset is distributed,
-obtain the package and its manifest from the dataset's official host.
-
-Use the current repository SDK with the extracted starter. The starter's older
-embedded annotation helpers are not the current v6 annotation interface.
+The starter contains twelve anchors from four training sites. It occupies
+6,510,607 bytes and can be checked without downloading a full split. From
+the root of the code checkout, with the official archive in the current directory:
 
 ```bash
-python -m pip install numpy Pillow
-tar -xzf /path/to/egodepth-starter.tar.gz -C /path/to/data
-python examples/read_starter.py \
-  --data /path/to/data/egodepth-starter \
-  --output outputs/starter_check.json
+python -m pip install -e .
+echo 'ca71afbc73ea7805f6dbc123b8ed3d8660856b85acce68d6643e225788fbc54f  egodepth-starter.tar.gz' | sha256sum -c -
+mkdir -p data
+tar -xzf egodepth-starter.tar.gz -C data
+python examples/read_starter.py --data data/egodepth-starter --output outputs/starter_check.json
 ```
 
-The CPU example reads all twelve anchors, checks six independent calibrated ray
-fields, and feeds identity predictions through the scoring functions. No PyTorch,
-model weights or GPU are required. A passing identity check verifies the reader
-and metric conventions; it does not measure GT accuracy or model performance.
-It writes only the optional report, outside the dataset.
+The reader decodes all six views and checks calibrated rays. An identity
+prediction should give AbsRel 0, MAE 0 and coverage 1. This tests the I/O and
+metric conventions. The starter's embedded annotation helpers predate v6;
+use the SDK in this code checkout for the full dataset.
 
 ## Full-release layout and restoration
 
@@ -51,6 +42,7 @@ uncompressed tar shards:
 
 ```text
 egodepth_v1_20260912/
+  release_manifest.json
   metadata/{samples.jsonl,index.sqlite,calibrations.json,sites.json}
   protocols/{train_3hz,val_1hz,test_1hz,all_official,diagnostics}.jsonl
   protocols/sampling.json
@@ -58,16 +50,25 @@ egodepth_v1_20260912/
   annotation_version.json
   annotations_v6/
   downloads/download_manifest.json
-  downloads/.../*.tar.zst
+  downloads/shards/{train,val,test}/site_*/*.tar.zst
   checksums/metadata_sha256.json
-  shards/{train,val,test}/*.tar
+  shards/{train,val,test}/site_*/*.tar
 ```
 
-The complete compressed release is approximately 454.75 GB; restored indexed
-shards occupy 882.62 GB across 1,195 files (decimal units). Keep space for both
-representations during restoration, or download one split at a time. Preserve
-the exact uncompressed tar bytes: the SDK seeks directly to indexed byte ranges
-and does not extract millions of files.
+For official test scoring, restore the **test split** and keep the complete
+metadata package, including annotations and calibration. Training and
+validation shards are needed only for workflows that read those splits.
+
+| Split | Tar shards | Download size | Restored size |
+| --- | ---: | ---: | ---: |
+| Train | 779 | 294.85 GB | 572.51 GB |
+| Validation | 165 | 63.46 GB | 125.40 GB |
+| Test | 251 | 96.43 GB | 184.72 GB |
+| All | 1,195 | 454.75 GB | 882.62 GB |
+
+Sizes are decimal GB for the shards. During restoration, allow space for the
+compressed and restored copies. Preserve the uncompressed tar bytes: the SDK
+seeks directly to indexed offsets.
 
 After obtaining the metadata package and a split's compressed shards:
 
@@ -95,17 +96,14 @@ import sys
 sys.path.insert(0, "sdk")
 from egodepth_dataset import EgoDepthDataset, unit_rays
 
-data = EgoDepthDataset(
+with EgoDepthDataset(
     "/path/to/release", split="train", protocol="protocols/train_3hz.jsonl"
-)
-try:
+) as data:
     sample = data[0]
     images = sample["images"]       # camera id -> H x W x 3 uint8 RGB
     z = sample["target_depth_z"]    # camera-2 optical-axis Z, metres, float32
     valid = sample["target_valid"]  # bool; True means reference-valid
     rays = {c: unit_rays(sample["calibrations"][str(c)]) for c in range(6)}
-finally:
-    data.close()
 ```
 
 - All released grids are W512 × H416. Each camera has its own double-sphere
@@ -122,7 +120,9 @@ finally:
   within each site, then sites receive equal weight. Missing predictions lower
   coverage and cannot silently remove a site.
 
-Omit `protocol` for the dense split. The reader works as a map-style PyTorch
+Each item follows the protocol file order. Pass `cameras=(2,)` to decode just
+the target RGB view, or `cameras=()` for depth and masks only. Omit `protocol`
+for the dense split. The reader works as a map-style PyTorch
 Dataset without importing torch, and reopens handles in worker processes. Its
 indexed I/O uses `os.pread`; Linux is the supported execution environment.
 

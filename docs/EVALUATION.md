@@ -6,14 +6,57 @@ implementation used for the archived 24 configurations.
 
 ## Evaluate your own model
 
-Store one `<sample_token>.npz` per test anchor, with floating-point `depth_z`
-and boolean `valid` arrays of shape `(416, 512)`. Run:
+Start with the restored test shards and metadata described in the
+[data guide](DATA.md). Export one `<sample_token>.npz` per official test
+anchor. File names must match `sample_token` in `protocols/test_1hz.jsonl`.
+For a metric-depth model the file contains two arrays on the native camera-2
+grid, in row/column order (416, 512):
+
+| Key | Type and meaning |
+| --- | --- |
+| `depth_z` | Floating-point optical-axis Z in metres |
+| `valid` | Boolean model support, true where the model returns usable depth |
+
+Use the support emitted by your model. A dense model with a prediction at every
+pixel may declare all pixels supported; numeric finiteness and positivity are
+applied by the scorer. Keep the reference validity mask out of the export.
+
+```python
+from pathlib import Path
+import numpy as np
+
+def save_prediction(directory, sample_token, depth_z, model_valid):
+    z = np.asarray(depth_z, dtype=np.float32)
+    valid = np.asarray(model_valid)
+    if z.shape != (416, 512) or valid.shape != z.shape or valid.dtype != np.bool_:
+        raise ValueError("Expected camera-2 depth and a boolean mask on the native grid")
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(directory / f"{sample_token}.npz", depth_z=z, valid=valid)
+```
+
+Run the installed CLI from the checkout:
 
 ```bash
 egodepth-score --release-root /path/to/release \
   --predictions-dir /path/to/predictions --method my_model \
   --output outputs/my_model.json
 ```
+
+The JSON records the number of anchors in `n_samples` and site IDs under
+`population.sites`. The headline numbers are in `strata["roi::full"]["metrics"]`:
+
+| Metric | Interpretation |
+| --- | --- |
+| `abs_rel` ↓ | Mean absolute depth error divided pixelwise by reference Z |
+| `mae_z_cm` ↓ | Mean absolute Z error in centimetres |
+| `coverage` ↑ | Share of reference-domain pixels with a valid prediction |
+| `a_5cm` ↑ | Share of all reference-domain pixels predicted within 5 cm |
+
+The scorer first computes each metric within a physical site, then averages
+across sites. If you want to inspect a complete prediction folder and result
+JSON before obtaining data, run `python examples/synthetic_smoke.py --output-dir outputs/first-score`
+with a new output directory.
 
 The formal v1 scorer reads the complete test manifest, camera calibrations and
 frozen v6 annotation files, including all 800 diagnostic masks. It checks their
@@ -98,7 +141,7 @@ The public, scale-only and fine-tuned MapAnything arms use the same rig inputs.
 
 `results/official/` and `results/paper_artifacts/` contain archived research
 results with public path references.
-Its provenance distinguishes the original files from the sanitized copies.
+The [provenance record](../results/provenance.json) tracks changes made for release.
 Exporting those results reproduces tables from saved statistics; it does not
 rerun model inference.
 

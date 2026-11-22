@@ -14,6 +14,11 @@ import sqlite3
 import numpy as np
 from PIL import Image
 
+if __package__:
+    from .release_paths import inside
+else:
+    from release_paths import inside
+
 
 def unit_rays(calibration):
     """Double-sphere unit rays on the declared pixel grid (H,W,3).
@@ -40,54 +45,81 @@ def unit_rays(calibration):
 
 
 class EgoDepthDataset:
+    """Map each protocol token, or each dense split row, to a released RGB-D sample."""
+
     def __init__(self, root, split=None, protocol=None, cameras=(0, 1, 2, 3, 4, 5)):
-        self.root = Path(root)
+        self.root = Path(root).resolve()
         self.cameras = tuple(cameras)
         if split not in (None, "train", "val", "test"):
             raise ValueError("invalid split")
-        self.calibrations = json.loads((self.root / "metadata/calibrations.json").read_text())
+        self.calibrations = json.loads(inside(self.root, "metadata/calibrations.json").read_text())
         self._pid = None
         self._db = None
         self._manifest = None
         self._shards = OrderedDict()
-        self._open()
-        if protocol is not None:
-            pp = Path(protocol)
-            if not pp.is_absolute():
-                pp = self.root / pp
-            ids = []
-            with pp.open() as f:
-                for line in f:
-                    r = json.loads(line)
-                    row = self._db.execute(
-                        "SELECT rowid,split FROM samples WHERE sample_token=?", (r["sample_token"],)
-                    ).fetchone()
-                    if row is None:
-                        raise KeyError(r["sample_token"])
-                    if split is not None and row[1] != split:
-                        raise ValueError("protocol crosses requested split")
-                    ids.append(row[0])
-            self.rowids = np.asarray(ids, dtype=np.int64)
-        else:
-            query = (
-                "SELECT rowid FROM samples"
-                + (" WHERE split=?" if split else "")
-                + " ORDER BY rowid"
-            )
-            self.rowids = np.fromiter(
-                (r[0] for r in self._db.execute(query, (split,) if split else ())), dtype=np.int64
-            )
+        try:
+            self._open()
+            if protocol is not None:
+                self.rowids = self._protocol_rows(self.root / Path(protocol), split)
+            else:
+                query = (
+                    "SELECT rowid FROM samples"
+                    + (" WHERE split=?" if split else "")
+                    + " ORDER BY rowid"
+                )
+                self.rowids = np.fromiter(
+                    (r[0] for r in self._db.execute(query, (split,) if split else ())),
+                    dtype=np.int64,
+                )
+        finally:
+            self.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
         self.close()
+
+    def _protocol_rows(self, path, split):
+        ids = []
+        seen = set()
+        with path.open(encoding="utf-8") as stream:
+            for line in stream:
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                token = record["sample_token"]
+                if token in seen:
+                    raise ValueError(f"Duplicate protocol token: {token}")
+                row = self._db.execute(
+                    "SELECT rowid, recording_id, timestamp_ns, physical_site_id, split "
+                    "FROM samples WHERE sample_token = ?",
+                    (token,),
+                ).fetchone()
+                if row is None:
+                    raise KeyError(f"Unknown protocol token: {token}")
+                if split is not None and row["split"] != split:
+                    raise ValueError(f"{token}: protocol crosses the requested split {split}")
+                for key in ("recording_id", "timestamp_ns", "physical_site_id", "split"):
+                    if key in record and record[key] != row[key]:
+                        raise ValueError(f"{token}: protocol {key} disagrees with the index")
+                seen.add(token)
+                ids.append(row["rowid"])
+        return np.asarray(ids, dtype=np.int64)
 
     def _open(self):
         if self._pid == os.getpid() and self._db is not None:
             return
         self.close()
+        uri = inside(self.root, "metadata/index.sqlite").as_uri() + "?mode=ro"
+        self._db = sqlite3.connect(uri, uri=True, check_same_thread=False)
+        try:
+            self._db.row_factory = sqlite3.Row
+            self._manifest = os.open(inside(self.root, "metadata/samples.jsonl"), os.O_RDONLY)
+        except (OSError, ValueError):
+            self.close()
+            raise
         self._pid = os.getpid()
-        self._db = sqlite3.connect(
-            f"file:{self.root / 'metadata/index.sqlite'}?mode=ro", uri=True, check_same_thread=False
-        )
-        self._manifest = os.open(self.root / "metadata/samples.jsonl", os.O_RDONLY)
 
     def close(self):
         if self._db is not None:
@@ -112,12 +144,22 @@ class EgoDepthDataset:
     def metadata(self, index):
         self._open()
         row = self._db.execute(
-            "SELECT byte_offset,byte_length FROM samples WHERE rowid=?", (int(self.rowids[index]),)
+            "SELECT sample_token, recording_id, timestamp_ns, physical_site_id, split, byte_offset, "
+            "byte_length FROM samples WHERE rowid = ?",
+            (int(self.rowids[index]),),
         ).fetchone()
-        b = os.pread(self._manifest, row[1], row[0])
-        if len(b) != row[1]:
-            raise IOError("truncated manifest")
-        result = json.loads(b)
+        if row is None:
+            raise ValueError("Selected sample disappeared from the release index")
+        offset, length = row["byte_offset"], row["byte_length"]
+        if offset < 0 or length <= 0:
+            raise ValueError(f"{row['sample_token']}: invalid manifest byte range")
+        payload = os.pread(self._manifest, length, offset)
+        if len(payload) != length:
+            raise IOError("Truncated manifest")
+        result = json.loads(payload)
+        for key in ("sample_token", "recording_id", "timestamp_ns", "physical_site_id", "split"):
+            if result[key] != row[key]:
+                raise ValueError(f"{row['sample_token']}: manifest {key} disagrees with the index")
         result["calibrations"] = self.calibrations[result["calibration_id"]]
         return result
 
@@ -125,10 +167,11 @@ class EgoDepthDataset:
         self._open()
         rel, span = locator.rsplit("::", 1)
         off, length = map(int, span.split(":"))
-        if Path(rel).is_absolute() or ".." in Path(rel).parts or off < 0 or length <= 0:
-            raise ValueError("unsafe asset locator")
+        if off < 0 or length <= 0:
+            raise ValueError("Invalid shard byte range")
         if rel not in self._shards:
-            self._shards[rel] = os.open(self.root / rel, os.O_RDONLY)
+            shard = inside(self.root, rel)
+            self._shards[rel] = os.open(shard, os.O_RDONLY)
             if len(self._shards) > 16:
                 os.close(self._shards.popitem(last=False)[1])
         self._shards.move_to_end(rel)
@@ -139,20 +182,26 @@ class EgoDepthDataset:
 
     def __getitem__(self, index):
         r = self.metadata(index)
-        images = {
-            i: np.array(
-                Image.open(io.BytesIO(self._bytes(r["rgb_rel_paths"][str(i)]))).convert("RGB")
-            )
-            for i in self.cameras
-        }
-        depth = np.load(io.BytesIO(self._bytes(r["depth_rel_path"])), allow_pickle=False).astype(
-            np.float32
-        )
+        shape = tuple(r["depth_shape_hw"])
+        if r["target_camera_id"] != 2 or len(shape) != 2:
+            raise ValueError(f"{r['sample_token']}: expected a camera-2 depth map")
+        images = {}
+        for camera in self.cameras:
+            with Image.open(io.BytesIO(self._bytes(r["rgb_rel_paths"][str(camera)]))) as image:
+                if image.size != (shape[1], shape[0]):
+                    raise ValueError(
+                        f"{r['sample_token']}: camera {camera} RGB grid differs from {shape}"
+                    )
+                images[camera] = np.array(image.convert("RGB"))
+        stored = np.load(io.BytesIO(self._bytes(r["depth_rel_path"])), allow_pickle=False)
+        if stored.dtype.kind != "f" or stored.shape != shape:
+            raise ValueError(f"{r['sample_token']}: expected floating-point depth on grid {shape}")
+        depth = stored.astype(np.float32, copy=False)
         valid = np.load(io.BytesIO(self._bytes(r["valid_mask_rel_path"])), allow_pickle=False)
-        if valid.dtype != np.bool_ or valid.shape != depth.shape:
-            raise ValueError("bad released reference mask")
+        if valid.dtype != np.bool_ or valid.shape != shape:
+            raise ValueError(f"{r['sample_token']}: invalid reference mask grid or dtype")
         if np.any(valid & (~np.isfinite(depth) | (depth <= 0))):
-            raise ValueError("invalid reference support")
+            raise ValueError(f"{r['sample_token']}: invalid depth within reference support")
         return {
             "sample_token": r["sample_token"],
             "recording_id": r["recording_id"],

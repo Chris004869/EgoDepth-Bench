@@ -1,41 +1,51 @@
 """Create local-path annotation records for older evaluation consumers.
 
-Portable public records remain unchanged. Regenerate this small directory after
-moving the release; pass its path as annotation.dir to the existing evaluator.
+Use the resulting absolute paths with consumers that require local mask files.
+Regenerate these derived records after moving the release. The public scorer
+reads the portable annotations directly.
 """
 import argparse
 import json
-import os
+import secrets
 from pathlib import Path
+
+if __package__:
+    from .annotations import annotation_directory
+    from .release_paths import inside
+else:
+    from annotations import annotation_directory
+    from release_paths import inside
 
 
 def materialize(root, output, directory=None):
-    from annotations import annotation_directory
     root = Path(root).resolve()
     output = Path(output).resolve()
     source_dir = annotation_directory(root, directory).resolve()
-    if output == source_dir or output == root / 'annotations':
-        raise ValueError('Never overwrite portable annotations')
+    if output.is_relative_to(root):
+        raise ValueError('Choose an output directory outside the release')
+    sources = sorted(source_dir.glob('s_*.json'))
+    if not sources:
+        raise FileNotFoundError(f'No annotation records in {source_dir}')
     output.mkdir(parents=True, exist_ok=True)
-    count = 0
-    for source in sorted(source_dir.glob('s_*.json')):
-        record = json.loads(source.read_text())
-        def resolve(relative):
-            path = Path(relative)
-            if path.is_absolute() or '..' in path.parts:
-                raise ValueError('Expected release-relative annotation path')
-            actual = root / path
-            if not actual.is_file():
-                raise FileNotFoundError(actual)
-            return str(actual)
+    def resolve(relative):
+        actual = inside(root, relative)
+        if not actual.is_file():
+            raise FileNotFoundError(actual)
+        return str(actual)
+
+    for source in sources:
+        record = json.loads(inside(source_dir, source.name).read_text())
         record['region_mask_path'] = resolve(record['region_mask_path'])
         record['overlay_paths'] = {k: resolve(v) for k, v in record.get('overlay_paths', {}).items()}
-        target = output / source.name
-        temporary = target.with_name(target.name + '.tmp.' + str(os.getpid()))
-        temporary.write_text(json.dumps(record, indent=2, ensure_ascii=False) + '\n')
-        temporary.replace(target)
-        count += 1
-    print(json.dumps({'local_annotation_records': count, 'output': str(output)}))
+        temporary = output / f".{source.name}.{secrets.token_hex(8)}.tmp"
+        try:
+            with temporary.open("x", encoding="utf-8") as stream:
+                json.dump(record, stream, indent=2, ensure_ascii=False)
+                stream.write("\n")
+            temporary.replace(output / source.name)
+        finally:
+            temporary.unlink(missing_ok=True)
+    print(json.dumps({'local_annotation_records': len(sources), 'output': str(output)}))
 
 
 if __name__ == '__main__':

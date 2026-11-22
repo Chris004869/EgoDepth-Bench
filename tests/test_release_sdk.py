@@ -80,3 +80,69 @@ def test_restoration_rejects_symlink_escape(tmp_path):
     for relative in ("../outside/file", "escape/file"):
         with pytest.raises(ValueError):
             restore_inside(root, relative)
+
+
+@pytest.fixture
+def indexed_protocol(tmp_path):
+    """Two independently indexed manifest rows, no image assets needed."""
+    import sqlite3
+
+    root = tmp_path / 'test #1'
+    metadata = root / 'metadata'
+    metadata.mkdir(parents=True)
+    (metadata / 'calibrations.json').write_text('{"rig": {}}')
+    tokens = ('s_first', 's_other')
+    rows = [
+        dict(sample_token=t, recording_id='rec', timestamp_ns=i + 1,
+             physical_site_id='site', split='test', calibration_id='rig')
+        for i, t in enumerate(tokens)
+    ]
+    with (metadata / 'samples.jsonl').open('wb') as stream, sqlite3.connect(metadata / 'index.sqlite') as db:
+        db.execute('CREATE TABLE samples (sample_token TEXT PRIMARY KEY, recording_id, timestamp_ns, '
+                   'physical_site_id, split, byte_offset, byte_length)')
+        for row in rows:
+            offset = stream.tell()
+            length = stream.write(json.dumps(row).encode() + b'\n')
+            db.execute('INSERT INTO samples VALUES (?, ?, ?, ?, ?, ?, ?)', (
+                row['sample_token'], row['recording_id'], row['timestamp_ns'], row['physical_site_id'],
+                row['split'], offset, length,
+            ))
+    return root, rows
+
+
+def test_sdk_maps_protocol_order_and_checks_record_identity(indexed_protocol):
+    import sqlite3
+    from egodepth_dataset import EgoDepthDataset
+
+    root, rows = indexed_protocol
+    path = root / 'protocol.jsonl'
+    path.write_text('\n'.join(json.dumps(row) for row in reversed(rows)))
+    with EgoDepthDataset(root, split='test', protocol=path) as dataset:
+        assert [dataset.metadata(i)['sample_token'] for i in range(2)] == ['s_other', 's_first']
+    with sqlite3.connect(root / 'metadata/index.sqlite') as db:
+        db.execute("UPDATE samples SET byte_offset=0 WHERE sample_token='s_other'")
+    with EgoDepthDataset(root, split='test', protocol=path) as dataset:
+        with pytest.raises(ValueError, match='manifest sample_token disagrees'):
+            dataset.metadata(0)
+
+
+@pytest.mark.parametrize('bad, field', [('repeat', 'Duplicate'), ('site', 'physical_site_id')])
+def test_sdk_rejects_conflicting_protocol(indexed_protocol, bad, field):
+    from egodepth_dataset import EgoDepthDataset
+
+    root, rows = indexed_protocol
+    entries = [rows[0], rows[0]] if bad == 'repeat' else [dict(rows[0], physical_site_id='different')]
+    path = root / 'bad.jsonl'
+    path.write_text('\n'.join(json.dumps(row) for row in entries))
+    with pytest.raises(ValueError, match=field):
+        EgoDepthDataset(root, split='test', protocol=path)
+
+
+def test_legacy_materializer_requires_records_and_output_outside_release(tmp_path):
+    release = tmp_path / 'release'
+    (release / 'annotations').mkdir(parents=True)
+    with pytest.raises(ValueError, match='outside'):
+        materialize(release, release / 'annotations_v6')
+    with pytest.raises(FileNotFoundError, match='No annotation records'):
+        materialize(release, tmp_path / 'output')
+    assert not (tmp_path / 'output').exists()

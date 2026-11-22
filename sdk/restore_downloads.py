@@ -9,6 +9,11 @@ import tempfile
 
 import zstandard as zstd
 
+if __package__:
+    from .release_paths import inside
+else:
+    from release_paths import inside
+
 
 def sha(path):
     digest = hashlib.sha256()
@@ -16,18 +21,6 @@ def sha(path):
         for block in iter(lambda: stream.read(8 << 20), b""):
             digest.update(block)
     return digest.hexdigest()
-
-
-def inside(root, relative):
-    """Keep source, destination and existing symlinks within the release root."""
-    root = Path(root).resolve()
-    relative = Path(relative)
-    if relative.is_absolute() or ".." in relative.parts or not relative.parts:
-        raise ValueError(f"Unsafe release-relative path: {relative}")
-    path = root / relative
-    if not path.resolve().is_relative_to(root):
-        raise ValueError(f"Release path escapes through a symlink: {relative}")
-    return path
 
 
 def restore_shard(root, row):

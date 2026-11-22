@@ -4,29 +4,29 @@ from pathlib import Path
 
 import numpy as np
 
+if __package__:
+    from .release_paths import inside
+else:
+    from release_paths import inside
+
 
 def annotation_directory(root, directory=None):
     root = Path(root)
     if directory is None:
-        pointer = root / 'annotation_version.json'
+        pointer = inside(root, 'annotation_version.json')
         directory = json.loads(pointer.read_text())['directory'] if pointer.exists() else 'annotations'
-    path = Path(directory)
-    if path.is_absolute() or '..' in path.parts:
-        raise ValueError('Annotation directory must be release-relative')
-    return root / path
+    return inside(root, directory)
 
 
 def read_annotation(root, token, directory=None):
     root = Path(root)
     if Path(token).name != token or not token.startswith('s_'):
         raise ValueError('Invalid sample token')
-    record = json.loads((annotation_directory(root, directory) / (token + '.json')).read_text())
+    record_path = inside(annotation_directory(root, directory), token + '.json')
+    record = json.loads(record_path.read_text())
     if record['sample_token'] != token:
         raise ValueError('Annotation token mismatch')
-    path = Path(record['region_mask_path'])
-    if path.is_absolute() or '..' in path.parts:
-        raise ValueError('Annotation asset must be release-relative')
-    with np.load(root / path, allow_pickle=False) as payload:
+    with np.load(inside(root, record['region_mask_path']), allow_pickle=False) as payload:
         region = payload['region']
     if region.shape != (416, 512) or not np.isin(region, [-1, 0, 1, 2]).all():
         raise ValueError('Invalid annotation region map')
