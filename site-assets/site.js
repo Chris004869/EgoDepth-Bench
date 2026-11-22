@@ -57,6 +57,16 @@ for (const group of document.querySelectorAll("[data-switches]")) {
   });
 }
 
+// Open the full-resolution layout that is currently displayed.
+for (const image of document.querySelectorAll(".case-figure picture img")) {
+  const link = image.closest("a");
+  const useCurrentImage = () => {
+    if (image.currentSrc) link.href = image.currentSrc;
+  };
+  image.addEventListener("load", useCurrentImage);
+  if (image.complete) useCurrentImage();
+}
+
 const video = document.getElementById("overview-video");
 const jumps = document.querySelector(".chapter-jumps");
 jumps.hidden = false;

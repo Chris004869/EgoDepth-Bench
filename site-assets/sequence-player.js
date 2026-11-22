@@ -235,6 +235,23 @@
       }
     });
   }
+  for (const link of document.querySelectorAll("a[data-feature]")) {
+    const button = choices.find(item => item.dataset.scene === link.dataset.feature);
+    if (!button || !["https:", "http:"].includes(location.protocol)) continue;
+    const url = new URL(location.pathname, location.origin);
+    url.searchParams.set("scene", button.dataset.scene);
+    url.hash = gallery.id;
+    link.href = url.href;
+    link.addEventListener("click", event => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      if (url.href !== location.href) history.pushState(null, "", url);
+      select(button);
+      gallery.focus({ preventScroll: true });
+      gallery.scrollIntoView();
+    });
+  }
+
   for (const button of modes) button.addEventListener("click", () => layout(button.dataset.mode));
   play.addEventListener("click", () => playing ? pause() : start());
   wipe.addEventListener("input", updateSplit);
@@ -258,6 +275,10 @@
   canvas.hidden = false;
   layout(mode);
   updateSplit();
-  const requested = new URLSearchParams(location.search).get("scene");
-  select(choices.find(button => button.dataset.scene === requested) || choices[0]);
+  function selectFromAddress() {
+    const requested = new URLSearchParams(location.search).get("scene");
+    select(choices.find(button => button.dataset.scene === requested) || choices[0]);
+  }
+  selectFromAddress();
+  window.addEventListener("popstate", selectFromAddress);
 })();
