@@ -1,8 +1,9 @@
 # Evaluation protocol
 
 Use `egodepth-score` for your own predictions and `scripts/run_eval_pipeline.py`
-for the provided model adapters. Both use `src/egodepth_eval/score/`, the scoring
-implementation used for the archived 24 configurations.
+for the provided model adapters. Both use the paper protocol implemented in
+`src/egodepth_eval/score/`. The 24 archived configurations retain the source
+identities of their original runs.
 
 ## Evaluate your own model
 
