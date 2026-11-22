@@ -17,6 +17,9 @@
   const title = document.getElementById("sequence-title");
   const poster = document.getElementById("sequence-poster");
   const wipe = document.getElementById("sequence-wipe");
+  const frame = gallery.querySelector(".sequence-frame");
+  const leftLabel = document.getElementById("sequence-left");
+  const rightLabel = document.getElementById("sequence-right");
   const play = document.getElementById("sequence-play");
   const seek = document.getElementById("sequence-seek");
   const time = document.getElementById("sequence-time");
@@ -55,15 +58,26 @@
     canvas.width = mode === "wipe" ? width : width * 2;
     canvas.height = height;
     wipe.hidden = mode !== "wipe";
-    document.getElementById("sequence-left").textContent = mode === "wipe" ? "Reference depth" : "RGB";
-    document.getElementById("sequence-right").textContent = mode === "wipe" ? "RGB" : "Reference depth";
+    leftLabel.textContent = mode === "wipe" ? "Reference depth" : "RGB";
+    rightLabel.textContent = mode === "wipe" ? "RGB" : "Reference depth";
+    updateLabels();
     modes.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.mode === mode)));
     render();
+  }
+
+  function updateLabels() {
+    const frameRect = frame.getBoundingClientRect();
+    const split = frameRect.left + frameRect.width * Number(wipe.value) / 100;
+    const hideLeft = mode === "wipe" && leftLabel.getBoundingClientRect().right > split;
+    const hideRight = mode === "wipe" && rightLabel.getBoundingClientRect().left < split;
+    leftLabel.style.visibility = hideLeft ? "hidden" : "";
+    rightLabel.style.visibility = hideRight ? "hidden" : "";
   }
 
   function updateSplit() {
     gallery.style.setProperty("--wipe", wipe.value + "%");
     wipe.setAttribute("aria-valuetext", wipe.value + "% reference depth");
+    updateLabels();
     render();
   }
 
@@ -275,6 +289,13 @@
   canvas.hidden = false;
   layout(mode);
   updateSplit();
+  if (typeof ResizeObserver === "function") {
+    const labelObserver = new ResizeObserver(updateLabels);
+    for (const element of [frame, leftLabel, rightLabel]) labelObserver.observe(element);
+  } else {
+    window.addEventListener("resize", updateLabels);
+  }
+
   function selectFromAddress() {
     const requested = new URLSearchParams(location.search).get("scene");
     select(choices.find(button => button.dataset.scene === requested) || choices[0]);
