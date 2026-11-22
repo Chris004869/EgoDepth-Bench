@@ -1,0 +1,12 @@
+EgoDepth-Bench
+Copyright 2026 GenRobot
+
+The first-party code in this repository is licensed under the Apache License,
+Version 2.0. Third-party source code, patches to upstream projects, model
+checkpoints, and datasets remain subject to their respective licenses.
+See docs/THIRD_PARTY.md for upstream attribution and dependency boundaries.
+
+This repository accompanies:
+EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation
+Yuan Gao, Dongchen Wei, Xinyang Lin, Shuhua Cao, Xueliang Guo,
+Zhuohan Li, and Yihao Wang.

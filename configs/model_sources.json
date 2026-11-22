@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "models": {
+    "unik3d": {
+      "directory": "UniK3D",
+      "url": "https://github.com/lpiccinelli-eth/UniK3D.git",
+      "commit": "29f7862f3c3ee79c53ef0153dfc901ce511df575",
+      "environment": "egodepth_mono",
+      "hf_repo": "lpiccinelli/unik3d-vitl",
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "abaf442f3ddca59f1f59bb6ad7da01ada37fab4b90ceafb037c5cd9f1d1d2f93",
+      "patches": [],
+      "license_evidence": "CC-BY-NC-SA-4.0 (LICENSE; pyproject metadata differs)",
+      "patched_files_sha256": {}
+    },
+    "dac": {
+      "directory": "DAC",
+      "url": "https://github.com/yuliangguo/depth_any_camera.git",
+      "commit": "371ee299429257bb9a27d1e23b7dc53670e37023",
+      "environment": "egodepth_mono",
+      "hf_repo": "yuliangguo/depth-any-camera",
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "ef7c92f63584b6a311fea6a87478a55d80cbd8d00b514952f27d44ce9572b51d",
+      "patches": [
+        "dac_ds_projection_and_ray_reverse.patch",
+        "dac_ds_pixel_centres.patch"
+      ],
+      "license_evidence": "MIT",
+      "patched_files_sha256": {
+        "dac/utils/erp_geometry.py": "97d3b3c484181626ac7bbc66ce4d2fc603417bb43d335c53841d9d6c2879b204"
+      }
+    },
+    "unidac": {
+      "directory": "UniDAC",
+      "url": "https://github.com/girish1511/UniDAC.git",
+      "commit": "9ddfc1f4cea68e08273ec9bca037f2ef9e1aa90e",
+      "environment": "egodepth_mono",
+      "hf_repo": "girish1511/UniDAC",
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "48c0ca787d209780ea74e00f885e478d2b8d4a3fe0a4bdfdc30620f71caab985",
+      "patches": [
+        "unidac_ds_projection.patch",
+        "unidac_ray_table_reverse.patch",
+        "unidac_ds_pixel_centres.patch"
+      ],
+      "license_evidence": "MIT",
+      "patched_files_sha256": {
+        "unidac/utils/erp_geometry.py": "d1d65840876acc2e0ff5c77294b23a6b466d6c18958ffdf5296ab466b0497290"
+      }
+    },
+    "unidepth_v2": {
+      "directory": "UniDepth",
+      "url": "https://github.com/lpiccinelli-eth/UniDepth.git",
+      "commit": "8d8cfe4c7ee15297099983607febf0d4f32eb3d6",
+      "environment": "egodepth_mono",
+      "hf_repo": "lpiccinelli/unidepth-v2-vitl14",
+      "hf_revision": "52b349b514bd8b47642f67ac78cb7b5dc5c51dd9",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "1c1b470337a55c5a3bb84b4f864b7551e9055f332823d0d7444649ad39e9e4a9",
+      "patches": [],
+      "license_evidence": "CC-BY-NC-4.0",
+      "patched_files_sha256": {}
+    },
+    "depth_pro": {
+      "directory": "ml-depth-pro",
+      "url": "https://github.com/apple/ml-depth-pro.git",
+      "commit": "9efe5c1def37a26c5367a71df664b18e1306c708",
+      "environment": "egodepth_depthpro",
+      "hf_repo": "apple/DepthPro",
+      "hf_revision": "ccd1350a774eb2248bcdfb3be430e38f1d3087ef",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "7a34ba9aea3a53112509ba13672a69c69e0b44a1333cc7046172b565748c19a3",
+      "patches": [],
+      "license_evidence": "Apple custom LICENSE",
+      "patched_files_sha256": {}
+    },
+    "metric3d_v2": {
+      "directory": "Metric3D",
+      "url": "https://github.com/YvanYin/Metric3D.git",
+      "commit": "eb5b6fac0dc155e4e52f576e304fbf11655ff339",
+      "environment": "egodepth_mono",
+      "hf_repo": null,
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "06def57526f8c7314b120f34a57509a140b56764f0b119b0b3d33738c30ca0c5",
+      "patches": [],
+      "license_evidence": "BSD-2-Clause",
+      "patched_files_sha256": {}
+    },
+    "depth_anything_3": {
+      "directory": "Depth-Anything-3",
+      "url": "https://github.com/ByteDance-Seed/Depth-Anything-3.git",
+      "commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+      "environment": "egodepth_da3",
+      "hf_repo": "depth-anything/DA3METRIC-LARGE",
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "ca41ff00910b2682578636d5d3d5473d2069ce03294a8b01e687869f09848e48",
+      "patches": [],
+      "license_evidence": "Apache-2.0",
+      "patched_files_sha256": {}
+    },
+    "zoedepth": {
+      "directory": "ZoeDepth",
+      "url": "https://github.com/isl-org/ZoeDepth.git",
+      "commit": "d87f17b2f5fdcb174cf4fb115491f4a6c60de152",
+      "environment": "egodepth_zoedepth",
+      "hf_repo": null,
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "98dc63c2a429fc4bb21dfece08983c6406825641a0061e989e8de3a495d3c178",
+      "patches": [],
+      "license_evidence": "MIT",
+      "patched_files_sha256": {}
+    },
+    "foundation_stereo": {
+      "directory": "FoundationStereo",
+      "url": "https://github.com/NVlabs/FoundationStereo.git",
+      "commit": "6e8806816b533e4d13ddbb95ffa907b797060a62",
+      "environment": "egodepth_fstereo",
+      "hf_repo": null,
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "140cca4f9ee67a4607aeb6ab3aeb8b98300787cd816d4e8c6cfb646dfe6540db",
+      "patches": [],
+      "license_evidence": "NVIDIA custom LICENSE",
+      "patched_files_sha256": {}
+    },
+    "geostereo": {
+      "directory": "geostereo",
+      "url": "https://github.com/qz-wei/GeoStereo.git",
+      "commit": "9b13879530d5a23eb2557da17f5b9c747b673130",
+      "environment": "egodepth_geostereo",
+      "hf_repo": "qz-wei/GeoStereo",
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "5a1451142d83f5ba2f38ec058520024bef40ba1d3c1b64a4f0cbcb252bc71fca",
+      "patches": [],
+      "license_evidence": "No project-wide license found at the pinned revision; depth_anything subdirectory contains an Apache-2.0 license",
+      "patched_files_sha256": {
+        "GeoStereo/core/extractor.py": "88697630e588f92e56181172bc8371e63549ce019ec83cefcfb64bf6e7bd1677",
+        "GeoStereo/depth_anything/dpt.py": "b194c43a2256e2423d3838995340a695cc947880ed5b1a34eef486ba28bafc3d"
+      }
+    },
+    "mast3r": {
+      "directory": "mast3r",
+      "url": "https://github.com/naver/mast3r.git",
+      "commit": "f5209afc300cec36239a7ac992263f36847bbba0",
+      "environment": "egodepth_mast3r",
+      "hf_repo": "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric",
+      "hf_revision": "06e7259f34c3060f322df5cb0c7b9094f57e41fc",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "103a493320a62ef890a167e667d1b8f6ba7ca37dccff546e97c0fd386d76b2c0",
+      "patches": [],
+      "license_evidence": "CC-BY-NC-SA-4.0 + NOTICE/CHECKPOINTS_NOTICE",
+      "patched_files_sha256": {}
+    },
+    "cut3r": {
+      "directory": "cut3r",
+      "url": "https://github.com/CUT3R/CUT3R.git",
+      "commit": "8bc15dc92a6d7fd92920b4ec81540d3dec7d3ecf",
+      "environment": "egodepth_cut3r",
+      "hf_repo": null,
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "c5376c410bf2eb3019d0d6447cad55be458fdf199b465748ba47eb4ecc0a09fa",
+      "patches": [
+        "cut3r_rope_negative_positions.patch"
+      ],
+      "license_evidence": "CC-BY-NC-SA-4.0",
+      "patched_files_sha256": {
+        "src/croco/models/pos_embed.py": "56887362b1b017a32830a0d5df087491495b3e7f7cbb249f746381305bd2dfb3"
+      }
+    },
+    "vggt": {
+      "directory": "vggt",
+      "url": "https://github.com/facebookresearch/vggt.git",
+      "commit": "a288dd0f14786c93483e45524328726ab7b1b4ce",
+      "environment": "egodepth_vggt",
+      "hf_repo": "facebook/VGGT-1B",
+      "hf_revision": "860abec7937da0a4c03c41d3c269c366e82abdf9",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "ac40db12918079add4b491b9da07c884b0b159baca4da14831d273014277c029",
+      "patches": [],
+      "license_evidence": "VGGT License (2025-07-29)",
+      "patched_files_sha256": {}
+    },
+    "vggt_omega": {
+      "directory": "vggt-omega",
+      "url": "https://github.com/facebookresearch/vggt-omega.git",
+      "commit": "282ec70363edeff59424bf43731658092fba3d37",
+      "environment": "egodepth_vggt",
+      "hf_repo": "facebook/VGGT-Omega",
+      "hf_revision": null,
+      "revision_evidence": "not recovered from local records",
+      "paper_checkpoint_content_id": "f88a904180df7855692c0ddf4aacea8695a6edd2e534d9f95ee827dbabda9f9d",
+      "patches": [],
+      "license_evidence": "FAIR Noncommercial Research License",
+      "patched_files_sha256": {}
+    },
+    "depth_anything_v2": {
+      "directory": "Depth-Anything-V2",
+      "url": "https://github.com/DepthAnything/Depth-Anything-V2.git",
+      "commit": "a561b849ebae10a6f5ef49e26c83cbbcd36c71bf",
+      "environment": "egodepth_group_d",
+      "hf_repo": "depth-anything/Depth-Anything-V2-Large",
+      "hf_revision": "cbbb86a30ce19b5684b7a05155dc7e6cbc7685b9",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "3bbd1f88b813752c337b8259de4e1e544809ffa362415cf175ec0c8b518ba015",
+      "patches": [],
+      "license_evidence": "Apache-2.0 code; Large weights CC-BY-NC-4.0",
+      "patched_files_sha256": {}
+    },
+    "marigold": {
+      "directory": "Marigold",
+      "url": "https://github.com/prs-eth/Marigold.git",
+      "commit": "ac915287aaa4e5fd5fe578322735c7c411a1f263",
+      "environment": "egodepth_group_d",
+      "hf_repo": "prs-eth/marigold-depth-lcm-v1-0",
+      "hf_revision": "04a73502f7fd8fc5e59947b9df3b2266d71d6849",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "ddf9e19ec24d6136751d7170c365960bfc658e776ef33428e3f3251f24d9280f",
+      "patches": [],
+      "license_evidence": "Apache-2.0 code; OpenRAIL++-M model",
+      "patched_files_sha256": {}
+    },
+    "moge": {
+      "directory": "moge",
+      "url": "https://github.com/microsoft/moge.git",
+      "commit": "74fbce054ebed49800de42d0ad0e83495065719a",
+      "environment": "egodepth_moge",
+      "hf_repo": "Ruicheng/moge-vitl",
+      "hf_revision": "ad326bfb61facd6c52b5a825bc1e34d7c97d9672",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "bbfa75d5b6f525875e0ec4f844777f8c0a677e94f8bcc14d3041e804cb6e09a2",
+      "patches": [],
+      "license_evidence": "MIT",
+      "patched_files_sha256": {}
+    },
+    "mapanything": {
+      "directory": "map-anything",
+      "url": "https://github.com/facebookresearch/map-anything.git",
+      "commit": "3d10cf7a3016fc0f9bb13a071ee66c47b10be0d9",
+      "environment": "egodepth_mapanything",
+      "hf_repo": "facebook/map-anything-apache",
+      "hf_revision": "00f9c245bbcb60522d1ed7f9e9d88462c6e3f38a",
+      "revision_evidence": "local HF cache refs/main at release preparation",
+      "paper_checkpoint_content_id": "6e9fe9cf65ffbfafcc738d4029a5d148ea57146f65db47f699a40ec1a4aa0ba5",
+      "patches": [],
+      "license_evidence": "Apache-2.0 code and selected apache checkpoint",
+      "patched_files_sha256": {}
+    }
+  }
+}

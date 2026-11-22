@@ -1,0 +1,40 @@
+diff --git a/src/croco/models/pos_embed.py b/src/croco/models/pos_embed.py
+index 0f76e4d..ec93408 100644
+--- a/src/croco/models/pos_embed.py
++++ b/src/croco/models/pos_embed.py
+@@ -151,6 +151,35 @@ except ImportError:
+ 
+         def apply_rope1d(self, tokens, pos1d, cos, sin):
+             assert pos1d.ndim == 2
++            # LOCAL PATCH (EgoDepth-Bench): shift negative positions into the
++            # table instead of indexing with them.
++            #
++            # CUT3R gives its pose token position -1 by design (model.py
++            # `pose_pos_i = -torch.ones(...)`). The CUDA kernel in
++            # models/curope/kernels.cu evaluates cos(pos * inv_freq)
++            # arithmetically, so a negative position is simply a rotation in
++            # the opposite direction and is perfectly valid there. This pure
++            # PyTorch fallback instead does an embedding *lookup*, which cannot
++            # index -1 and dies with "index out of range in self" (as a
++            # device-side assert on CUDA, so the message points at the wrong
++            # place). Upstream only ever exercises the compiled kernel, which
++            # is why the fallback path carries this bug.
++            #
++            # Rebuilding the table over [min(pos), max(pos)] and re-basing the
++            # indices reproduces the kernel's semantics exactly for any integer
++            # position, negative included.
++            lo = int(pos1d.min())
++            if lo < 0:
++                D = cos.shape[1] // 2
++                span = int(pos1d.max()) - lo + 1
++                inv_freq = 1.0 / (
++                    self.base ** (torch.arange(0, D * 2, 2, device=pos1d.device).float() / (D * 2))
++                )
++                t = torch.arange(lo, lo + span, device=pos1d.device, dtype=inv_freq.dtype)
++                freqs = torch.einsum("i,j->ij", t, inv_freq).to(cos.dtype)
++                freqs = torch.cat((freqs, freqs), dim=-1)
++                cos, sin = freqs.cos(), freqs.sin()
++                pos1d = pos1d - lo
+             cos = torch.nn.functional.embedding(pos1d, cos)[:, None, :, :]
+             sin = torch.nn.functional.embedding(pos1d, sin)[:, None, :, :]
+             return (tokens * cos) + (self.rotate_half(tokens) * sin)

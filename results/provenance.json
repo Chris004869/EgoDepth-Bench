@@ -1,0 +1,980 @@
+{
+  "schema": "egodepth-public-result-provenance-1",
+  "snapshot": "paper-final-20260916",
+  "data_version": "egodepth_v1_20260912",
+  "n_official_configurations": 24,
+  "policy": "Finite scientific values, sample identifiers and recorded content identities are unchanged. Machine hostnames/process IDs are removed and resource locations rewritten. Six undefined NaN diagnostic cells are represented as JSON null. Original identities describe the original experiment, not the public source tree.",
+  "logical_resources": {
+    "dataset://": "Path relative to the named dataset release; obtain separately.",
+    "artifact://": "External model artifact; not bundled here.",
+    "archive://": "Original experiment configuration or audit artifact; identifier, not a download URL.",
+    "model://": "Original model artifact name; use the published model registry for acquisition."
+  },
+  "files": [
+    {
+      "path": "results/official/cut3r.json",
+      "source_artifact": "results/cut3r.json",
+      "source_sha256": "a4efa5f2cea4830507f39c3a188daf5c52ef24ec791c9081ffce077f47402ab8",
+      "public_sha256": "48142e8207cf029fbc0ad91b604a4fd9b9542b0ac97fc4b27ac477415449aaa9",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/checkpoint",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/dac.json",
+      "source_artifact": "results/dac.json",
+      "source_sha256": "285a8fb9e2f4781f2a7c48634b2433b2ac02dca5046147eb0166b44eebb9ea19",
+      "public_sha256": "bca55506540e4753421088b3100bd7a0f7362a9a54aae75d65db3d8a3a145061",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/depth_anything_3.json",
+      "source_artifact": "results/depth_anything_3.json",
+      "source_sha256": "a733d0ec222fbea948c4937da60cf18df0ea8d540050b0981ae7456c2621bd60",
+      "public_sha256": "393569a36d846a69b9f7bb04a555002fe1a464ff1a28fe9698208c4dde990163",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/depth_anything_v2.json",
+      "source_artifact": "results/depth_anything_v2.json",
+      "source_sha256": "da0bfc3e9efd83bf8c2782281645a395cd2b3607e85d5d492241c7272768bb15",
+      "public_sha256": "bad65f977c77dec894a59decadf017f50fac4d8c2ba17ac9c43e395f613a65f8",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/depth_pro.json",
+      "source_artifact": "results/depth_pro.json",
+      "source_sha256": "3d4aab2db941ebbaeb5690e69c07406d8ac2dc51152073d003db8cb7c26e023a",
+      "public_sha256": "49489cd877833433f7d22c49dc58ff1d41e5eeb30957afdfb3d7d4fb440b084e",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/foundation_stereo.json",
+      "source_artifact": "results/foundation_stereo.json",
+      "source_sha256": "6de161f977fc354595c7b6ce37d9ff93c4ff6d32e7047fc1545a5acfc4c5ebb8",
+      "public_sha256": "a4fa70bc4d622d5a4e680d7f13e71b794c15404efc0a054bdc193b6579fcf049",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/geostereo.json",
+      "source_artifact": "results/geostereo.json",
+      "source_sha256": "159776bab571a8a4c8f9f53c4254721043b3d5a75bc7c75830f678bded1c859a",
+      "public_sha256": "4177ff060acd53b791bd111b2ab04dd38cee6b2966db479ab4b9c89d5963bfde",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mapanything_1view.json",
+      "source_artifact": "results/mapanything_1view.json",
+      "source_sha256": "d25efdb364b068373ba23ffb2f205eb47e1373c8692e48d1428a83719dda450c",
+      "public_sha256": "0bb68831f51cac24654503dde368f0179a992c6db369dd0c756babd2cf5af814",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mapanything_2view.json",
+      "source_artifact": "results/mapanything_2view.json",
+      "source_sha256": "e89da746e39a819aad2c0b92b6435db929c9a64da888c997c7355e0545012dfe",
+      "public_sha256": "97639bde2ae3290b3f5100ee468a9221e848e9076b4d4f8560b15518e57fa4b5",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mapanything_6view.json",
+      "source_artifact": "results/mapanything_6view.json",
+      "source_sha256": "29f699e10ae7ed957f3bd48d4b79c23d594fecbaa59e03058fd497baacc6f241",
+      "public_sha256": "ba248b7cf89267323032a8d5fa95547b2d725d24f4d619090eaa6ebff28192be",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mapanything_6view_rig.json",
+      "source_artifact": "results/mapanything_6view_rig.json",
+      "source_sha256": "2e8105ff2891855c3893c4a3f6857ad1884e76deb59676057f2998ffdca35ec7",
+      "public_sha256": "9762bd26eaf4f9ad1bc1ae6cad537f6986bc4b2cc9f22f39afec48fc98f017de",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mapanything_rig_ft.json",
+      "source_artifact": "results/mapanything_rig_ft.json",
+      "source_sha256": "de98f6ac5305fb74d3ac78135d06e1104d8411bc4c796a3c752b601f5ec5db1e",
+      "public_sha256": "74bc131ddc587928770a9b1823d3a6560f9aca9b6923f8cd3cda746424896505",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/notes/finetuned_state_dict",
+          "operation": "relocate_path"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mapanything_rig_scale_only.json",
+      "source_artifact": "results/mapanything_rig_scale_only.json",
+      "source_sha256": "51b977484f3b25f4cf1c83c35df13123f395849aee246f0ce704100e3110abed",
+      "public_sha256": "b569d11d6b6619790931ec6f62279d353b88b111dfcc48af10f60ba9559b6bc8",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/notes/calibration_record",
+          "operation": "relocate_path"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mapanything_scale_only.json",
+      "source_artifact": "results/mapanything_scale_only.json",
+      "source_sha256": "69cf4275514d4db515b30989f5bf81b677f7f4f975adf5a9a49f6a1a9e53d355",
+      "public_sha256": "4f628a6bede3d92580e7d477370059f351f89ae13b35198bcfd27e3232aa8f54",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/notes/calibration_record",
+          "operation": "relocate_path"
+        }
+      ]
+    },
+    {
+      "path": "results/official/marigold.json",
+      "source_artifact": "results/marigold.json",
+      "source_sha256": "b41f3414499c79f644927dcb8b68c4abdfa8c0d1f7d48c4847fc933e8d3a353c",
+      "public_sha256": "0565e790da1a8315e236c05ba64d4ae70abdfbdedc06006cb3380b84f3a38a54",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/mast3r.json",
+      "source_artifact": "results/mast3r.json",
+      "source_sha256": "46a112f504f23c92d1e5210dfbf3328655941d51e8dc2ac50f8551e714c64ae8",
+      "public_sha256": "aba53c0f3cde4cda055765f75275be2c67001d0356464c93936a016a483f7a02",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/metric3d_v2.json",
+      "source_artifact": "results/metric3d_v2.json",
+      "source_sha256": "d0096fd744d0df0f2b705ebf8bae1534b7ac615bb33da06357fc930c4ead08ee",
+      "public_sha256": "4584a44a54121b6e79f5fdc8af8adcce68f2a9dbb255417dadfcfd111fc08cbd",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/moge.json",
+      "source_artifact": "results/moge.json",
+      "source_sha256": "55f4b70369a7fb5b66f47e54fc01609cd6dce2915791e0b575bc1679596b8c1a",
+      "public_sha256": "3f1780bc97cc168e2001ec46b1c46a3021733aa9cf627aa9782ff7e947b9791b",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/unidac.json",
+      "source_artifact": "results/unidac.json",
+      "source_sha256": "f129402e1e2c6373a482470268251546d6b401fb1024d0fdf083c97847741b19",
+      "public_sha256": "1096bb82ee0703f5579fe9be9319cc4228750063af6fb961ed20bbc171b0e65a",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/unidepth_v2.json",
+      "source_artifact": "results/unidepth_v2.json",
+      "source_sha256": "32f7be2adefcba5e1864106e7c4904bc9d5a4c678ee4d177600b4c58ede848e6",
+      "public_sha256": "f08191209a9b7a6f4d4e49f2eee3cfa4c179a3942aaee69aaf3833202a04d627",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/unik3d.json",
+      "source_artifact": "results/unik3d.json",
+      "source_sha256": "17392107733f55f8cd4d2fd2a27a60c0adaf1af9676001cec1780d5ec023431e",
+      "public_sha256": "022ecbde7bf9cd5bcc99cf3d4853d9916d800b029fbda05ceb2da487fcd7cd33",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/vggt.json",
+      "source_artifact": "results/vggt.json",
+      "source_sha256": "b4776e7b135221a60984992211a583cc3f55f2bb8a3897ca20f6049cac6ffcb5",
+      "public_sha256": "3c64992268226b4ed1a246a94a85b322ad0f05ceac66ef357d9bb835ff3f13d5",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/vggt_omega.json",
+      "source_artifact": "results/vggt_omega.json",
+      "source_sha256": "e1bf721e31b83ebc2aaab1cdb8e9717a6e697a1ed56ced704b93a8086e8dd487",
+      "public_sha256": "d2e534c78e31a875e406949c2eaed156a68a40e09eed0b42c5a10c3fb610cda8",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/checkpoint",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/official/zoedepth.json",
+      "source_artifact": "results/zoedepth.json",
+      "source_sha256": "9c7362216ec8b5188c9db0519e918c4b1f95911847e9c1c0d396c6282bf5447b",
+      "public_sha256": "2bc57a37ad513dc61f0ccf1910032df409603637e6eb7c6c05645e6fb0bcafa2",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/adaptation_table.tex",
+      "source_artifact": "paper_artifacts/adaptation_table.tex",
+      "source_sha256": "b903ca014234e2f7cd4fa4efb90f75ac0e1d14c635a652b8d57de3dd6a12345f",
+      "public_sha256": "b903ca014234e2f7cd4fa4efb90f75ac0e1d14c635a652b8d57de3dd6a12345f",
+      "changes": []
+    },
+    {
+      "path": "results/paper_artifacts/diagnostic_subset/foundation_stereo.json",
+      "source_artifact": "paper_artifacts/diagnostic_subset/foundation_stereo.json",
+      "source_sha256": "05a8a9a7904592dae390dc36b0dea63b9953293a2182428db99c48ab6c3e19c7",
+      "public_sha256": "26eea677a1ea9e6226256df3bbe6229ccb6b9218c9ff8b660a2e35d594f1fc88",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/diagnostic_subset/mapanything_6view.json",
+      "source_artifact": "paper_artifacts/diagnostic_subset/mapanything_6view.json",
+      "source_sha256": "ab3a41d79f3521baf0eecacea954e64fd2f1d5b5649b7289268eb3401ef1379c",
+      "public_sha256": "f6eaee3a76145f569cf4ca3f8436ec3f0520dad138bd8ed6c1a80531e7f7c62e",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/diagnostic_subset/mapanything_6view_rig.json",
+      "source_artifact": "paper_artifacts/diagnostic_subset/mapanything_6view_rig.json",
+      "source_sha256": "44e2675501f84e592126f7989c3fa4b1deddbba18c915fd6acdde617bb543a97",
+      "public_sha256": "5fe37dcdf0979d327f96732db825b7ae412810bf2f5c62a5f9ae04010637eb19",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/diagnostic_subset/mapanything_rig_ft.json",
+      "source_artifact": "paper_artifacts/diagnostic_subset/mapanything_rig_ft.json",
+      "source_sha256": "d86fe6c07052ad091214293d4db02d32665e8a8fcdd6f28bd8f224d72a40d4a5",
+      "public_sha256": "2ba97d1f9c4d2cb5684b3aea8721d06c8cd3a62f54489fdc62afb3352bfaa595",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/notes/finetuned_state_dict",
+          "operation": "relocate_path"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/diagnostic_subset/unidepth_v2.json",
+      "source_artifact": "paper_artifacts/diagnostic_subset/unidepth_v2.json",
+      "source_sha256": "f5ffd823c8066f672fd69330bcaf6412ac2e3bb1c5b868710f7efb12104cc672",
+      "public_sha256": "97aeb3389e0d8dbe69ed15143694f7d9dc23d07b6c1ea06dbde06427c71a5e9a",
+      "changes": [
+        {
+          "field": "/population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/manifest_id",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/population_identity/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/hostname",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/pid",
+          "operation": "remove_machine_identity"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/export_manifest.json",
+      "source_artifact": "paper_artifacts/export_manifest.json",
+      "source_sha256": "c10d6a3ae7b6cf06655630282c66dca1e1947a48300b40bca2528972bb6a2d79",
+      "public_sha256": "edf403d662e0e45f3e88f96ba126f464af38be0ad49ffaa9af8a2a26041520d6",
+      "changes": [
+        {
+          "field": "/artifacts/main_table",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/artifacts/views_table",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/artifacts/adaptation_table",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/artifacts/support_csv",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/artifacts/figure4",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/scored_population/manifest_path",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/final_config",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/figure4_provenance",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/contrast_reporting_revision/audit",
+          "operation": "relocate_path"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/interaction_diagnostics.json",
+      "source_artifact": "paper_artifacts/interaction_diagnostics.json",
+      "source_sha256": "ae0d3a751f247dd79c877ae3edb2e96fd4f56ebb7825b8eac36b7f622807a28c",
+      "public_sha256": "50901d2033e49e645a0cd451a611ba50e4c1ed68bd1a5a5009b7d6b8bba00c13",
+      "changes": [
+        {
+          "field": "/source_artifacts",
+          "operation": "relocate_path"
+        },
+        {
+          "field": "/cells/foundation_stereo/mae_cm/0/3",
+          "operation": "undefined_number_to_null"
+        },
+        {
+          "field": "/cells/foundation_stereo/mae_cm/0/4",
+          "operation": "undefined_number_to_null"
+        },
+        {
+          "field": "/cells/foundation_stereo/mae_cm/1/3",
+          "operation": "undefined_number_to_null"
+        },
+        {
+          "field": "/cells/foundation_stereo/mae_cm/1/4",
+          "operation": "undefined_number_to_null"
+        },
+        {
+          "field": "/cells/foundation_stereo/mae_cm/2/3",
+          "operation": "undefined_number_to_null"
+        },
+        {
+          "field": "/cells/foundation_stereo/mae_cm/2/4",
+          "operation": "undefined_number_to_null"
+        }
+      ]
+    },
+    {
+      "path": "results/paper_artifacts/interaction_diagnostics.pdf",
+      "source_artifact": "paper_artifacts/interaction_diagnostics.pdf",
+      "source_sha256": "b3fe32b66c4c14d3f65690b3ad9a4c7b3edd15e94b9fd150ee01f28759caba16",
+      "public_sha256": "b3fe32b66c4c14d3f65690b3ad9a4c7b3edd15e94b9fd150ee01f28759caba16",
+      "changes": []
+    },
+    {
+      "path": "results/paper_artifacts/interaction_diagnostics.png",
+      "source_artifact": "paper_artifacts/interaction_diagnostics.png",
+      "source_sha256": "4b6a7ca0bef49e0a35c9cd6a3237a59b24d516b2acde6af366110aba283bff02",
+      "public_sha256": "4b6a7ca0bef49e0a35c9cd6a3237a59b24d516b2acde6af366110aba283bff02",
+      "changes": []
+    },
+    {
+      "path": "results/paper_artifacts/main_table.tex",
+      "source_artifact": "paper_artifacts/main_table.tex",
+      "source_sha256": "eec79a04105a0b57640b661b01cc67228f564ca6120ea933d5f711638bcd77c9",
+      "public_sha256": "eec79a04105a0b57640b661b01cc67228f564ca6120ea933d5f711638bcd77c9",
+      "changes": []
+    },
+    {
+      "path": "results/paper_artifacts/support_summary.csv",
+      "source_artifact": "paper_artifacts/support_summary.csv",
+      "source_sha256": "3296234c8f62b70ef490d01aceedf6dbf13bca39379de7d6aa2d36497591e406",
+      "public_sha256": "3296234c8f62b70ef490d01aceedf6dbf13bca39379de7d6aa2d36497591e406",
+      "changes": []
+    },
+    {
+      "path": "results/paper_artifacts/views_table.tex",
+      "source_artifact": "paper_artifacts/views_table.tex",
+      "source_sha256": "72ff3a0b79b934aac1c68ea08dc480109bb076199168aca67758eb0373280f63",
+      "public_sha256": "72ff3a0b79b934aac1c68ea08dc480109bb076199168aca67758eb0373280f63",
+      "changes": []
+    },
+    {
+      "path": "results/training_run.json",
+      "source_artifact": "training/seed20260912/training_run.json",
+      "source_sha256": "d393f51ceb27b8dc837ef6482ae8aca0ed5b07b312738e155aceb2a175888cf1",
+      "public_sha256": "d393f51ceb27b8dc837ef6482ae8aca0ed5b07b312738e155aceb2a175888cf1",
+      "changes": []
+    }
+  ]
+}

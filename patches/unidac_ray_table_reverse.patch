@@ -1,0 +1,31 @@
+--- a/unidac/utils/erp_geometry.py
++++ b/unidac/utils/erp_geometry.py
+@@ -404,7 +404,27 @@
+     
+     # convert img grid to normalized camera coordinates
+     # if cam_params['dataset'] in ['kitti360', 'nyu', 'scannetpp']: # use this if you want to consider nyu as fisheye, very slight distortion
+-    if cam_params['dataset'] in ['kitti360', 'scannetpp', 'zipnerf']:
++    # -----------------------------------------------------------------
++    # EgoDepth-Bench patch: use the ray lookup table whenever one is supplied.
++    #
++    # Upstream gates this branch on a hard-coded dataset-name whitelist
++    # (['kitti360', 'scannetpp', 'zipnerf']), so a NEW camera that supplies a
++    # valid `fisheye_grid2ray` still falls through to the `else` branch and gets
++    # unprojected as a PINHOLE, (u-cx)/fx. That is silent: the depth map is fully
++    # populated and looks plausible, but off-axis pixels are sampled from the
++    # wrong ERP location. Measured on this rig's double-sphere camera, the
++    # implied field angle is wrong by 12 deg at the median and 29.8 deg at the
++    # rim, and the pinhole branch cannot represent field angles past 60.2 deg at
++    # all -- i.e. the whole outer third of a 200-deg lens.
++    #
++    # Ten lines below, upstream already reads the table's 4th channel under
++    # `if fisheye_grid2ray is not None`, so keying the branch on the same
++    # condition is consistent with its own convention rather than a new one.
++    # The dataset-name list is kept as a fallback for callers that pass a table
++    # of a different layout.
++    #
++    # Kept as a recorded local patch; see docs/third_party_patches.md.
++    if fisheye_grid2ray is not None or cam_params['dataset'] in ['kitti360', 'scannetpp', 'zipnerf']:
+         """_
+             MEI model has no closed-form inversion, so we need to provide the lookup table for fast inversion
+         """

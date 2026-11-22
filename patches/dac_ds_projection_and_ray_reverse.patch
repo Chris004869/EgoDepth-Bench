@@ -1,0 +1,83 @@
+--- a/dac/utils/erp_geometry.py
++++ b/dac/utils/erp_geometry.py
+@@ -160,7 +160,52 @@
+ 
+     # Important: this normalization needs to use the source perspective image FOV, for the grid sample function range [-1, 1]
+     # Gnomonic Projection for OPENCV_FISHEYE model, only works for FOV < 180 degree
+-    if 'camera_model' in cam_params.keys() and cam_params['camera_model'] == 'OPENCV_FISHEYE':    
++    # ---------------------------------------------------------------------
++    # EgoDepth-Bench patch: double-sphere (DS) forward projection.
++    #
++    # `cam_to_erp_patch_fast` supports OPENCV_FISHEYE, MEI and ERP. The
++    # EgoDepth-Bench rig is double-sphere, which is none of these: MEI has no
++    # `alpha`, and OPENCV_FISHEYE is a polynomial in theta. Without this branch a
++    # DS camera can only be forced through one of the other models, which
++    # misprojects and produces plausible-looking depth on the wrong pixels.
++    #
++    # This is the standard DS projection (Usenko et al.), applied to the Gnomonic
++    # ray (x_num, y_num, cos_c) that the code above already computed:
++    #     d1 = sqrt(x^2 + y^2 + z^2)
++    #     d2 = sqrt(x^2 + y^2 + (xi*d1 + z)^2)
++    #     u  = fx * x / (alpha*d2 + (1-alpha)*(xi*d1 + z)) + cx
++    #
++    # Kept as a recorded local patch; see docs/third_party_patches.md.
++    if 'camera_model' in cam_params.keys() and cam_params['camera_model'] == 'DS':
++        fx = cam_params['fx']
++        fy = cam_params['fy']
++        cx = cam_params['cx']
++        cy = cam_params['cy']
++        xi = cam_params['xi']
++        alpha = cam_params['alpha']
++
++        d1 = torch.sqrt(x_num * x_num + y_num * y_num + cos_c * cos_c)
++        z_shifted = xi * d1 + cos_c
++        d2 = torch.sqrt(x_num * x_num + y_num * y_num + z_shifted * z_shifted)
++        denominator = alpha * d2 + (1.0 - alpha) * z_shifted
++        # Rays the DS model cannot project land outside the image, which the
++        # normalization below turns into out-of-range grid coordinates that
++        # grid_sample fills with padding -- the same treatment other models'
++        # invalid rays get.
++        denominator = torch.where(
++            denominator.abs() < 1e-9,
++            torch.full_like(denominator, 1e-9),
++            denominator,
++        )
++        new_x = fx * x_num / denominator + cx
++        new_y = fy * y_num / denominator + cy
++
++        new_x -= img_w / 2
++        new_x /= (img_w / 2)
++        new_y -= img_h / 2
++        new_y /= (img_h / 2)
++
++    elif 'camera_model' in cam_params.keys() and cam_params['camera_model'] == 'OPENCV_FISHEYE':    
+         """
+             Apply opencv distortion (Refer to: OpenCV)
+         """
+@@ -357,7 +402,25 @@
+     
+     # convert img grid to normalized camera coordinates
+     # if cam_params['dataset'] in ['kitti360', 'nyu', 'scannetpp']: # use this if you want to consider nyu as fisheye, very slight distortion
+-    if cam_params['dataset'] in ['kitti360', 'scannetpp', 'zipnerf']:
++    # -----------------------------------------------------------------
++    # EgoDepth-Bench patch: use the ray lookup table whenever one is supplied.
++    #
++    # Upstream gates this branch on a hard-coded dataset-name whitelist, so a NEW
++    # camera that supplies a valid `fisheye_grid2ray` still falls through to the
++    # `else` branch and is unprojected as a PINHOLE, (u-cx)/fx. That is silent:
++    # the depth map is fully populated and looks plausible, but off-axis pixels
++    # are sampled from the wrong ERP location. Measured on this rig's
++    # double-sphere camera, the implied field angle is wrong by 12 deg at the
++    # median and 29.8 deg at the rim, and the pinhole form cannot represent field
++    # angles past 60.2 deg at all -- the whole outer third of a 200-deg lens.
++    #
++    # Below, upstream already reads the table's 4th channel under
++    # `if fisheye_grid2ray is not None`, so keying the branch on the same
++    # condition follows its own convention. The dataset list is kept as a
++    # fallback for callers passing a table of a different layout.
++    #
++    # Kept as a recorded local patch; see docs/third_party_patches.md.
++    if fisheye_grid2ray is not None or cam_params['dataset'] in ['kitti360', 'scannetpp', 'zipnerf']:
+         """_
+             MEI model has no closed-form inversion, so we need to provide the lookup table for fast inversion
+         """

@@ -1,0 +1,17 @@
+--- a/dac/utils/erp_geometry.py
++++ b/dac/utils/erp_geometry.py
+@@ -200,10 +200,10 @@
+         new_x = fx * x_num / denominator + cx
+         new_y = fy * y_num / denominator + cy
+ 
+-        new_x -= img_w / 2
+-        new_x /= (img_w / 2)
+-        new_y -= img_h / 2
+-        new_y /= (img_h / 2)
++        # grid_sample below uses align_corners=True: native pixel centers
++        # 0 and W-1 must map to -1 and +1, respectively.
++        new_x = 2.0 * new_x / (img_w - 1) - 1.0
++        new_y = 2.0 * new_y / (img_h - 1) - 1.0
+ 
+     elif 'camera_model' in cam_params.keys() and cam_params['camera_model'] == 'OPENCV_FISHEYE':    
+         """

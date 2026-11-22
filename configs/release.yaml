@@ -1,0 +1,240 @@
+# Portable paper-protocol template. Run scripts/configure.py before use.
+run:
+  status: formal
+  out_dir: outputs/benchmark
+  population_name: egodepth_v1_20260912_test_1hz
+  notes: 'Paper protocol: 18 public models, 24 configurations including MapAnything
+    adaptation.'
+paths:
+  third_party_dir: third_party
+  weights_dir: weights
+  conda_prefix: null
+data:
+  samples_jsonl: data/egodepth_v1/protocols/all_official.jsonl
+  asset_roots:
+  - data/egodepth_v1
+  data_version: egodepth_v1_20260912
+  mask_profile: release_declared_mask
+  site_map_path: data/egodepth_v1/splits/site_map.json
+  scoring_grid_hw:
+  - 416
+  - 512
+  target_camera_id: 2
+  context_manifest: null
+scoring:
+  depth_range:
+  - 0.25
+  - 2.0
+  z_bins:
+  - - 0.25
+    - 0.8
+  - - 0.8
+    - 1.2
+  - - 1.2
+    - 2.0
+  angle_bins:
+  - - 0
+    - 20
+  - - 20
+    - 40
+  - - 40
+    - 60
+  - - 60
+    - 80
+  - - 80
+    - 90
+  tau_max_m: 0.1
+  tau_table_m: 0.05
+  bootstrap:
+    n_boot: 2000
+    seed: 20260912
+  common_support_pairs:
+  - - foundation_stereo
+    - unidepth_v2
+  - - mapanything_6view
+    - mapanything_1view
+  - - mapanything_6view_rig
+    - mapanything_rig_ft
+annotation:
+  dir: data/egodepth_v1/annotations_v6
+  version: ai-rgb-reviewed-v6
+  status: frozen
+  diagnostics_manifest: data/egodepth_v1/protocols/diagnostics.jsonl
+  summary: data/egodepth_v1/annotations_v6/annotation_summary.json
+  asset_root: data/egodepth_v1
+methods:
+  unik3d:
+    kind: legacy
+    spec: unik3d
+  dac:
+    kind: legacy
+    spec: dac
+  unidac:
+    kind: legacy
+    spec: unidac
+  unidepth_v2:
+    kind: legacy
+    spec: unidepth_v2
+  depth_pro:
+    kind: legacy
+    spec: depth_pro
+  metric3d_v2:
+    kind: legacy
+    spec: metric3d_v2
+  depth_anything_3:
+    kind: legacy
+    spec: depth_anything_3
+  zoedepth:
+    kind: legacy
+    spec: zoedepth
+  foundation_stereo:
+    kind: legacy
+    spec: foundation_stereo
+  geostereo:
+    kind: legacy
+    spec: geostereo
+  mast3r:
+    kind: legacy
+    spec: mast3r
+  cut3r:
+    kind: legacy
+    spec: cut3r
+  vggt:
+    kind: legacy
+    spec: vggt
+  vggt_omega:
+    kind: legacy
+    spec: vggt_omega
+  depth_anything_v2:
+    kind: legacy
+    spec: depth_anything_v2
+  marigold:
+    kind: legacy
+    spec: marigold
+  moge:
+    kind: legacy
+    spec: moge
+  mapanything_1view:
+    kind: mapanything
+    checkpoint: facebook/map-anything-apache
+    view_ids:
+    - 2
+    alignment: none
+    height: 406
+    width: 518
+    amp_dtype: bf16
+  mapanything_2view:
+    kind: mapanything
+    checkpoint: facebook/map-anything-apache
+    view_ids:
+    - 2
+    - 3
+    alignment: none
+    height: 406
+    width: 518
+    amp_dtype: bf16
+  mapanything_6view:
+    kind: mapanything
+    checkpoint: facebook/map-anything-apache
+    view_ids: &id001
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    alignment: none
+    height: 406
+    width: 518
+    amp_dtype: bf16
+  mapanything_scale_only:
+    kind: mapanything
+    checkpoint: facebook/map-anything-apache
+    view_ids: *id001
+    alignment: none
+    height: 406
+    width: 518
+    amp_dtype: bf16
+    scale_factor: 0.26407919272133623
+    calibration_record: configs/scale_only_calibration.json
+  mapanything_6view_rig:
+    kind: mapanything
+    checkpoint: facebook/map-anything-apache
+    view_ids:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    alignment: none
+    height: 406
+    width: 518
+    amp_dtype: bf16
+    pose_mode: rig
+  mapanything_rig_scale_only:
+    kind: mapanything
+    checkpoint: facebook/map-anything-apache
+    view_ids:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    alignment: none
+    height: 406
+    width: 518
+    amp_dtype: bf16
+    pose_mode: rig
+    scale_factor: 0.8807126587853854
+    calibration_record: configs/scale_only_rig_calibration.json
+  mapanything_rig_ft:
+    kind: mapanything
+    checkpoint: facebook/map-anything-apache
+    view_ids:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    alignment: none
+    height: 406
+    width: 518
+    amp_dtype: bf16
+    pose_mode: rig
+    finetuned_state_dict: weights/egodepth/mapanything_rig_ft.pt
+    training_record: results/training_run.json
+training:
+  out_dir: outputs/mapanything
+  run_name: mapanything_rig_ft
+  trainable: heads_info_sharing_and_rays
+  batch_size: 1
+  grad_accum_steps: 6
+  max_steps: 6000
+  learning_rate: 1.0e-05
+  weight_decay: 0.01
+  warmup_steps: 200
+  huber_delta: 0.1
+  grad_clip_norm: 1.0
+  amp_dtype: bf16
+  gradient_checkpointing: true
+  height: 406
+  width: 518
+  num_workers: 4
+  seeds:
+  - 20260912
+  eval_every: 500
+  save_every: 500
+  calibration_subset:
+    seed: 20260912
+    n_samples: 1024
+  global_batch_size: 36
+  status: paper_recipe
+  deterministic: true
+  pose_mode: rig
+adaptation:
+  public_method: mapanything_6view_rig
+  scale_method: mapanything_rig_scale_only
+  ft_method: mapanything_rig_ft

@@ -1,0 +1,1224 @@
+{
+  "methods": [
+    "unidepth_v2",
+    "foundation_stereo",
+    "mapanything_6view_rig"
+  ],
+  "source_artifacts": "results/paper_artifacts",
+  "cells": {
+    "unidepth_v2": {
+      "mae_cm": [
+        [
+          13.942766242284605,
+          14.469647161604719,
+          13.02256736933358,
+          8.884637152736671,
+          8.053074161564261
+        ],
+        [
+          16.957937033819366,
+          18.861756769176942,
+          17.048608586401166,
+          14.31677106393455,
+          20.664032156968
+        ],
+        [
+          24.43436893092473,
+          26.333575861821494,
+          24.120843885630727,
+          21.684087759919926,
+          39.12558686323255
+        ]
+      ],
+      "coverage": [
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "reference": [
+        [
+          2718051,
+          9473437,
+          16380220,
+          23658945,
+          1048677
+        ],
+        [
+          1991173,
+          4394673,
+          8113308,
+          8154876,
+          49380
+        ],
+        [
+          1663429,
+          6644720,
+          9913386,
+          3566755,
+          5282
+        ]
+      ],
+      "sites": [
+        [
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        [
+          8,
+          8,
+          8,
+          8,
+          7
+        ],
+        [
+          8,
+          8,
+          8,
+          8,
+          6
+        ]
+      ]
+    },
+    "foundation_stereo": {
+      "mae_cm": [
+        [
+          2.519866335849933,
+          3.020836300998818,
+          3.5717097634287884,
+          null,
+          null
+        ],
+        [
+          4.931260653453229,
+          6.068724533788531,
+          8.652375409722447,
+          null,
+          null
+        ],
+        [
+          9.742808889515375,
+          13.07097807830733,
+          16.787005827207594,
+          null,
+          null
+        ]
+      ],
+      "coverage": [
+        [
+          1.0,
+          0.986143083077903,
+          0.2065657474975136,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.9918194485528868,
+          0.19400542085175354,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.9898953578247436,
+          0.31261463764586317,
+          0.0,
+          0.0
+        ]
+      ],
+      "reference": [
+        [
+          2718051,
+          9473437,
+          16380220,
+          23658945,
+          1048677
+        ],
+        [
+          1991173,
+          4394673,
+          8113308,
+          8154876,
+          49380
+        ],
+        [
+          1663429,
+          6644720,
+          9913386,
+          3566755,
+          5282
+        ]
+      ],
+      "sites": [
+        [
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        [
+          8,
+          8,
+          8,
+          8,
+          7
+        ],
+        [
+          8,
+          8,
+          8,
+          8,
+          6
+        ]
+      ]
+    },
+    "mapanything_6view_rig": {
+      "mae_cm": [
+        [
+          35.897237470451174,
+          33.56070928589757,
+          35.20535209094209,
+          46.910656347541206,
+          59.9194386940713
+        ],
+        [
+          46.49805454238671,
+          43.01344109239051,
+          49.445627145408906,
+          52.44381740383594,
+          83.93329083330262
+        ],
+        [
+          68.8191464275549,
+          69.17188201219307,
+          69.19776677543882,
+          74.37444411387881,
+          91.0037317753717
+        ]
+      ],
+      "coverage": [
+        [
+          1.0,
+          0.9999767932695596,
+          0.9999074263483905,
+          0.9999709717935374,
+          0.9999553276328452
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          0.9999977119936891,
+          0.9993649239311397
+        ],
+        [
+          1.0,
+          0.9999994467092479,
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "reference": [
+        [
+          2718051,
+          9473437,
+          16380220,
+          23658945,
+          1048677
+        ],
+        [
+          1991173,
+          4394673,
+          8113308,
+          8154876,
+          49380
+        ],
+        [
+          1663429,
+          6644720,
+          9913386,
+          3566755,
+          5282
+        ]
+      ],
+      "sites": [
+        [
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        [
+          8,
+          8,
+          8,
+          8,
+          7
+        ],
+        [
+          8,
+          8,
+          8,
+          8,
+          6
+        ]
+      ]
+    }
+  },
+  "contrasts": {
+    "regions": {
+      "unidepth_v2": {
+        "hand": {
+          "n_cells_eligible": 33,
+          "n_cells_below_reference_threshold": 31,
+          "min_reference_per_region_cell": 200,
+          "missing_prediction_cells": [],
+          "weight_source": "ROI reference composition within site, then equal site weights",
+          "retained_reference_pixels": 348986,
+          "discarded_reference_pixels": 1444,
+          "status": "ok",
+          "n_sites": 8,
+          "raw_status": "ok",
+          "standardized_status": "ok",
+          "missing_raw_sites": [],
+          "raw_retained_difference_cm": 2.403846274475002,
+          "standardized_difference_cm": 1.917606123316625,
+          "raw_retained_ci95": [
+            0.9856849489302019,
+            4.29684745248283
+          ],
+          "standardized_ci95": [
+            0.20846667732145086,
+            4.218226991929634
+          ],
+          "per_site": {
+            "site_010": {
+              "raw": 0.8848874493839141,
+              "standardized": 0.5531550682664728
+            },
+            "site_013": {
+              "raw": 1.91445636616292,
+              "standardized": 2.01546861707738
+            },
+            "site_014": {
+              "raw": 0.864869231611638,
+              "standardized": 0.9505424934703239
+            },
+            "site_015": {
+              "raw": 2.0658937094916965,
+              "standardized": 1.4642263203370507
+            },
+            "site_016": {
+              "raw": 3.2930624629533902,
+              "standardized": 2.187496916516957
+            },
+            "site_027": {
+              "raw": -0.39770416204208203,
+              "standardized": -1.7542774424665202
+            },
+            "site_032": {
+              "raw": 8.450475392564389,
+              "standardized": 9.293461996820191
+            },
+            "site_034": {
+              "raw": 2.1548297456741494,
+              "standardized": 0.6307750165111438
+            }
+          },
+          "interpretation": "whole-frame error reweighted to the region's Z/angle distribution on the same reference-selected cells"
+        },
+        "object": {
+          "n_cells_eligible": 45,
+          "n_cells_below_reference_threshold": 15,
+          "min_reference_per_region_cell": 200,
+          "missing_prediction_cells": [],
+          "weight_source": "ROI reference composition within site, then equal site weights",
+          "retained_reference_pixels": 440241,
+          "discarded_reference_pixels": 910,
+          "status": "ok",
+          "n_sites": 8,
+          "raw_status": "ok",
+          "standardized_status": "ok",
+          "missing_raw_sites": [],
+          "raw_retained_difference_cm": -1.0128832336663185,
+          "standardized_difference_cm": -0.8900395500108492,
+          "raw_retained_ci95": [
+            -1.8230838511928,
+            -0.1427572886600443
+          ],
+          "standardized_ci95": [
+            -1.9949813528802767,
+            0.14234055100868265
+          ],
+          "per_site": {
+            "site_010": {
+              "raw": 0.10659855070312574,
+              "standardized": 0.12242896734413107
+            },
+            "site_013": {
+              "raw": -0.10094781745474712,
+              "standardized": 0.6007350018627685
+            },
+            "site_014": {
+              "raw": 1.2736117172463057,
+              "standardized": 1.1895221832021337
+            },
+            "site_015": {
+              "raw": -1.3479973166158796,
+              "standardized": -1.588271358538295
+            },
+            "site_016": {
+              "raw": -1.9002620624665862,
+              "standardized": -2.8315221228541856
+            },
+            "site_027": {
+              "raw": -2.5608391623470066,
+              "standardized": -3.2187865842850174
+            },
+            "site_032": {
+              "raw": -1.922467128090771,
+              "standardized": 0.08813081018095284
+            },
+            "site_034": {
+              "raw": -1.6507626503049888,
+              "standardized": -1.482553296999281
+            }
+          },
+          "interpretation": "whole-frame error reweighted to the region's Z/angle distribution on the same reference-selected cells"
+        }
+      },
+      "foundation_stereo": {
+        "hand": {
+          "n_cells_eligible": 33,
+          "n_cells_below_reference_threshold": 31,
+          "min_reference_per_region_cell": 200,
+          "missing_prediction_cells": [
+            [
+              "site_015",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_014",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_032",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_034",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_013",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_010",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ]
+          ],
+          "weight_source": "ROI reference composition within site, then equal site weights",
+          "retained_reference_pixels": 348986,
+          "discarded_reference_pixels": 1444,
+          "status": "undefined_prediction_support",
+          "n_sites": 8,
+          "raw_status": "ok",
+          "standardized_status": "undefined_prediction_support",
+          "missing_raw_sites": [],
+          "raw_retained_difference_cm": -1.2624728383525072,
+          "standardized_difference_cm": null,
+          "raw_retained_ci95": [
+            -1.9416492324439718,
+            -0.7009030403385099
+          ],
+          "standardized_ci95": null,
+          "per_site": {
+            "site_010": {
+              "raw": -1.813293257590705,
+              "standardized": null
+            },
+            "site_013": {
+              "raw": -0.5887801794710616,
+              "standardized": null
+            },
+            "site_014": {
+              "raw": -0.8511764183182124,
+              "standardized": null
+            },
+            "site_015": {
+              "raw": -2.069274549702742,
+              "standardized": null
+            },
+            "site_016": {
+              "raw": -0.9334346965661497,
+              "standardized": null
+            },
+            "site_027": {
+              "raw": -3.0649638290928576,
+              "standardized": null
+            },
+            "site_032": {
+              "raw": -0.2649626458514085,
+              "standardized": null
+            },
+            "site_034": {
+              "raw": -0.51389713022692,
+              "standardized": null
+            }
+          },
+          "interpretation": "whole-frame error reweighted to the region's Z/angle distribution on the same reference-selected cells"
+        },
+        "object": {
+          "n_cells_eligible": 45,
+          "n_cells_below_reference_threshold": 15,
+          "min_reference_per_region_cell": 200,
+          "missing_prediction_cells": [
+            [
+              "site_034",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_016",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_015",
+              "z=[0.25,0.8)::angle=[60,80)"
+            ],
+            [
+              "site_032",
+              "z=[0.8,1.2)::angle=[40,60)"
+            ]
+          ],
+          "weight_source": "ROI reference composition within site, then equal site weights",
+          "retained_reference_pixels": 440241,
+          "discarded_reference_pixels": 910,
+          "status": "undefined_prediction_support",
+          "n_sites": 8,
+          "raw_status": "ok",
+          "standardized_status": "undefined_prediction_support",
+          "missing_raw_sites": [],
+          "raw_retained_difference_cm": -1.278477888370941,
+          "standardized_difference_cm": null,
+          "raw_retained_ci95": [
+            -1.7602895043172575,
+            -0.8400336014839324
+          ],
+          "standardized_ci95": null,
+          "per_site": {
+            "site_010": {
+              "raw": -0.8156188874767909,
+              "standardized": null
+            },
+            "site_013": {
+              "raw": -0.46449017251851,
+              "standardized": null
+            },
+            "site_014": {
+              "raw": -0.48799229820921264,
+              "standardized": null
+            },
+            "site_015": {
+              "raw": -1.0453982452991628,
+              "standardized": null
+            },
+            "site_016": {
+              "raw": -1.649638869383189,
+              "standardized": null
+            },
+            "site_027": {
+              "raw": -2.3228487258440005,
+              "standardized": null
+            },
+            "site_032": {
+              "raw": -1.338915040050677,
+              "standardized": null
+            },
+            "site_034": {
+              "raw": -2.1029208681859854,
+              "standardized": null
+            }
+          },
+          "interpretation": "whole-frame error reweighted to the region's Z/angle distribution on the same reference-selected cells"
+        }
+      },
+      "mapanything_6view_rig": {
+        "hand": {
+          "n_cells_eligible": 33,
+          "n_cells_below_reference_threshold": 31,
+          "min_reference_per_region_cell": 200,
+          "missing_prediction_cells": [],
+          "weight_source": "ROI reference composition within site, then equal site weights",
+          "retained_reference_pixels": 348986,
+          "discarded_reference_pixels": 1444,
+          "status": "ok",
+          "n_sites": 8,
+          "raw_status": "ok",
+          "standardized_status": "ok",
+          "missing_raw_sites": [],
+          "raw_retained_difference_cm": -5.865213957455289,
+          "standardized_difference_cm": -1.1449360449727415,
+          "raw_retained_ci95": [
+            -10.042129540608512,
+            -1.7583837315650228
+          ],
+          "standardized_ci95": [
+            -4.8459839547503885,
+            2.4640955709707306
+          ],
+          "per_site": {
+            "site_010": {
+              "raw": -8.076601084852598,
+              "standardized": 3.338668280173614
+            },
+            "site_013": {
+              "raw": -6.567949299113966,
+              "standardized": -8.108985993568488
+            },
+            "site_014": {
+              "raw": -8.733748434554222,
+              "standardized": -3.734017956592839
+            },
+            "site_015": {
+              "raw": -3.5323077197331187,
+              "standardized": 1.4772363329836502
+            },
+            "site_016": {
+              "raw": 5.232863226408892,
+              "standardized": 5.922499520601244
+            },
+            "site_027": {
+              "raw": -16.416353943331156,
+              "standardized": -2.321747198006201
+            },
+            "site_032": {
+              "raw": -9.051074899028038,
+              "standardized": -9.191424493466304
+            },
+            "site_034": {
+              "raw": 0.22346049456189476,
+              "standardized": 3.4582831480933915
+            }
+          },
+          "interpretation": "whole-frame error reweighted to the region's Z/angle distribution on the same reference-selected cells"
+        },
+        "object": {
+          "n_cells_eligible": 45,
+          "n_cells_below_reference_threshold": 15,
+          "min_reference_per_region_cell": 200,
+          "missing_prediction_cells": [],
+          "weight_source": "ROI reference composition within site, then equal site weights",
+          "retained_reference_pixels": 440241,
+          "discarded_reference_pixels": 910,
+          "status": "ok",
+          "n_sites": 8,
+          "raw_status": "ok",
+          "standardized_status": "ok",
+          "missing_raw_sites": [],
+          "raw_retained_difference_cm": -9.411459386586396,
+          "standardized_difference_cm": -5.153549431184234,
+          "raw_retained_ci95": [
+            -14.393904349975692,
+            -4.964808538167852
+          ],
+          "standardized_ci95": [
+            -8.733529576447182,
+            -1.7493300174777178
+          ],
+          "per_site": {
+            "site_010": {
+              "raw": -23.70023495088747,
+              "standardized": -14.423447717459192
+            },
+            "site_013": {
+              "raw": -6.610841312389024,
+              "standardized": -6.1639914696481215
+            },
+            "site_014": {
+              "raw": -7.0301190860482095,
+              "standardized": -7.406260165224656
+            },
+            "site_015": {
+              "raw": 1.2359032319491874,
+              "standardized": 2.9500704894351397
+            },
+            "site_016": {
+              "raw": -3.785410408374574,
+              "standardized": -0.5739804615118028
+            },
+            "site_027": {
+              "raw": -10.530222178363005,
+              "standardized": -2.3375177656452255
+            },
+            "site_032": {
+              "raw": -14.96033174432845,
+              "standardized": -9.97620074098681
+            },
+            "site_034": {
+              "raw": -9.910418644249628,
+              "standardized": -3.297067618433204
+            }
+          },
+          "interpretation": "whole-frame error reweighted to the region's Z/angle distribution on the same reference-selected cells"
+        }
+      }
+    },
+    "motion": {
+      "unidepth_v2": {
+        "method": "unidepth_v2",
+        "roi": "object",
+        "counters": {
+          "n_samples": 800,
+          "n_with_prediction": 95,
+          "n_motion_usable": 95,
+          "n_active": 59,
+          "n_low": 36,
+          "n_roi_unusable": 0
+        },
+        "n_strata_active_only": 19,
+        "n_strata_low_only": 16,
+        "n_strata_shared": 15,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "discarded_strata": [
+          {
+            "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 178,
+            "n_reference_low": 45
+          },
+          {
+            "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 1,
+            "n_reference_low": 155
+          },
+          {
+            "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 398,
+            "n_reference_low": 96
+          },
+          {
+            "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 2317,
+            "n_reference_low": 139
+          },
+          {
+            "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 167,
+            "n_reference_low": 1723
+          },
+          {
+            "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 863,
+            "n_reference_low": 51
+          }
+        ],
+        "missing_prediction_strata": [],
+        "min_stratum_reference_px": 200,
+        "weight_source": "reference pixel composition, fixed before scoring",
+        "comparisons": [
+          {
+            "label": "unidepth_v2\nobject",
+            "method": "unidepth_v2",
+            "roi": "object",
+            "unweighted": -0.8848830134389931,
+            "standardized": -1.2112678175361211,
+            "unweighted_ci95": [
+              -7.650527009873738,
+              5.3386532505554145
+            ],
+            "standardized_ci95": [
+              -7.670359806508699,
+              5.203917660507556
+            ],
+            "raw_status": "ok",
+            "standardized_status": "ok",
+            "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+            "ci95_status": "ok",
+            "ci95_note": null,
+            "n_strata_retained": 9,
+            "n_strata_discarded": 6,
+            "n_sites_compared": 4,
+            "n_sites_eligible": 4,
+            "active_mae_z_cm": 8.968023091382575,
+            "low_motion_mae_z_cm": 9.85290610482157,
+            "per_stratum_difference": {
+              "site_010::z=[0.25,0.8)::angle=[0,20)": -6.088341390151224,
+              "site_010::z=[0.25,0.8)::angle=[20,40)": 9.301491381942757,
+              "site_013::z=[0.25,0.8)::angle=[0,20)": -11.757679119518734,
+              "site_013::z=[0.25,0.8)::angle=[20,40)": -8.11359354096813,
+              "site_015::z=[0.25,0.8)::angle=[20,40)": -1.2900327219214276,
+              "site_015::z=[0.25,0.8)::angle=[40,60)": -0.6544291715018398,
+              "site_015::z=[0.25,0.8)::angle=[60,80)": 3.09778651908116,
+              "site_032::z=[0.25,0.8)::angle=[0,20)": 8.38956239713708,
+              "site_032::z=[0.25,0.8)::angle=[20,40)": 7.438555655625553
+            }
+          }
+        ],
+        "raw_status": "ok",
+        "standardized_status": "ok",
+        "status": "ok",
+        "n_sites_eligible": 4,
+        "missing_raw_sites": [],
+        "paired_bootstrap": {
+          "metric": "mae_z_cm",
+          "n_boot": 2000,
+          "seed": 20260912,
+          "n_sites_common": 4,
+          "n_sites_compared": 4,
+          "sites_compared": [
+            "site_010",
+            "site_013",
+            "site_015",
+            "site_032"
+          ],
+          "n_sites_dropped": 0,
+          "aggregation": "site_macro_equal_weight",
+          "resampling": "shared site index applied to both methods per draw",
+          "status": "ok",
+          "mean_a": 9.85290610482157,
+          "mean_b": 8.968023091382575,
+          "difference": -0.8848830134389942,
+          "ci95": [
+            -7.6505270098737395,
+            5.3386532505554145
+          ],
+          "per_site_difference": {
+            "site_010": -0.2163202873581902,
+            "site_013": -10.12859591737892,
+            "site_015": -0.4692302746391217,
+            "site_032": 7.27461442562026
+          }
+        },
+        "standardization": {
+          "unweighted": -0.8848830134389931,
+          "standardized": -1.2112678175361211,
+          "unweighted_ci95": [
+            -7.650527009873738,
+            5.3386532505554145
+          ],
+          "standardized_ci95": [
+            -7.670359806508699,
+            5.203917660507556
+          ],
+          "n_sites": 4,
+          "per_site_raw": {
+            "site_010": -0.2163202873581902,
+            "site_013": -10.12859591737892,
+            "site_015": -0.4692302746391217,
+            "site_032": 7.27461442562026
+          },
+          "per_site_standardized": {
+            "site_010": -2.1105191712488955,
+            "site_013": -10.152411928023083,
+            "site_015": -0.22420344196554487,
+            "site_032": 7.642063271093039
+          },
+          "weighting": "reference composition within site; equal weight across sites",
+          "bootstrap": {
+            "unit": "site",
+            "n_boot": 2000,
+            "seed": 20260912
+          },
+          "raw_status": "ok",
+          "standardized_status": "ok"
+        },
+        "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+      },
+      "foundation_stereo": {
+        "method": "foundation_stereo",
+        "roi": "object",
+        "counters": {
+          "n_samples": 800,
+          "n_with_prediction": 95,
+          "n_motion_usable": 95,
+          "n_active": 59,
+          "n_low": 36,
+          "n_roi_unusable": 0
+        },
+        "n_strata_active_only": 19,
+        "n_strata_low_only": 16,
+        "n_strata_shared": 15,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "discarded_strata": [
+          {
+            "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 178,
+            "n_reference_low": 45
+          },
+          {
+            "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 1,
+            "n_reference_low": 155
+          },
+          {
+            "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 398,
+            "n_reference_low": 96
+          },
+          {
+            "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 2317,
+            "n_reference_low": 139
+          },
+          {
+            "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 167,
+            "n_reference_low": 1723
+          },
+          {
+            "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 863,
+            "n_reference_low": 51
+          }
+        ],
+        "missing_prediction_strata": [
+          "site_015::z=[0.25,0.8)::angle=[60,80)"
+        ],
+        "min_stratum_reference_px": 200,
+        "weight_source": "reference pixel composition, fixed before scoring",
+        "comparisons": [
+          {
+            "label": "foundation_stereo\nobject",
+            "method": "foundation_stereo",
+            "roi": "object",
+            "unweighted": -0.4463409680053763,
+            "standardized": null,
+            "unweighted_ci95": [
+              -0.933787014437415,
+              0.041105078426662334
+            ],
+            "standardized_ci95": null,
+            "raw_status": "ok",
+            "standardized_status": "undefined_prediction_support",
+            "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+            "ci95_status": "ok",
+            "ci95_note": null,
+            "n_strata_retained": 9,
+            "n_strata_discarded": 6,
+            "n_sites_compared": 4,
+            "n_sites_eligible": 4,
+            "active_mae_z_cm": 1.7950064279813918,
+            "low_motion_mae_z_cm": 2.241347395986768,
+            "per_stratum_difference": {
+              "site_010::z=[0.25,0.8)::angle=[0,20)": -0.7010973147291546,
+              "site_010::z=[0.25,0.8)::angle=[20,40)": -0.4160262708235747,
+              "site_013::z=[0.25,0.8)::angle=[0,20)": 0.24869013454395006,
+              "site_013::z=[0.25,0.8)::angle=[20,40)": -0.13110458872900543,
+              "site_015::z=[0.25,0.8)::angle=[20,40)": -0.24230535130740982,
+              "site_015::z=[0.25,0.8)::angle=[40,60)": -1.8963976833554148,
+              "site_015::z=[0.25,0.8)::angle=[60,80)": null,
+              "site_032::z=[0.25,0.8)::angle=[0,20)": -0.8606940576550037,
+              "site_032::z=[0.25,0.8)::angle=[20,40)": 0.3961437990497796
+            }
+          }
+        ],
+        "raw_status": "ok",
+        "standardized_status": "undefined_prediction_support",
+        "status": "undefined_prediction_support",
+        "n_sites_eligible": 4,
+        "missing_raw_sites": [],
+        "reason": "Reference-eligible strata lack predictions in a condition; the complete standardized contrast is undefined. These strata are retained in the raw pooling.",
+        "paired_bootstrap": {
+          "metric": "mae_z_cm",
+          "n_boot": 2000,
+          "seed": 20260912,
+          "n_sites_common": 4,
+          "n_sites_compared": 4,
+          "sites_compared": [
+            "site_010",
+            "site_013",
+            "site_015",
+            "site_032"
+          ],
+          "n_sites_dropped": 0,
+          "aggregation": "site_macro_equal_weight",
+          "resampling": "shared site index applied to both methods per draw",
+          "status": "ok",
+          "mean_a": 2.241347395986768,
+          "mean_b": 1.7950064279813918,
+          "difference": -0.44634096800537626,
+          "ci95": [
+            -0.9337870144374145,
+            0.04110507842666222
+          ],
+          "per_site_difference": {
+            "site_010": -0.9166090335497246,
+            "site_013": 0.07854629733643592,
+            "site_015": -0.9509649953251054,
+            "site_032": 0.0036638595168887456
+          }
+        },
+        "standardization": {
+          "unweighted": -0.4463409680053763,
+          "standardized": null,
+          "unweighted_ci95": [
+            -0.933787014437415,
+            0.041105078426662334
+          ],
+          "standardized_ci95": null,
+          "n_sites": 4,
+          "per_site_raw": {
+            "site_010": -0.9166090335497246,
+            "site_013": 0.07854629733643592,
+            "site_015": -0.9509649953251054,
+            "site_032": 0.0036638595168887456
+          },
+          "per_site_standardized": {
+            "site_010": null,
+            "site_013": null,
+            "site_015": null,
+            "site_032": null
+          },
+          "weighting": "reference composition within site; equal weight across sites",
+          "bootstrap": {
+            "unit": "site",
+            "n_boot": 2000,
+            "seed": 20260912
+          },
+          "raw_status": "ok",
+          "standardized_status": "undefined_prediction_support"
+        },
+        "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+      },
+      "mapanything_6view_rig": {
+        "method": "mapanything_6view_rig",
+        "roi": "object",
+        "counters": {
+          "n_samples": 800,
+          "n_with_prediction": 95,
+          "n_motion_usable": 95,
+          "n_active": 59,
+          "n_low": 36,
+          "n_roi_unusable": 0
+        },
+        "n_strata_active_only": 19,
+        "n_strata_low_only": 16,
+        "n_strata_shared": 15,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "discarded_strata": [
+          {
+            "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 178,
+            "n_reference_low": 45
+          },
+          {
+            "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 1,
+            "n_reference_low": 155
+          },
+          {
+            "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 398,
+            "n_reference_low": 96
+          },
+          {
+            "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 2317,
+            "n_reference_low": 139
+          },
+          {
+            "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 167,
+            "n_reference_low": 1723
+          },
+          {
+            "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+            "reason": "insufficient reference support",
+            "n_reference_active": 863,
+            "n_reference_low": 51
+          }
+        ],
+        "missing_prediction_strata": [],
+        "min_stratum_reference_px": 200,
+        "weight_source": "reference pixel composition, fixed before scoring",
+        "comparisons": [
+          {
+            "label": "mapanything_6view_rig\nobject",
+            "method": "mapanything_6view_rig",
+            "roi": "object",
+            "unweighted": 36.711647274305236,
+            "standardized": 28.28890459130527,
+            "unweighted_ci95": [
+              5.5414286210995165,
+              70.58125996570635
+            ],
+            "standardized_ci95": [
+              5.372494185439906,
+              46.56637004743475
+            ],
+            "raw_status": "ok",
+            "standardized_status": "ok",
+            "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+            "ci95_status": "ok",
+            "ci95_note": null,
+            "n_strata_retained": 9,
+            "n_strata_discarded": 6,
+            "n_sites_compared": 4,
+            "n_sites_eligible": 4,
+            "active_mae_z_cm": 56.82971337097686,
+            "low_motion_mae_z_cm": 20.118066096671633,
+            "per_stratum_difference": {
+              "site_010::z=[0.25,0.8)::angle=[0,20)": 23.343455496277823,
+              "site_010::z=[0.25,0.8)::angle=[20,40)": 132.7877608487706,
+              "site_013::z=[0.25,0.8)::angle=[0,20)": -3.445787109214666,
+              "site_013::z=[0.25,0.8)::angle=[20,40)": -5.456862812231005,
+              "site_015::z=[0.25,0.8)::angle=[20,40)": 39.15425836090913,
+              "site_015::z=[0.25,0.8)::angle=[40,60)": 29.811117670208027,
+              "site_015::z=[0.25,0.8)::angle=[60,80)": 24.713432659593884,
+              "site_032::z=[0.25,0.8)::angle=[0,20)": 33.187639725568076,
+              "site_032::z=[0.25,0.8)::angle=[20,40)": 34.8382757716555
+            }
+          }
+        ],
+        "raw_status": "ok",
+        "standardized_status": "ok",
+        "status": "ok",
+        "n_sites_eligible": 4,
+        "missing_raw_sites": [],
+        "paired_bootstrap": {
+          "metric": "mae_z_cm",
+          "n_boot": 2000,
+          "seed": 20260912,
+          "n_sites_common": 4,
+          "n_sites_compared": 4,
+          "sites_compared": [
+            "site_010",
+            "site_013",
+            "site_015",
+            "site_032"
+          ],
+          "n_sites_dropped": 0,
+          "aggregation": "site_macro_equal_weight",
+          "resampling": "shared site index applied to both methods per draw",
+          "status": "ok",
+          "mean_a": 20.118066096671633,
+          "mean_b": 56.82971337097686,
+          "difference": 36.71164727430523,
+          "ci95": [
+            5.541428621099515,
+            70.58125996570635
+          ],
+          "per_site_difference": {
+            "site_010": 83.18435824964746,
+            "site_013": -4.362275624646195,
+            "site_015": 32.77196511388302,
+            "site_032": 35.25254135833665
+          }
+        },
+        "standardization": {
+          "unweighted": 36.711647274305236,
+          "standardized": 28.28890459130527,
+          "unweighted_ci95": [
+            5.5414286210995165,
+            70.58125996570635
+          ],
+          "standardized_ci95": [
+            5.372494185439906,
+            46.56637004743475
+          ],
+          "n_sites": 4,
+          "per_site_raw": {
+            "site_010": 83.18435824964746,
+            "site_013": -4.362275624646195,
+            "site_015": 32.77196511388302,
+            "site_032": 35.25254135833665
+          },
+          "per_site_standardized": {
+            "site_010": 51.63161145031045,
+            "site_013": -4.331692167171678,
+            "site_015": 31.370645838807654,
+            "site_032": 34.485053243274656
+          },
+          "weighting": "reference composition within site; equal weight across sites",
+          "bootstrap": {
+            "unit": "site",
+            "n_boot": 2000,
+            "seed": 20260912
+          },
+          "raw_status": "ok",
+          "standardized_status": "ok"
+        },
+        "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+      }
+    }
+  },
+  "missing_standardized_marker": "† on method label; raw only",
+  "display": {
+    "contrast_labels": [
+      "Raw",
+      "Adjusted"
+    ],
+    "adjustment": "within-site Z-angle reweighting",
+    "contrast_shapes": [
+      "open circle",
+      "filled diamond"
+    ],
+    "region_row_order": [
+      "hand",
+      "object"
+    ],
+    "legends": "local headers; no shared method/coverage legend",
+    "missing_marker_position": "method label with local header note",
+    "tolerance_ylim_percent": [
+      0,
+      100
+    ],
+    "gt_shading": "log10 pooled pixel count",
+    "gt_count_units": "M for millions; k for thousands"
+  },
+  "artifact_sha256": {
+    "export_manifest.json": "c10d6a3ae7b6cf06655630282c66dca1e1947a48300b40bca2528972bb6a2d79",
+    "diagnostic_subset/unidepth_v2.json": "f5ffd823c8066f672fd69330bcaf6412ac2e3bb1c5b868710f7efb12104cc672",
+    "diagnostic_subset/foundation_stereo.json": "05a8a9a7904592dae390dc36b0dea63b9953293a2182428db99c48ab6c3e19c7",
+    "diagnostic_subset/mapanything_6view_rig.json": "44e2675501f84e592126f7989c3fa4b1deddbba18c915fd6acdde617bb543a97"
+  },
+  "heatmap_color_range_cm": [
+    0,
+    91.0037317753717
+  ],
+  "figure_scope": "statistical diagnostics only; qualitative examples in a separate figure"
+}

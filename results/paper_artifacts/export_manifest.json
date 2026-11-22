@@ -1,0 +1,2503 @@
+{
+  "status": "formal",
+  "results_found": [
+    "cut3r",
+    "dac",
+    "depth_anything_3",
+    "depth_anything_v2",
+    "depth_pro",
+    "foundation_stereo",
+    "geostereo",
+    "mapanything_1view",
+    "mapanything_2view",
+    "mapanything_6view",
+    "mapanything_6view_rig",
+    "mapanything_rig_ft",
+    "mapanything_rig_scale_only",
+    "mapanything_scale_only",
+    "marigold",
+    "mast3r",
+    "metric3d_v2",
+    "moge",
+    "unidac",
+    "unidepth_v2",
+    "unik3d",
+    "vggt",
+    "vggt_omega",
+    "zoedepth"
+  ],
+  "artifacts": {
+    "main_table": "results/paper_artifacts/main_table.tex",
+    "views_table": "results/paper_artifacts/views_table.tex",
+    "adaptation_table": "results/paper_artifacts/adaptation_table.tex",
+    "support_csv": "results/paper_artifacts/support_summary.csv",
+    "figure4": "results/paper_artifacts/interaction_diagnostics.pdf"
+  },
+  "scored_population": {
+    "role": "test",
+    "split": "test",
+    "status": "formal",
+    "n_samples": 6574,
+    "n_sites": 8,
+    "sites": [
+      "site_010",
+      "site_013",
+      "site_014",
+      "site_015",
+      "site_016",
+      "site_027",
+      "site_032",
+      "site_034"
+    ],
+    "mask_profile": "release_declared_mask",
+    "data_version": "egodepth_v1_20260912",
+    "manifest_path": "dataset://egodepth_v1_20260912/protocols/all_official.jsonl",
+    "manifest_content_id": "f3ac8f78faf576e1",
+    "token_set_id": "4f36b7e1100a8c2a",
+    "annotation_version": "ai-rgb-reviewed-v6",
+    "formal_ready": true,
+    "blockers": [],
+    "site_mapping_status": "frozen",
+    "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
+    "n_samples_loaded": 6574,
+    "recording_prefilter": {
+      "split": "test",
+      "n_recordings": 237,
+      "source": "jsonl"
+    },
+    "site_mapping_summary": {
+      "n_mapped": 6574,
+      "n_unmapped": 0,
+      "unmapped_examples": [],
+      "splits": {
+        "test": 6574
+      },
+      "sites": [
+        "site_010",
+        "site_013",
+        "site_014",
+        "site_015",
+        "site_016",
+        "site_027",
+        "site_032",
+        "site_034"
+      ],
+      "n_recordings": 237
+    },
+    "split_filter": "applied as a recording prefilter over 237 recordings; the split is a property of the site mapping, not of the sample rows",
+    "splits_present_after_filter": [
+      "test"
+    ],
+    "split_assertion": {
+      "n_probed": 65,
+      "n_retained": 6574,
+      "stride": 102,
+      "includes_first_and_last": true,
+      "n_wrong_split": 0,
+      "n_without_site": 0,
+      "exhaustive_over": "the 1,218 recording->site->split assignments; sample rows are probed"
+    }
+  },
+  "n_annotation_records": 800,
+  "figure_primary_methods": [
+    "unidepth_v2",
+    "foundation_stereo",
+    "mapanything_6view_rig"
+  ],
+  "rig_common_support": {
+    "n_samples": 6574,
+    "reference": "native Z in [0.25,2.0] m",
+    "support": "G intersect all three prediction supports",
+    "alignment": "each frame/arm independently fits positive L2 Z scale on full-target common support; reused on ROIs",
+    "omega_raw_is_not_a_metric_benchmark": true,
+    "methods": {
+      "mapanything_6view": {
+        "full": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 0.9999687282453872,
+              "raw_abs_rel": 1.4987492627421097,
+              "raw_mae_cm": 99.70652278365775,
+              "aligned_abs_rel": 0.29856764366581084,
+              "aligned_mae_cm": 20.27612418120673
+            },
+            "site_027": {
+              "coverage": 0.9999888010717128,
+              "raw_abs_rel": 3.1556970996367015,
+              "raw_mae_cm": 194.02485821245094,
+              "aligned_abs_rel": 0.36536474122900403,
+              "aligned_mae_cm": 22.634335650914114
+            },
+            "site_016": {
+              "coverage": 0.9999740498092456,
+              "raw_abs_rel": 3.909748095221884,
+              "raw_mae_cm": 242.84470998411456,
+              "aligned_abs_rel": 0.4214880336832885,
+              "aligned_mae_cm": 27.37338299242914
+            },
+            "site_034": {
+              "coverage": 0.9999784774433171,
+              "raw_abs_rel": 1.6682875773519548,
+              "raw_mae_cm": 106.36236704297305,
+              "aligned_abs_rel": 0.28462823536720766,
+              "aligned_mae_cm": 18.920776823392444
+            },
+            "site_015": {
+              "coverage": 0.999968925606702,
+              "raw_abs_rel": 1.4220513590156398,
+              "raw_mae_cm": 91.50662093647493,
+              "aligned_abs_rel": 0.3282732013237972,
+              "aligned_mae_cm": 21.77693780661561
+            },
+            "site_010": {
+              "coverage": 0.9998545132204442,
+              "raw_abs_rel": 8.893184113601059,
+              "raw_mae_cm": 542.1919709764898,
+              "aligned_abs_rel": 0.40910935583531893,
+              "aligned_mae_cm": 25.291971149773786
+            },
+            "site_013": {
+              "coverage": 0.9999980076361602,
+              "raw_abs_rel": 3.87780471358418,
+              "raw_mae_cm": 270.4227760017257,
+              "aligned_abs_rel": 0.32525262825981704,
+              "aligned_mae_cm": 22.30326638085964
+            },
+            "site_014": {
+              "coverage": 0.999952422459952,
+              "raw_abs_rel": 0.921393682642022,
+              "raw_mae_cm": 58.98722420542052,
+              "aligned_abs_rel": 0.24083701141709893,
+              "aligned_mae_cm": 15.364995559132307
+            }
+          },
+          "macro": {
+            "coverage": 0.9999604906866152,
+            "raw_abs_rel": 3.168364487974444,
+            "raw_mae_cm": 200.75588126791342,
+            "aligned_abs_rel": 0.3341901063476679,
+            "aligned_mae_cm": 21.74272381804047
+          }
+        },
+        "hand": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.8723427687742924,
+              "raw_mae_cm": 87.50258266027949,
+              "aligned_abs_rel": 0.37691219538309834,
+              "aligned_mae_cm": 17.014734498819838
+            },
+            "site_027": {
+              "coverage": 1.0,
+              "raw_abs_rel": 4.139514043940055,
+              "raw_mae_cm": 203.79637735546177,
+              "aligned_abs_rel": 0.33651573681746855,
+              "aligned_mae_cm": 17.99624365680364
+            },
+            "site_016": {
+              "coverage": 1.0,
+              "raw_abs_rel": 5.381284543702883,
+              "raw_mae_cm": 230.4679179337272,
+              "aligned_abs_rel": 0.7324074072151942,
+              "aligned_mae_cm": 27.489991955841198
+            },
+            "site_013": {
+              "coverage": 1.0,
+              "raw_abs_rel": 4.422024382843353,
+              "raw_mae_cm": 223.92296274957513,
+              "aligned_abs_rel": 0.3335383318309271,
+              "aligned_mae_cm": 16.52794735599302
+            },
+            "site_014": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.1361863399354832,
+              "raw_mae_cm": 39.065086131933775,
+              "aligned_abs_rel": 0.32401200465838853,
+              "aligned_mae_cm": 11.202725473766957
+            },
+            "site_015": {
+              "coverage": 1.0,
+              "raw_abs_rel": 2.685458216059947,
+              "raw_mae_cm": 91.33487415976602,
+              "aligned_abs_rel": 0.746253689932492,
+              "aligned_mae_cm": 24.094914059865175
+            },
+            "site_034": {
+              "coverage": 1.0,
+              "raw_abs_rel": 5.195872201651006,
+              "raw_mae_cm": 197.90837773066426,
+              "aligned_abs_rel": 0.44289293717273404,
+              "aligned_mae_cm": 16.71404962621044
+            },
+            "site_010": {
+              "coverage": 1.0,
+              "raw_abs_rel": 10.75563063367173,
+              "raw_mae_cm": 511.81841441451917,
+              "aligned_abs_rel": 0.2656068196914411,
+              "aligned_mae_cm": 13.388180232274651
+            }
+          },
+          "macro": {
+            "coverage": 1.0,
+            "raw_abs_rel": 4.448539141322343,
+            "raw_mae_cm": 198.22707414199084,
+            "aligned_abs_rel": 0.44476739033771795,
+            "aligned_mae_cm": 18.053598357446866
+          }
+        },
+        "object": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.810039721240724,
+              "raw_mae_cm": 105.58876386996738,
+              "aligned_abs_rel": 0.14775683029291603,
+              "aligned_mae_cm": 8.894676052453827
+            },
+            "site_027": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.5912790271529114,
+              "raw_mae_cm": 135.98304359769423,
+              "aligned_abs_rel": 0.20733633357255948,
+              "aligned_mae_cm": 22.349548130606987
+            },
+            "site_016": {
+              "coverage": 1.0,
+              "raw_abs_rel": 5.539987389768067,
+              "raw_mae_cm": 226.5138845742881,
+              "aligned_abs_rel": 0.48139502587851946,
+              "aligned_mae_cm": 17.623957450909487
+            },
+            "site_034": {
+              "coverage": 1.0,
+              "raw_abs_rel": 3.61193889527054,
+              "raw_mae_cm": 173.3765615819215,
+              "aligned_abs_rel": 0.27744749119118456,
+              "aligned_mae_cm": 13.963925342739106
+            },
+            "site_015": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.9898867914530127,
+              "raw_mae_cm": 81.16859453756793,
+              "aligned_abs_rel": 0.4053207001181232,
+              "aligned_mae_cm": 14.270966603641421
+            },
+            "site_010": {
+              "coverage": 1.0,
+              "raw_abs_rel": 9.60343611456754,
+              "raw_mae_cm": 501.7172906303649,
+              "aligned_abs_rel": 0.29640657974666007,
+              "aligned_mae_cm": 13.523094883765102
+            },
+            "site_013": {
+              "coverage": 1.0,
+              "raw_abs_rel": 3.448706663356566,
+              "raw_mae_cm": 174.0092577408433,
+              "aligned_abs_rel": 0.20698622222642252,
+              "aligned_mae_cm": 10.864373737648117
+            },
+            "site_014": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.0060811155481837,
+              "raw_mae_cm": 35.86900774210683,
+              "aligned_abs_rel": 0.1993969369902574,
+              "aligned_mae_cm": 6.926526108284842
+            }
+          },
+          "macro": {
+            "coverage": 1.0,
+            "raw_abs_rel": 3.575169464794693,
+            "raw_mae_cm": 179.27830053434428,
+            "aligned_abs_rel": 0.2777557650020803,
+            "aligned_mae_cm": 13.552133538756111
+          }
+        }
+      },
+      "mapanything_6view_rig": {
+        "full": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 0.9999687282453872,
+              "raw_abs_rel": 0.6676451398214597,
+              "raw_mae_cm": 48.95831368665047,
+              "aligned_abs_rel": 0.29866809120138704,
+              "aligned_mae_cm": 20.406300472964546
+            },
+            "site_027": {
+              "coverage": 0.9999888010717128,
+              "raw_abs_rel": 0.48355640107103753,
+              "raw_mae_cm": 34.330242196626735,
+              "aligned_abs_rel": 0.35081998248301516,
+              "aligned_mae_cm": 21.955089497614086
+            },
+            "site_016": {
+              "coverage": 0.9999740498092456,
+              "raw_abs_rel": 0.4319222624804035,
+              "raw_mae_cm": 37.90878412502249,
+              "aligned_abs_rel": 0.41445810254422955,
+              "aligned_mae_cm": 27.008274180282328
+            },
+            "site_034": {
+              "coverage": 0.9999784774433171,
+              "raw_abs_rel": 0.6208656180930671,
+              "raw_mae_cm": 42.84583640235644,
+              "aligned_abs_rel": 0.2901126231079385,
+              "aligned_mae_cm": 19.44094041641642
+            },
+            "site_015": {
+              "coverage": 0.999968925606702,
+              "raw_abs_rel": 0.8695277800383008,
+              "raw_mae_cm": 54.41494501561874,
+              "aligned_abs_rel": 0.30705351906838285,
+              "aligned_mae_cm": 20.68255436705437
+            },
+            "site_010": {
+              "coverage": 0.9998545132204442,
+              "raw_abs_rel": 1.2330100578425054,
+              "raw_mae_cm": 73.02394457488212,
+              "aligned_abs_rel": 0.38748829234098503,
+              "aligned_mae_cm": 24.106489104845252
+            },
+            "site_013": {
+              "coverage": 0.9999980076361602,
+              "raw_abs_rel": 0.42573466879744204,
+              "raw_mae_cm": 41.05248168543006,
+              "aligned_abs_rel": 0.32188590057406524,
+              "aligned_mae_cm": 22.03317600406078
+            },
+            "site_014": {
+              "coverage": 0.999952422459952,
+              "raw_abs_rel": 0.9297903992541112,
+              "raw_mae_cm": 60.066561704631695,
+              "aligned_abs_rel": 0.24167981413203496,
+              "aligned_mae_cm": 15.397975293768765
+            }
+          },
+          "macro": {
+            "coverage": 0.9999604906866152,
+            "raw_abs_rel": 0.707756540924791,
+            "raw_mae_cm": 49.075138673902345,
+            "aligned_abs_rel": 0.32652079068150475,
+            "aligned_mae_cm": 21.37884991712582
+          }
+        },
+        "hand": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.7717377745722495,
+              "raw_mae_cm": 33.211468328731954,
+              "aligned_abs_rel": 0.3603502006859013,
+              "aligned_mae_cm": 16.08383931862194
+            },
+            "site_027": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.3926786027154531,
+              "raw_mae_cm": 20.47512881841671,
+              "aligned_abs_rel": 0.2749602904579129,
+              "aligned_mae_cm": 14.908594266267679
+            },
+            "site_016": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.0004739361927706,
+              "raw_mae_cm": 32.644634696989925,
+              "aligned_abs_rel": 0.7729603182234773,
+              "aligned_mae_cm": 28.680455572249848
+            },
+            "site_013": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.30961923916483286,
+              "raw_mae_cm": 16.610837272045885,
+              "aligned_abs_rel": 0.29827711850751276,
+              "aligned_mae_cm": 14.779310763320233
+            },
+            "site_014": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.1380045306503894,
+              "raw_mae_cm": 39.11110113742526,
+              "aligned_abs_rel": 0.3157482496567564,
+              "aligned_mae_cm": 10.910702834050701
+            },
+            "site_015": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.6353565778026804,
+              "raw_mae_cm": 55.980532622295456,
+              "aligned_abs_rel": 0.6546900341767666,
+              "aligned_mae_cm": 21.087101152844497
+            },
+            "site_034": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.6981840964003462,
+              "raw_mae_cm": 24.097891537942,
+              "aligned_abs_rel": 0.3885235687485693,
+              "aligned_mae_cm": 14.643397486963988
+            },
+            "site_010": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.5210667435504193,
+              "raw_mae_cm": 69.9480389272874,
+              "aligned_abs_rel": 0.24516491405353041,
+              "aligned_mae_cm": 12.456883983731718
+            }
+          },
+          "macro": {
+            "coverage": 1.0,
+            "raw_abs_rel": 0.9333901876311427,
+            "raw_mae_cm": 36.50995416764182,
+            "aligned_abs_rel": 0.4138343368138033,
+            "aligned_mae_cm": 16.693785672256325
+          }
+        },
+        "object": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.47500481489658253,
+              "raw_mae_cm": 28.477741009311636,
+              "aligned_abs_rel": 0.13087411223630344,
+              "aligned_mae_cm": 7.772714547701243
+            },
+            "site_027": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.4125639784286283,
+              "raw_mae_cm": 40.04591961297552,
+              "aligned_abs_rel": 0.18094831040099135,
+              "aligned_mae_cm": 19.771581448164522
+            },
+            "site_016": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.44903629391376576,
+              "raw_mae_cm": 21.07126309410894,
+              "aligned_abs_rel": 0.49822107826812395,
+              "aligned_mae_cm": 18.098725464511453
+            },
+            "site_034": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.575140663163396,
+              "raw_mae_cm": 25.614869056979742,
+              "aligned_abs_rel": 0.27617752557996683,
+              "aligned_mae_cm": 13.505104478647262
+            },
+            "site_015": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.359721545700633,
+              "raw_mae_cm": 55.79147139903716,
+              "aligned_abs_rel": 0.36530034793330785,
+              "aligned_mae_cm": 12.998184749134957
+            },
+            "site_010": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.0629607911665444,
+              "raw_mae_cm": 48.4142783324539,
+              "aligned_abs_rel": 0.2388181948593473,
+              "aligned_mae_cm": 11.64980067445587
+            },
+            "site_013": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.21235601950231814,
+              "raw_mae_cm": 12.469528532413602,
+              "aligned_abs_rel": 0.15709461475070174,
+              "aligned_mae_cm": 8.275803890469431
+            },
+            "site_014": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.0757957769118713,
+              "raw_mae_cm": 38.61700184337022,
+              "aligned_abs_rel": 0.21131181789595993,
+              "aligned_mae_cm": 7.416928536408209
+            }
+          },
+          "macro": {
+            "coverage": 1.0,
+            "raw_abs_rel": 0.7028224854604674,
+            "raw_mae_cm": 33.81275911008134,
+            "aligned_abs_rel": 0.2573432502405878,
+            "aligned_mae_cm": 12.436105473686618
+          }
+        }
+      },
+      "vggt_omega": {
+        "full": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 0.9999687282453872,
+              "raw_abs_rel": 0.43103682126382303,
+              "raw_mae_cm": 26.67921000793667,
+              "aligned_abs_rel": 0.2715998011655945,
+              "aligned_mae_cm": 19.192199737686433
+            },
+            "site_027": {
+              "coverage": 0.9999888010717128,
+              "raw_abs_rel": 0.6830357887074585,
+              "raw_mae_cm": 38.4074631654367,
+              "aligned_abs_rel": 0.2731714559153041,
+              "aligned_mae_cm": 17.66085009022058
+            },
+            "site_016": {
+              "coverage": 0.9999740498092456,
+              "raw_abs_rel": 0.8146588233784036,
+              "raw_mae_cm": 53.27812648160661,
+              "aligned_abs_rel": 0.30349198867210514,
+              "aligned_mae_cm": 21.323473932936306
+            },
+            "site_034": {
+              "coverage": 0.9999784774433171,
+              "raw_abs_rel": 0.4779428991205727,
+              "raw_mae_cm": 29.865012416132313,
+              "aligned_abs_rel": 0.27218672172354846,
+              "aligned_mae_cm": 19.00766002742613
+            },
+            "site_015": {
+              "coverage": 0.999968925606702,
+              "raw_abs_rel": 0.5084292145332092,
+              "raw_mae_cm": 31.017243004125856,
+              "aligned_abs_rel": 0.27222092897108985,
+              "aligned_mae_cm": 19.885356838091937
+            },
+            "site_010": {
+              "coverage": 0.9998545132204442,
+              "raw_abs_rel": 0.5955014498981621,
+              "raw_mae_cm": 34.5363301352606,
+              "aligned_abs_rel": 0.29452940101318725,
+              "aligned_mae_cm": 19.42331154363203
+            },
+            "site_013": {
+              "coverage": 0.9999980076361602,
+              "raw_abs_rel": 0.4821376343472008,
+              "raw_mae_cm": 31.010604710566874,
+              "aligned_abs_rel": 0.31051999349963516,
+              "aligned_mae_cm": 22.41370829126637
+            },
+            "site_014": {
+              "coverage": 0.999952422459952,
+              "raw_abs_rel": 0.533259198772131,
+              "raw_mae_cm": 30.770104371163953,
+              "aligned_abs_rel": 0.27431036754902877,
+              "aligned_mae_cm": 17.8692179145252
+            }
+          },
+          "macro": {
+            "coverage": 0.9999604906866152,
+            "raw_abs_rel": 0.5657502287526202,
+            "raw_mae_cm": 34.4455117865287,
+            "aligned_abs_rel": 0.28400383231368664,
+            "aligned_mae_cm": 19.59697229697312
+          }
+        },
+        "hand": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.34684083141539884,
+              "raw_mae_cm": 15.19081119125948,
+              "aligned_abs_rel": 0.18239444281094983,
+              "aligned_mae_cm": 8.426160906400478
+            },
+            "site_027": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.8151429570060846,
+              "raw_mae_cm": 37.47605417502408,
+              "aligned_abs_rel": 0.20770093564806702,
+              "aligned_mae_cm": 11.333322613284105
+            },
+            "site_016": {
+              "coverage": 1.0,
+              "raw_abs_rel": 1.6524949273432625,
+              "raw_mae_cm": 59.85255370355546,
+              "aligned_abs_rel": 0.3733754487755508,
+              "aligned_mae_cm": 14.519974108133967
+            },
+            "site_013": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.2497151280175651,
+              "raw_mae_cm": 12.690333341287333,
+              "aligned_abs_rel": 0.299509260767239,
+              "aligned_mae_cm": 15.533658888343412
+            },
+            "site_014": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.4603554031255937,
+              "raw_mae_cm": 15.98055364216123,
+              "aligned_abs_rel": 0.22161947969906376,
+              "aligned_mae_cm": 8.056856921597712
+            },
+            "site_015": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.7122057217988764,
+              "raw_mae_cm": 25.292341055725824,
+              "aligned_abs_rel": 0.2725688550434762,
+              "aligned_mae_cm": 9.011726742630847
+            },
+            "site_034": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.5674373949765393,
+              "raw_mae_cm": 19.924855808175526,
+              "aligned_abs_rel": 0.18411210796098107,
+              "aligned_mae_cm": 7.613927793398439
+            },
+            "site_010": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.35709165464078535,
+              "raw_mae_cm": 17.847512803395993,
+              "aligned_abs_rel": 0.16932497306275218,
+              "aligned_mae_cm": 8.967899379711776
+            }
+          },
+          "macro": {
+            "coverage": 1.0,
+            "raw_abs_rel": 0.6451605022905132,
+            "raw_mae_cm": 25.531876965073117,
+            "aligned_abs_rel": 0.23882568797101,
+            "aligned_mae_cm": 10.43294091918759
+          }
+        },
+        "object": {
+          "n_sites": 8,
+          "per_site": {
+            "site_032": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.39478167562180916,
+              "raw_mae_cm": 23.66668801574078,
+              "aligned_abs_rel": 0.12353804110391872,
+              "aligned_mae_cm": 7.845043739722323
+            },
+            "site_027": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.20759787862151788,
+              "raw_mae_cm": 18.518136435223997,
+              "aligned_abs_rel": 0.21738626288156168,
+              "aligned_mae_cm": 21.59874752228823
+            },
+            "site_016": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.4487574700489314,
+              "raw_mae_cm": 18.43902635314796,
+              "aligned_abs_rel": 0.28483162534386475,
+              "aligned_mae_cm": 15.057866335254175
+            },
+            "site_034": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.3570808300756291,
+              "raw_mae_cm": 17.27482337481542,
+              "aligned_abs_rel": 0.195075917141433,
+              "aligned_mae_cm": 10.632749969144836
+            },
+            "site_015": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.8886399080349634,
+              "raw_mae_cm": 38.84202165002664,
+              "aligned_abs_rel": 0.17205933131532272,
+              "aligned_mae_cm": 6.6817650487046265
+            },
+            "site_010": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.38405660034296196,
+              "raw_mae_cm": 18.230606095189295,
+              "aligned_abs_rel": 0.24557230159862445,
+              "aligned_mae_cm": 15.248064149441344
+            },
+            "site_013": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.232235564970206,
+              "raw_mae_cm": 11.420177628408352,
+              "aligned_abs_rel": 0.3692482881547356,
+              "aligned_mae_cm": 19.913213473759907
+            },
+            "site_014": {
+              "coverage": 1.0,
+              "raw_abs_rel": 0.3711470656236575,
+              "raw_mae_cm": 13.107266646755534,
+              "aligned_abs_rel": 0.11994949762564172,
+              "aligned_mae_cm": 4.300049778298713
+            }
+          },
+          "macro": {
+            "coverage": 1.0,
+            "raw_abs_rel": 0.4105371241674596,
+            "raw_mae_cm": 19.9373432749135,
+            "aligned_abs_rel": 0.21595765814563783,
+            "aligned_mae_cm": 12.65968750207677
+          }
+        }
+      }
+    },
+    "status": "passed",
+    "contrasts": [
+      {
+        "difference": "mapanything_6view_rig minus mapanything_6view",
+        "region": "full",
+        "metric": "aligned_abs_rel",
+        "estimate": -0.007669315666163107,
+        "ci95": [
+          -0.014385077560957124,
+          -0.0015231820638759576
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "mapanything_6view_rig minus mapanything_6view",
+        "region": "full",
+        "metric": "aligned_mae_cm",
+        "estimate": -0.36387390091465277,
+        "ci95": [
+          -0.7408487466283831,
+          0.0058562903021056436
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "mapanything_6view_rig minus mapanything_6view",
+        "region": "hand",
+        "metric": "aligned_abs_rel",
+        "estimate": -0.030933053523914594,
+        "ci95": [
+          -0.055868801228121885,
+          -0.005257535364825731
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "mapanything_6view_rig minus mapanything_6view",
+        "region": "hand",
+        "metric": "aligned_mae_cm",
+        "estimate": -1.3598126851905394,
+        "ci95": [
+          -2.243522063562496,
+          -0.4250119711988627
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "mapanything_6view_rig minus mapanything_6view",
+        "region": "object",
+        "metric": "aligned_abs_rel",
+        "estimate": -0.020412514761492542,
+        "ci95": [
+          -0.037945486157856506,
+          -0.0021957451715403833
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "mapanything_6view_rig minus mapanything_6view",
+        "region": "object",
+        "metric": "aligned_mae_cm",
+        "estimate": -1.116028065069493,
+        "ci95": [
+          -1.86365491901529,
+          -0.3372290245830365
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "vggt_omega minus mapanything_6view_rig",
+        "region": "full",
+        "metric": "aligned_abs_rel",
+        "estimate": -0.04251695836781813,
+        "ci95": [
+          -0.07292057840368674,
+          -0.01179844935751926
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "vggt_omega minus mapanything_6view_rig",
+        "region": "full",
+        "metric": "aligned_mae_cm",
+        "estimate": -1.781877620152695,
+        "ci95": [
+          -3.6332555993597255,
+          0.038037338460840155
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "vggt_omega minus mapanything_6view_rig",
+        "region": "hand",
+        "metric": "aligned_abs_rel",
+        "estimate": -0.1750086488427934,
+        "ci95": [
+          -0.27286627683383874,
+          -0.08560050836830749
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "vggt_omega minus mapanything_6view_rig",
+        "region": "hand",
+        "metric": "aligned_mae_cm",
+        "estimate": -6.260844753068733,
+        "ci95": [
+          -9.449278629065091,
+          -3.252648619821177
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "vggt_omega minus mapanything_6view_rig",
+        "region": "object",
+        "metric": "aligned_abs_rel",
+        "estimate": -0.04138559209494996,
+        "ci95": [
+          -0.12386016658703691,
+          0.04594565438812336
+        ],
+        "n_sites": 8
+      },
+      {
+        "difference": "vggt_omega minus mapanything_6view_rig",
+        "region": "object",
+        "metric": "aligned_mae_cm",
+        "estimate": 0.22358202839015107,
+        "ci95": [
+          -2.997235245188011,
+          3.9208244255795472
+        ],
+        "n_sites": 8
+      }
+    ]
+  },
+  "rig_common_support_prediction_contracts": {
+    "mapanything_6view": "a4775664b805d1cc",
+    "mapanything_6view_rig": "30a6ab946b27a780",
+    "vggt_omega": "de408d4d8fa1871c"
+  },
+  "rig_control_extension": {
+    "reason": "Author-requested audit of omitted known rig poses; no-pose results retained",
+    "diagnostic_selection": "Same 800 anchors, unchanged labels and reference-selected comparison cells",
+    "independent_score_sha256": "543689ad07b0b631507b18d21fb29e797d33cd638358f73f0b4823b1465f4deb"
+  },
+  "diagnostic_input_identity": {
+    "annotation_version": "ai-rgb-reviewed-v6",
+    "prediction_contracts": {
+      "foundation_stereo": "f2e843e3fffa4bfd",
+      "mapanything_1view": "384a343ef32c32a4",
+      "mapanything_6view": "a4775664b805d1cc",
+      "mapanything_6view_rig": "30a6ab946b27a780",
+      "mapanything_rig_ft": "eb242bb3dc934ecb",
+      "mapanything_rig_scale_only": "5dbdce517ae68d06",
+      "unidepth_v2": "a50b49fb91868e08"
+    }
+  },
+  "aligned_diagnostic": {
+    "status": "ok",
+    "counters": {
+      "n_samples": 6574,
+      "n_all_arms_present": 6574,
+      "n_shared_nonempty": 6574
+    },
+    "fit_domain": "G intersect P_mapanything_6view_rig intersect P_mapanything_rig_scale_only intersect P_mapanything_rig_ft on the full camera-2 target frame; fit reused unchanged for the object ROI",
+    "arms": [
+      "mapanything_6view_rig",
+      "mapanything_rig_scale_only",
+      "mapanything_rig_ft"
+    ],
+    "shared_arms": [
+      "mapanything_6view_rig",
+      "mapanything_rig_scale_only",
+      "mapanything_rig_ft"
+    ],
+    "independence": "each arm's scale is fitted from its own predictions; no field is copied between arms",
+    "mapanything_6view_rig": {
+      "abs_rel": 0.32653022040818097,
+      "object_mae_z_cm": 12.436106803038065,
+      "n_sites": 8,
+      "object_n_sites": 8,
+      "n_fits": 6574,
+      "n_failed_fits": 0,
+      "median_fitted_scale": 0.8477180184344267
+    },
+    "mapanything_rig_scale_only": {
+      "abs_rel": 0.32653022044864016,
+      "object_mae_z_cm": 12.436106871170551,
+      "n_sites": 8,
+      "object_n_sites": 8,
+      "n_fits": 6574,
+      "n_failed_fits": 0,
+      "median_fitted_scale": 0.9625363980343808
+    },
+    "mapanything_rig_ft": {
+      "abs_rel": 0.07165966638135553,
+      "object_mae_z_cm": 4.782502054180349,
+      "n_sites": 8,
+      "object_n_sites": 8,
+      "n_fits": 6574,
+      "n_failed_fits": 0,
+      "median_fitted_scale": 1.0044542929589484
+    },
+    "scalar_invariance_check": {
+      "public_aligned_abs_rel": 0.32653022040818097,
+      "scale_only_aligned_abs_rel": 0.32653022044864016,
+      "absolute_difference": 4.0459191552599805e-11,
+      "tolerance": 0.0001,
+      "passed": true,
+      "median_scale_ratio": 0.8807126880246529,
+      "expectation": "a frozen network times one positive scalar has identical shape, so the aligned scores must match and the fitted scales must differ by exactly that scalar. Both sides are computed from their own prediction files."
+    }
+  },
+  "scalar_invariance_check": {
+    "public_aligned_abs_rel": 0.32653022040818097,
+    "scale_only_aligned_abs_rel": 0.32653022044864016,
+    "absolute_difference": 4.0459191552599805e-11,
+    "tolerance": 0.0001,
+    "passed": true,
+    "median_scale_ratio": 0.8807126880246529,
+    "expectation": "a frozen network times one positive scalar has identical shape, so the aligned scores must match and the fitted scales must differ by exactly that scalar. Both sides are computed from their own prediction files."
+  },
+  "diagnostic_subset": {
+    "n_samples": 800,
+    "token_set_id": "d4eef59c165bb525",
+    "main_token_set_id": "4f36b7e1100a8c2a",
+    "same_token_set": false,
+    "methods_scored": [
+      "foundation_stereo",
+      "mapanything_6view",
+      "mapanything_6view_rig",
+      "mapanything_rig_ft",
+      "unidepth_v2"
+    ],
+    "note": "Fig. 4(a) reads these results only, so its whole-image and ROI numbers share one frame set. The main test-set whole-image numbers stay in the tables."
+  },
+  "motion_contrast": {
+    "status": "ok",
+    "comparisons": [
+      {
+        "label": "unidepth_v2\nobject",
+        "method": "unidepth_v2",
+        "roi": "object",
+        "unweighted": -0.8848830134389931,
+        "standardized": -1.2112678175361211,
+        "unweighted_ci95": [
+          -7.650527009873738,
+          5.3386532505554145
+        ],
+        "standardized_ci95": [
+          -7.670359806508699,
+          5.203917660507556
+        ],
+        "raw_status": "ok",
+        "standardized_status": "ok",
+        "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+        "ci95_status": "ok",
+        "ci95_note": null,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "n_sites_compared": 4,
+        "n_sites_eligible": 4,
+        "active_mae_z_cm": 8.968023091382575,
+        "low_motion_mae_z_cm": 9.85290610482157,
+        "per_stratum_difference": {
+          "site_010::z=[0.25,0.8)::angle=[0,20)": -6.088341390151224,
+          "site_010::z=[0.25,0.8)::angle=[20,40)": 9.301491381942757,
+          "site_013::z=[0.25,0.8)::angle=[0,20)": -11.757679119518734,
+          "site_013::z=[0.25,0.8)::angle=[20,40)": -8.11359354096813,
+          "site_015::z=[0.25,0.8)::angle=[20,40)": -1.2900327219214276,
+          "site_015::z=[0.25,0.8)::angle=[40,60)": -0.6544291715018398,
+          "site_015::z=[0.25,0.8)::angle=[60,80)": 3.09778651908116,
+          "site_032::z=[0.25,0.8)::angle=[0,20)": 8.38956239713708,
+          "site_032::z=[0.25,0.8)::angle=[20,40)": 7.438555655625553
+        }
+      },
+      {
+        "label": "foundation_stereo\nobject",
+        "method": "foundation_stereo",
+        "roi": "object",
+        "unweighted": -0.4463409680053763,
+        "standardized": null,
+        "unweighted_ci95": [
+          -0.933787014437415,
+          0.041105078426662334
+        ],
+        "standardized_ci95": null,
+        "raw_status": "ok",
+        "standardized_status": "undefined_prediction_support",
+        "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+        "ci95_status": "ok",
+        "ci95_note": null,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "n_sites_compared": 4,
+        "n_sites_eligible": 4,
+        "active_mae_z_cm": 1.7950064279813918,
+        "low_motion_mae_z_cm": 2.241347395986768,
+        "per_stratum_difference": {
+          "site_010::z=[0.25,0.8)::angle=[0,20)": -0.7010973147291546,
+          "site_010::z=[0.25,0.8)::angle=[20,40)": -0.4160262708235747,
+          "site_013::z=[0.25,0.8)::angle=[0,20)": 0.24869013454395006,
+          "site_013::z=[0.25,0.8)::angle=[20,40)": -0.13110458872900543,
+          "site_015::z=[0.25,0.8)::angle=[20,40)": -0.24230535130740982,
+          "site_015::z=[0.25,0.8)::angle=[40,60)": -1.8963976833554148,
+          "site_015::z=[0.25,0.8)::angle=[60,80)": null,
+          "site_032::z=[0.25,0.8)::angle=[0,20)": -0.8606940576550037,
+          "site_032::z=[0.25,0.8)::angle=[20,40)": 0.3961437990497796
+        }
+      },
+      {
+        "label": "mapanything_6view_rig\nobject",
+        "method": "mapanything_6view_rig",
+        "roi": "object",
+        "unweighted": 36.711647274305236,
+        "standardized": 28.28890459130527,
+        "unweighted_ci95": [
+          5.5414286210995165,
+          70.58125996570635
+        ],
+        "standardized_ci95": [
+          5.372494185439906,
+          46.56637004743475
+        ],
+        "raw_status": "ok",
+        "standardized_status": "ok",
+        "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+        "ci95_status": "ok",
+        "ci95_note": null,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "n_sites_compared": 4,
+        "n_sites_eligible": 4,
+        "active_mae_z_cm": 56.82971337097686,
+        "low_motion_mae_z_cm": 20.118066096671633,
+        "per_stratum_difference": {
+          "site_010::z=[0.25,0.8)::angle=[0,20)": 23.343455496277823,
+          "site_010::z=[0.25,0.8)::angle=[20,40)": 132.7877608487706,
+          "site_013::z=[0.25,0.8)::angle=[0,20)": -3.445787109214666,
+          "site_013::z=[0.25,0.8)::angle=[20,40)": -5.456862812231005,
+          "site_015::z=[0.25,0.8)::angle=[20,40)": 39.15425836090913,
+          "site_015::z=[0.25,0.8)::angle=[40,60)": 29.811117670208027,
+          "site_015::z=[0.25,0.8)::angle=[60,80)": 24.713432659593884,
+          "site_032::z=[0.25,0.8)::angle=[0,20)": 33.187639725568076,
+          "site_032::z=[0.25,0.8)::angle=[20,40)": 34.8382757716555
+        }
+      },
+      {
+        "label": "mapanything_6view\nobject",
+        "method": "mapanything_6view",
+        "roi": "object",
+        "unweighted": -14.887178237220859,
+        "standardized": -30.17319573352142,
+        "unweighted_ci95": [
+          -27.49783508097595,
+          4.760460322092012
+        ],
+        "standardized_ci95": [
+          -73.23864198057743,
+          6.2094092819357645
+        ],
+        "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+        "ci95_status": "ok",
+        "ci95_note": null,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "n_sites_compared": 4,
+        "active_mae_z_cm": 217.70755665758594,
+        "low_motion_mae_z_cm": 232.5947348948068,
+        "per_stratum_difference": {
+          "site_010::z=[0.25,0.8)::angle=[0,20)": -125.93426239546216,
+          "site_010::z=[0.25,0.8)::angle=[20,40)": 10.171477075560688,
+          "site_013::z=[0.25,0.8)::angle=[0,20)": -25.31536522081234,
+          "site_013::z=[0.25,0.8)::angle=[20,40)": -14.815083644493228,
+          "site_015::z=[0.25,0.8)::angle=[20,40)": 3.4086672125289823,
+          "site_015::z=[0.25,0.8)::angle=[40,60)": 16.06460239960738,
+          "site_015::z=[0.25,0.8)::angle=[60,80)": 42.594688896150934,
+          "site_032::z=[0.25,0.8)::angle=[0,20)": -40.43996537609246,
+          "site_032::z=[0.25,0.8)::angle=[20,40)": -22.438740760245466
+        }
+      },
+      {
+        "label": "mapanything_rig_ft\nobject",
+        "method": "mapanything_rig_ft",
+        "roi": "object",
+        "unweighted": 0.14342309396875752,
+        "standardized": 0.13969613998568842,
+        "unweighted_ci95": [
+          -1.4217083965231834,
+          1.9022804533995696
+        ],
+        "standardized_ci95": [
+          -1.7418277919506489,
+          2.0963884016061116
+        ],
+        "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+        "ci95_status": "ok",
+        "ci95_note": null,
+        "n_strata_retained": 9,
+        "n_strata_discarded": 6,
+        "n_sites_compared": 4,
+        "active_mae_z_cm": 4.139220576079957,
+        "low_motion_mae_z_cm": 3.9957974821111995,
+        "per_stratum_difference": {
+          "site_010::z=[0.25,0.8)::angle=[0,20)": 4.884664725673474,
+          "site_010::z=[0.25,0.8)::angle=[20,40)": -2.5927858588968586,
+          "site_013::z=[0.25,0.8)::angle=[0,20)": 0.5471118199516163,
+          "site_013::z=[0.25,0.8)::angle=[20,40)": 0.6657841651612562,
+          "site_015::z=[0.25,0.8)::angle=[20,40)": 1.1053327527248356,
+          "site_015::z=[0.25,0.8)::angle=[40,60)": -1.097198337881467,
+          "site_015::z=[0.25,0.8)::angle=[60,80)": -0.6529274478190394,
+          "site_032::z=[0.25,0.8)::angle=[0,20)": -0.32387321909608335,
+          "site_032::z=[0.25,0.8)::angle=[20,40)": -3.120739625704644
+        }
+      }
+    ]
+  },
+  "motion_by_method": {
+    "unidepth_v2": {
+      "method": "unidepth_v2",
+      "roi": "object",
+      "counters": {
+        "n_samples": 800,
+        "n_with_prediction": 95,
+        "n_motion_usable": 95,
+        "n_active": 59,
+        "n_low": 36,
+        "n_roi_unusable": 0
+      },
+      "n_strata_active_only": 19,
+      "n_strata_low_only": 16,
+      "n_strata_shared": 15,
+      "n_strata_retained": 9,
+      "n_strata_discarded": 6,
+      "discarded_strata": [
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 178,
+          "n_reference_low": 45
+        },
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 1,
+          "n_reference_low": 155
+        },
+        {
+          "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 398,
+          "n_reference_low": 96
+        },
+        {
+          "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 2317,
+          "n_reference_low": 139
+        },
+        {
+          "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 167,
+          "n_reference_low": 1723
+        },
+        {
+          "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 863,
+          "n_reference_low": 51
+        }
+      ],
+      "missing_prediction_strata": [],
+      "min_stratum_reference_px": 200,
+      "weight_source": "reference pixel composition, fixed before scoring",
+      "comparisons": [
+        {
+          "label": "unidepth_v2\nobject",
+          "method": "unidepth_v2",
+          "roi": "object",
+          "unweighted": -0.8848830134389931,
+          "standardized": -1.2112678175361211,
+          "unweighted_ci95": [
+            -7.650527009873738,
+            5.3386532505554145
+          ],
+          "standardized_ci95": [
+            -7.670359806508699,
+            5.203917660507556
+          ],
+          "raw_status": "ok",
+          "standardized_status": "ok",
+          "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+          "ci95_status": "ok",
+          "ci95_note": null,
+          "n_strata_retained": 9,
+          "n_strata_discarded": 6,
+          "n_sites_compared": 4,
+          "n_sites_eligible": 4,
+          "active_mae_z_cm": 8.968023091382575,
+          "low_motion_mae_z_cm": 9.85290610482157,
+          "per_stratum_difference": {
+            "site_010::z=[0.25,0.8)::angle=[0,20)": -6.088341390151224,
+            "site_010::z=[0.25,0.8)::angle=[20,40)": 9.301491381942757,
+            "site_013::z=[0.25,0.8)::angle=[0,20)": -11.757679119518734,
+            "site_013::z=[0.25,0.8)::angle=[20,40)": -8.11359354096813,
+            "site_015::z=[0.25,0.8)::angle=[20,40)": -1.2900327219214276,
+            "site_015::z=[0.25,0.8)::angle=[40,60)": -0.6544291715018398,
+            "site_015::z=[0.25,0.8)::angle=[60,80)": 3.09778651908116,
+            "site_032::z=[0.25,0.8)::angle=[0,20)": 8.38956239713708,
+            "site_032::z=[0.25,0.8)::angle=[20,40)": 7.438555655625553
+          }
+        }
+      ],
+      "raw_status": "ok",
+      "standardized_status": "ok",
+      "status": "ok",
+      "n_sites_eligible": 4,
+      "missing_raw_sites": [],
+      "paired_bootstrap": {
+        "metric": "mae_z_cm",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 4,
+        "n_sites_compared": 4,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_015",
+          "site_032"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 9.85290610482157,
+        "mean_b": 8.968023091382575,
+        "difference": -0.8848830134389942,
+        "ci95": [
+          -7.6505270098737395,
+          5.3386532505554145
+        ],
+        "per_site_difference": {
+          "site_010": -0.2163202873581902,
+          "site_013": -10.12859591737892,
+          "site_015": -0.4692302746391217,
+          "site_032": 7.27461442562026
+        }
+      },
+      "standardization": {
+        "unweighted": -0.8848830134389931,
+        "standardized": -1.2112678175361211,
+        "unweighted_ci95": [
+          -7.650527009873738,
+          5.3386532505554145
+        ],
+        "standardized_ci95": [
+          -7.670359806508699,
+          5.203917660507556
+        ],
+        "n_sites": 4,
+        "per_site_raw": {
+          "site_010": -0.2163202873581902,
+          "site_013": -10.12859591737892,
+          "site_015": -0.4692302746391217,
+          "site_032": 7.27461442562026
+        },
+        "per_site_standardized": {
+          "site_010": -2.1105191712488955,
+          "site_013": -10.152411928023083,
+          "site_015": -0.22420344196554487,
+          "site_032": 7.642063271093039
+        },
+        "weighting": "reference composition within site; equal weight across sites",
+        "bootstrap": {
+          "unit": "site",
+          "n_boot": 2000,
+          "seed": 20260912
+        },
+        "raw_status": "ok",
+        "standardized_status": "ok"
+      },
+      "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+    },
+    "foundation_stereo": {
+      "method": "foundation_stereo",
+      "roi": "object",
+      "counters": {
+        "n_samples": 800,
+        "n_with_prediction": 95,
+        "n_motion_usable": 95,
+        "n_active": 59,
+        "n_low": 36,
+        "n_roi_unusable": 0
+      },
+      "n_strata_active_only": 19,
+      "n_strata_low_only": 16,
+      "n_strata_shared": 15,
+      "n_strata_retained": 9,
+      "n_strata_discarded": 6,
+      "discarded_strata": [
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 178,
+          "n_reference_low": 45
+        },
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 1,
+          "n_reference_low": 155
+        },
+        {
+          "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 398,
+          "n_reference_low": 96
+        },
+        {
+          "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 2317,
+          "n_reference_low": 139
+        },
+        {
+          "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 167,
+          "n_reference_low": 1723
+        },
+        {
+          "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 863,
+          "n_reference_low": 51
+        }
+      ],
+      "missing_prediction_strata": [
+        "site_015::z=[0.25,0.8)::angle=[60,80)"
+      ],
+      "min_stratum_reference_px": 200,
+      "weight_source": "reference pixel composition, fixed before scoring",
+      "comparisons": [
+        {
+          "label": "foundation_stereo\nobject",
+          "method": "foundation_stereo",
+          "roi": "object",
+          "unweighted": -0.4463409680053763,
+          "standardized": null,
+          "unweighted_ci95": [
+            -0.933787014437415,
+            0.041105078426662334
+          ],
+          "standardized_ci95": null,
+          "raw_status": "ok",
+          "standardized_status": "undefined_prediction_support",
+          "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+          "ci95_status": "ok",
+          "ci95_note": null,
+          "n_strata_retained": 9,
+          "n_strata_discarded": 6,
+          "n_sites_compared": 4,
+          "n_sites_eligible": 4,
+          "active_mae_z_cm": 1.7950064279813918,
+          "low_motion_mae_z_cm": 2.241347395986768,
+          "per_stratum_difference": {
+            "site_010::z=[0.25,0.8)::angle=[0,20)": -0.7010973147291546,
+            "site_010::z=[0.25,0.8)::angle=[20,40)": -0.4160262708235747,
+            "site_013::z=[0.25,0.8)::angle=[0,20)": 0.24869013454395006,
+            "site_013::z=[0.25,0.8)::angle=[20,40)": -0.13110458872900543,
+            "site_015::z=[0.25,0.8)::angle=[20,40)": -0.24230535130740982,
+            "site_015::z=[0.25,0.8)::angle=[40,60)": -1.8963976833554148,
+            "site_015::z=[0.25,0.8)::angle=[60,80)": null,
+            "site_032::z=[0.25,0.8)::angle=[0,20)": -0.8606940576550037,
+            "site_032::z=[0.25,0.8)::angle=[20,40)": 0.3961437990497796
+          }
+        }
+      ],
+      "raw_status": "ok",
+      "standardized_status": "undefined_prediction_support",
+      "status": "undefined_prediction_support",
+      "n_sites_eligible": 4,
+      "missing_raw_sites": [],
+      "reason": "Reference-eligible strata lack predictions in a condition; the complete standardized contrast is undefined. These strata are retained in the raw pooling.",
+      "paired_bootstrap": {
+        "metric": "mae_z_cm",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 4,
+        "n_sites_compared": 4,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_015",
+          "site_032"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 2.241347395986768,
+        "mean_b": 1.7950064279813918,
+        "difference": -0.44634096800537626,
+        "ci95": [
+          -0.9337870144374145,
+          0.04110507842666222
+        ],
+        "per_site_difference": {
+          "site_010": -0.9166090335497246,
+          "site_013": 0.07854629733643592,
+          "site_015": -0.9509649953251054,
+          "site_032": 0.0036638595168887456
+        }
+      },
+      "standardization": {
+        "unweighted": -0.4463409680053763,
+        "standardized": null,
+        "unweighted_ci95": [
+          -0.933787014437415,
+          0.041105078426662334
+        ],
+        "standardized_ci95": null,
+        "n_sites": 4,
+        "per_site_raw": {
+          "site_010": -0.9166090335497246,
+          "site_013": 0.07854629733643592,
+          "site_015": -0.9509649953251054,
+          "site_032": 0.0036638595168887456
+        },
+        "per_site_standardized": {
+          "site_010": null,
+          "site_013": null,
+          "site_015": null,
+          "site_032": null
+        },
+        "weighting": "reference composition within site; equal weight across sites",
+        "bootstrap": {
+          "unit": "site",
+          "n_boot": 2000,
+          "seed": 20260912
+        },
+        "raw_status": "ok",
+        "standardized_status": "undefined_prediction_support"
+      },
+      "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+    },
+    "mapanything_6view_rig": {
+      "method": "mapanything_6view_rig",
+      "roi": "object",
+      "counters": {
+        "n_samples": 800,
+        "n_with_prediction": 95,
+        "n_motion_usable": 95,
+        "n_active": 59,
+        "n_low": 36,
+        "n_roi_unusable": 0
+      },
+      "n_strata_active_only": 19,
+      "n_strata_low_only": 16,
+      "n_strata_shared": 15,
+      "n_strata_retained": 9,
+      "n_strata_discarded": 6,
+      "discarded_strata": [
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 178,
+          "n_reference_low": 45
+        },
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 1,
+          "n_reference_low": 155
+        },
+        {
+          "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 398,
+          "n_reference_low": 96
+        },
+        {
+          "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 2317,
+          "n_reference_low": 139
+        },
+        {
+          "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 167,
+          "n_reference_low": 1723
+        },
+        {
+          "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 863,
+          "n_reference_low": 51
+        }
+      ],
+      "missing_prediction_strata": [],
+      "min_stratum_reference_px": 200,
+      "weight_source": "reference pixel composition, fixed before scoring",
+      "comparisons": [
+        {
+          "label": "mapanything_6view_rig\nobject",
+          "method": "mapanything_6view_rig",
+          "roi": "object",
+          "unweighted": 36.711647274305236,
+          "standardized": 28.28890459130527,
+          "unweighted_ci95": [
+            5.5414286210995165,
+            70.58125996570635
+          ],
+          "standardized_ci95": [
+            5.372494185439906,
+            46.56637004743475
+          ],
+          "raw_status": "ok",
+          "standardized_status": "ok",
+          "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+          "ci95_status": "ok",
+          "ci95_note": null,
+          "n_strata_retained": 9,
+          "n_strata_discarded": 6,
+          "n_sites_compared": 4,
+          "n_sites_eligible": 4,
+          "active_mae_z_cm": 56.82971337097686,
+          "low_motion_mae_z_cm": 20.118066096671633,
+          "per_stratum_difference": {
+            "site_010::z=[0.25,0.8)::angle=[0,20)": 23.343455496277823,
+            "site_010::z=[0.25,0.8)::angle=[20,40)": 132.7877608487706,
+            "site_013::z=[0.25,0.8)::angle=[0,20)": -3.445787109214666,
+            "site_013::z=[0.25,0.8)::angle=[20,40)": -5.456862812231005,
+            "site_015::z=[0.25,0.8)::angle=[20,40)": 39.15425836090913,
+            "site_015::z=[0.25,0.8)::angle=[40,60)": 29.811117670208027,
+            "site_015::z=[0.25,0.8)::angle=[60,80)": 24.713432659593884,
+            "site_032::z=[0.25,0.8)::angle=[0,20)": 33.187639725568076,
+            "site_032::z=[0.25,0.8)::angle=[20,40)": 34.8382757716555
+          }
+        }
+      ],
+      "raw_status": "ok",
+      "standardized_status": "ok",
+      "status": "ok",
+      "n_sites_eligible": 4,
+      "missing_raw_sites": [],
+      "paired_bootstrap": {
+        "metric": "mae_z_cm",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 4,
+        "n_sites_compared": 4,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_015",
+          "site_032"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 20.118066096671633,
+        "mean_b": 56.82971337097686,
+        "difference": 36.71164727430523,
+        "ci95": [
+          5.541428621099515,
+          70.58125996570635
+        ],
+        "per_site_difference": {
+          "site_010": 83.18435824964746,
+          "site_013": -4.362275624646195,
+          "site_015": 32.77196511388302,
+          "site_032": 35.25254135833665
+        }
+      },
+      "standardization": {
+        "unweighted": 36.711647274305236,
+        "standardized": 28.28890459130527,
+        "unweighted_ci95": [
+          5.5414286210995165,
+          70.58125996570635
+        ],
+        "standardized_ci95": [
+          5.372494185439906,
+          46.56637004743475
+        ],
+        "n_sites": 4,
+        "per_site_raw": {
+          "site_010": 83.18435824964746,
+          "site_013": -4.362275624646195,
+          "site_015": 32.77196511388302,
+          "site_032": 35.25254135833665
+        },
+        "per_site_standardized": {
+          "site_010": 51.63161145031045,
+          "site_013": -4.331692167171678,
+          "site_015": 31.370645838807654,
+          "site_032": 34.485053243274656
+        },
+        "weighting": "reference composition within site; equal weight across sites",
+        "bootstrap": {
+          "unit": "site",
+          "n_boot": 2000,
+          "seed": 20260912
+        },
+        "raw_status": "ok",
+        "standardized_status": "ok"
+      },
+      "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+    },
+    "mapanything_6view": {
+      "method": "mapanything_6view",
+      "roi": "object",
+      "counters": {
+        "n_samples": 800,
+        "n_with_prediction": 95,
+        "n_motion_usable": 95,
+        "n_active": 59,
+        "n_low": 36,
+        "n_roi_unusable": 0
+      },
+      "n_strata_active_only": 19,
+      "n_strata_low_only": 16,
+      "n_strata_shared": 15,
+      "n_strata_retained": 9,
+      "n_strata_discarded": 6,
+      "discarded_strata": [
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 178,
+          "n_reference_low": 45
+        },
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 1,
+          "n_reference_low": 155
+        },
+        {
+          "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 398,
+          "n_reference_low": 96
+        },
+        {
+          "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 2317,
+          "n_reference_low": 139
+        },
+        {
+          "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 167,
+          "n_reference_low": 1723
+        },
+        {
+          "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 863,
+          "n_reference_low": 51
+        }
+      ],
+      "missing_prediction_strata": [],
+      "min_stratum_reference_px": 200,
+      "weight_source": "reference pixel composition, fixed before scoring",
+      "comparisons": [
+        {
+          "label": "mapanything_6view\nobject",
+          "method": "mapanything_6view",
+          "roi": "object",
+          "unweighted": -14.887178237220859,
+          "standardized": -30.17319573352142,
+          "unweighted_ci95": [
+            -27.49783508097595,
+            4.760460322092012
+          ],
+          "standardized_ci95": [
+            -73.23864198057743,
+            6.2094092819357645
+          ],
+          "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+          "ci95_status": "ok",
+          "ci95_note": null,
+          "n_strata_retained": 9,
+          "n_strata_discarded": 6,
+          "n_sites_compared": 4,
+          "active_mae_z_cm": 217.70755665758594,
+          "low_motion_mae_z_cm": 232.5947348948068,
+          "per_stratum_difference": {
+            "site_010::z=[0.25,0.8)::angle=[0,20)": -125.93426239546216,
+            "site_010::z=[0.25,0.8)::angle=[20,40)": 10.171477075560688,
+            "site_013::z=[0.25,0.8)::angle=[0,20)": -25.31536522081234,
+            "site_013::z=[0.25,0.8)::angle=[20,40)": -14.815083644493228,
+            "site_015::z=[0.25,0.8)::angle=[20,40)": 3.4086672125289823,
+            "site_015::z=[0.25,0.8)::angle=[40,60)": 16.06460239960738,
+            "site_015::z=[0.25,0.8)::angle=[60,80)": 42.594688896150934,
+            "site_032::z=[0.25,0.8)::angle=[0,20)": -40.43996537609246,
+            "site_032::z=[0.25,0.8)::angle=[20,40)": -22.438740760245466
+          }
+        }
+      ],
+      "status": "ok",
+      "paired_bootstrap": {
+        "metric": "mae_z_cm",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 4,
+        "n_sites_compared": 4,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_015",
+          "site_032"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 232.5947348948068,
+        "mean_b": 217.70755665758594,
+        "difference": -14.887178237220866,
+        "ci95": [
+          -27.49783508097596,
+          4.76046032209203
+        ],
+        "per_site_difference": {
+          "site_010": -22.76930049076276,
+          "site_013": -21.079019414794516,
+          "site_015": 13.937047259710269,
+          "site_032": -29.637440303036428
+        }
+      },
+      "standardization": {
+        "unweighted": -14.887178237220859,
+        "standardized": -30.17319573352142,
+        "unweighted_ci95": [
+          -27.49783508097595,
+          4.760460322092012
+        ],
+        "standardized_ci95": [
+          -73.23864198057743,
+          6.2094092819357645
+        ],
+        "n_sites": 4,
+        "per_site_raw": {
+          "site_010": -22.76930049076276,
+          "site_013": -21.079019414794516,
+          "site_015": 13.937047259710269,
+          "site_032": -29.637440303036428
+        },
+        "per_site_standardized": {
+          "site_010": -90.75490452942464,
+          "site_013": -20.689854334035772,
+          "site_015": 17.042830599184164,
+          "site_032": -26.290854669809434
+        },
+        "weighting": "reference composition within site; equal weight across sites",
+        "bootstrap": {
+          "unit": "site",
+          "n_boot": 2000,
+          "seed": 20260912
+        }
+      },
+      "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+    },
+    "mapanything_rig_ft": {
+      "method": "mapanything_rig_ft",
+      "roi": "object",
+      "counters": {
+        "n_samples": 800,
+        "n_with_prediction": 95,
+        "n_motion_usable": 95,
+        "n_active": 59,
+        "n_low": 36,
+        "n_roi_unusable": 0
+      },
+      "n_strata_active_only": 19,
+      "n_strata_low_only": 16,
+      "n_strata_shared": 15,
+      "n_strata_retained": 9,
+      "n_strata_discarded": 6,
+      "discarded_strata": [
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[0,20)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 178,
+          "n_reference_low": 45
+        },
+        {
+          "stratum": "site_010::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 1,
+          "n_reference_low": 155
+        },
+        {
+          "stratum": "site_015::z=[0.8,1.2)::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 398,
+          "n_reference_low": 96
+        },
+        {
+          "stratum": "site_027::z=[1.2,2.0]::angle=[20,40)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 2317,
+          "n_reference_low": 139
+        },
+        {
+          "stratum": "site_032::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 167,
+          "n_reference_low": 1723
+        },
+        {
+          "stratum": "site_034::z=[0.25,0.8)::angle=[40,60)",
+          "reason": "insufficient reference support",
+          "n_reference_active": 863,
+          "n_reference_low": 51
+        }
+      ],
+      "missing_prediction_strata": [],
+      "min_stratum_reference_px": 200,
+      "weight_source": "reference pixel composition, fixed before scoring",
+      "comparisons": [
+        {
+          "label": "mapanything_rig_ft\nobject",
+          "method": "mapanything_rig_ft",
+          "roi": "object",
+          "unweighted": 0.14342309396875752,
+          "standardized": 0.13969613998568842,
+          "unweighted_ci95": [
+            -1.4217083965231834,
+            1.9022804533995696
+          ],
+          "standardized_ci95": [
+            -1.7418277919506489,
+            2.0963884016061116
+          ],
+          "ci95_applies_to": "separate paired site bootstraps for raw and standardized differences",
+          "ci95_status": "ok",
+          "ci95_note": null,
+          "n_strata_retained": 9,
+          "n_strata_discarded": 6,
+          "n_sites_compared": 4,
+          "active_mae_z_cm": 4.139220576079957,
+          "low_motion_mae_z_cm": 3.9957974821111995,
+          "per_stratum_difference": {
+            "site_010::z=[0.25,0.8)::angle=[0,20)": 4.884664725673474,
+            "site_010::z=[0.25,0.8)::angle=[20,40)": -2.5927858588968586,
+            "site_013::z=[0.25,0.8)::angle=[0,20)": 0.5471118199516163,
+            "site_013::z=[0.25,0.8)::angle=[20,40)": 0.6657841651612562,
+            "site_015::z=[0.25,0.8)::angle=[20,40)": 1.1053327527248356,
+            "site_015::z=[0.25,0.8)::angle=[40,60)": -1.097198337881467,
+            "site_015::z=[0.25,0.8)::angle=[60,80)": -0.6529274478190394,
+            "site_032::z=[0.25,0.8)::angle=[0,20)": -0.32387321909608335,
+            "site_032::z=[0.25,0.8)::angle=[20,40)": -3.120739625704644
+          }
+        }
+      ],
+      "status": "ok",
+      "paired_bootstrap": {
+        "metric": "mae_z_cm",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 4,
+        "n_sites_compared": 4,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_015",
+          "site_032"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 3.9957974821111995,
+        "mean_b": 4.139220576079957,
+        "difference": 0.14342309396875752,
+        "ci95": [
+          -1.4217083965231838,
+          1.90228045339957
+        ],
+        "per_site_difference": {
+          "site_010": 2.7679014455811357,
+          "site_013": 0.5939769732049012,
+          "site_015": -0.6945825231451286,
+          "site_032": -2.093603519765878
+        }
+      },
+      "standardization": {
+        "unweighted": 0.14342309396875752,
+        "standardized": 0.13969613998568842,
+        "unweighted_ci95": [
+          -1.4217083965231834,
+          1.9022804533995696
+        ],
+        "standardized_ci95": [
+          -1.7418277919506489,
+          2.0963884016061116
+        ],
+        "n_sites": 4,
+        "per_site_raw": {
+          "site_010": 2.7679014455811357,
+          "site_013": 0.5939769732049012,
+          "site_015": -0.6945825231451286,
+          "site_032": -2.093603519765878
+        },
+        "per_site_standardized": {
+          "site_010": 2.9519621735065584,
+          "site_013": 0.5993885346984337,
+          "site_015": -0.47033291409522876,
+          "site_032": -2.5222332341670097
+        },
+        "weighting": "reference composition within site; equal weight across sites",
+        "bootstrap": {
+          "unit": "site",
+          "n_boot": 2000,
+          "seed": 20260912
+        }
+      },
+      "note": "Observational comparison. Motion, occlusion and appearance may vary together; the difference is not attributed to motion alone."
+    }
+  },
+  "figure4_panels": {
+    "a": "rendered",
+    "b": "rendered",
+    "c": "rendered",
+    "d": "rendered",
+    "e": "rendered"
+  },
+  "figure4_missing_panels": [],
+  "paired_bootstrap": [
+    {
+      "pair": [
+        "foundation_stereo",
+        "unidepth_v2"
+      ],
+      "roi": "full",
+      "status": "ok",
+      "counters": {
+        "n_samples": 6574,
+        "n_both_present": 6574,
+        "n_shared_nonempty": 6574
+      },
+      "own_support": {
+        "foundation_stereo": {
+          "abs_rel": 0.06828058213700736,
+          "mae_z_cm": 7.353238395348514,
+          "coverage": 0.35417395281848113,
+          "n_sites": 8,
+          "n_scored_px": 279838484,
+          "complete_macro_defined": true
+        },
+        "unidepth_v2": {
+          "abs_rel": 0.20147636652497064,
+          "mae_z_cm": 15.43918881371728,
+          "coverage": 1.0,
+          "n_sites": 8,
+          "n_scored_px": 796414945,
+          "complete_macro_defined": true
+        }
+      },
+      "common_support": {
+        "foundation_stereo": {
+          "abs_rel": 0.06828058213700736,
+          "mae_z_cm": 7.353238395348514,
+          "coverage": 0.35417395281848113,
+          "n_sites": 8,
+          "n_scored_px": 279838484,
+          "complete_macro_defined": true
+        },
+        "unidepth_v2": {
+          "abs_rel": 0.2145452998859967,
+          "mae_z_cm": 18.747393746102308,
+          "coverage": 0.35417395281848113,
+          "n_sites": 8,
+          "n_scored_px": 279838484,
+          "complete_macro_defined": true
+        }
+      },
+      "support_pixels": {
+        "foundation_stereo_own": 279838484,
+        "unidepth_v2_own": 796414945,
+        "shared": 279838484,
+        "shared_share_of_a": 1.0,
+        "shared_share_of_b": 0.3513727181500844
+      },
+      "own_support_difference": {
+        "metric": "abs_rel",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 8,
+        "n_sites_compared": 8,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_014",
+          "site_015",
+          "site_016",
+          "site_027",
+          "site_032",
+          "site_034"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 0.06828058213700736,
+        "mean_b": 0.20147636652497064,
+        "difference": 0.13319578438796328,
+        "ci95": [
+          0.10691148874844768,
+          0.16202328582400724
+        ],
+        "per_site_difference": {
+          "site_010": 0.1117986721902876,
+          "site_013": 0.21231618762296084,
+          "site_014": 0.09031032247644727,
+          "site_015": 0.07515531383201852,
+          "site_016": 0.16339577422572477,
+          "site_027": 0.1528089763656679,
+          "site_032": 0.13244220968803933,
+          "site_034": 0.1273388187025602
+        }
+      },
+      "common_support_difference": {
+        "metric": "abs_rel",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 8,
+        "n_sites_compared": 8,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_014",
+          "site_015",
+          "site_016",
+          "site_027",
+          "site_032",
+          "site_034"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 0.06828058213700736,
+        "mean_b": 0.2145452998859967,
+        "difference": 0.14626471774898933,
+        "ci95": [
+          0.12108237471423408,
+          0.17814415680108564
+        ],
+        "per_site_difference": {
+          "site_010": 0.11228889395153446,
+          "site_013": 0.23627324982697767,
+          "site_014": 0.1101631241594489,
+          "site_015": 0.10854680046650016,
+          "site_016": 0.1828595238706519,
+          "site_027": 0.1551643652281543,
+          "site_032": 0.12562802845699456,
+          "site_034": 0.13919375603165274
+        }
+      },
+      "domain": "G n P_A n P_B, computed per frame from both prediction masks",
+      "note": "Only pre-specified pairs are intersected. Intersecting the whole model pool would shrink the domain to the weakest method's coverage."
+    },
+    {
+      "pair": [
+        "mapanything_6view",
+        "mapanything_1view"
+      ],
+      "roi": "full",
+      "status": "ok",
+      "counters": {
+        "n_samples": 6574,
+        "n_both_present": 6574,
+        "n_shared_nonempty": 6574
+      },
+      "own_support": {
+        "mapanything_6view": {
+          "abs_rel": 3.1684324078587185,
+          "mae_z_cm": 200.75751072122912,
+          "coverage": 0.999980809821323,
+          "n_sites": 8,
+          "n_scored_px": 796404380,
+          "complete_macro_defined": true
+        },
+        "mapanything_1view": {
+          "abs_rel": 2.800022801833433,
+          "mae_z_cm": 176.69776503533387,
+          "coverage": 0.9999546871972933,
+          "n_sites": 8,
+          "n_scored_px": 796390198,
+          "complete_macro_defined": true
+        }
+      },
+      "common_support": {
+        "mapanything_6view": {
+          "abs_rel": 3.168177488044644,
+          "mae_z_cm": 200.75306079073405,
+          "coverage": 0.9999522356157836,
+          "n_sites": 8,
+          "n_scored_px": 796388730,
+          "complete_macro_defined": true
+        },
+        "mapanything_1view": {
+          "abs_rel": 2.8000167592574083,
+          "mae_z_cm": 176.69769212867595,
+          "coverage": 0.9999522356157836,
+          "n_sites": 8,
+          "n_scored_px": 796388730,
+          "complete_macro_defined": true
+        }
+      },
+      "support_pixels": {
+        "mapanything_6view_own": 796404380,
+        "mapanything_1view_own": 796390198,
+        "shared": 796388730,
+        "shared_share_of_a": 0.9999803491788932,
+        "shared_share_of_b": 0.9999981566824859
+      },
+      "own_support_difference": {
+        "metric": "abs_rel",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 8,
+        "n_sites_compared": 8,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_014",
+          "site_015",
+          "site_016",
+          "site_027",
+          "site_032",
+          "site_034"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 3.1684324078587185,
+        "mean_b": 2.800022801833433,
+        "difference": -0.3684096060252853,
+        "ci95": [
+          -1.0368303798790177,
+          0.19076243429630999
+        ],
+        "per_site_difference": {
+          "site_010": -2.3946298297826614,
+          "site_013": -1.1866170961609122,
+          "site_014": 0.3415729459421921,
+          "site_015": 0.6316559870933245,
+          "site_016": -0.273311385818066,
+          "site_027": -0.4821508039645499,
+          "site_032": 0.4168086989775974,
+          "site_034": -0.0006053644892063392
+        }
+      },
+      "common_support_difference": {
+        "metric": "abs_rel",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 8,
+        "n_sites_compared": 8,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_014",
+          "site_015",
+          "site_016",
+          "site_027",
+          "site_032",
+          "site_034"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 3.168177488044644,
+        "mean_b": 2.8000167592574083,
+        "difference": -0.3681607287872355,
+        "ci95": [
+          -1.0361350062691381,
+          0.19076947258318383
+        ],
+        "per_site_difference": {
+          "site_010": -2.3927761795803404,
+          "site_013": -1.1866171913366563,
+          "site_014": 0.34157987506339893,
+          "site_015": 0.6316559340064383,
+          "site_016": -0.27331008400061485,
+          "site_027": -0.48205400243138996,
+          "site_032": 0.4168391102850044,
+          "site_034": -0.0006032923037238014
+        }
+      },
+      "domain": "G n P_A n P_B, computed per frame from both prediction masks",
+      "note": "Only pre-specified pairs are intersected. Intersecting the whole model pool would shrink the domain to the weakest method's coverage."
+    },
+    {
+      "pair": [
+        "mapanything_6view_rig",
+        "mapanything_rig_ft"
+      ],
+      "roi": "full",
+      "status": "ok",
+      "counters": {
+        "n_samples": 6574,
+        "n_both_present": 6574,
+        "n_shared_nonempty": 6574
+      },
+      "own_support": {
+        "mapanything_6view_rig": {
+          "abs_rel": 0.7077561770126298,
+          "mae_z_cm": 49.074825953165615,
+          "coverage": 0.9999714654953695,
+          "n_sites": 8,
+          "n_scored_px": 796394583,
+          "complete_macro_defined": true
+        },
+        "mapanything_rig_ft": {
+          "abs_rel": 0.09050615017910145,
+          "mae_z_cm": 7.028058320148646,
+          "coverage": 0.9999966814396573,
+          "n_sites": 8,
+          "n_scored_px": 796410620,
+          "complete_macro_defined": true
+        }
+      },
+      "common_support": {
+        "mapanything_6view_rig": {
+          "abs_rel": 0.7077568623830381,
+          "mae_z_cm": 49.07485802433717,
+          "coverage": 0.9999683242730009,
+          "n_sites": 8,
+          "n_scored_px": 796390402,
+          "complete_macro_defined": true
+        },
+        "mapanything_rig_ft": {
+          "abs_rel": 0.0905048038218456,
+          "mae_z_cm": 7.028056449516642,
+          "coverage": 0.9999683242730009,
+          "n_sites": 8,
+          "n_scored_px": 796390402,
+          "complete_macro_defined": true
+        }
+      },
+      "support_pixels": {
+        "mapanything_6view_rig_own": 796394583,
+        "mapanything_rig_ft_own": 796410620,
+        "shared": 796390402,
+        "shared_share_of_a": 0.9999947500898559,
+        "shared_share_of_b": 0.9999746135981964
+      },
+      "own_support_difference": {
+        "metric": "abs_rel",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 8,
+        "n_sites_compared": 8,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_014",
+          "site_015",
+          "site_016",
+          "site_027",
+          "site_032",
+          "site_034"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 0.7077561770126298,
+        "mean_b": 0.09050615017910145,
+        "difference": -0.6172500268335284,
+        "ci95": [
+          -0.8018548237145849,
+          -0.4508051495684177
+        ],
+        "per_site_difference": {
+          "site_010": -1.1176555079021464,
+          "site_013": -0.3247176124936737,
+          "site_014": -0.8435225342565227,
+          "site_015": -0.7878193541314651,
+          "site_016": -0.3433228136137085,
+          "site_027": -0.4002015478741019,
+          "site_032": -0.5866663758789133,
+          "site_034": -0.5340944685176958
+        }
+      },
+      "common_support_difference": {
+        "metric": "abs_rel",
+        "n_boot": 2000,
+        "seed": 20260912,
+        "n_sites_common": 8,
+        "n_sites_compared": 8,
+        "sites_compared": [
+          "site_010",
+          "site_013",
+          "site_014",
+          "site_015",
+          "site_016",
+          "site_027",
+          "site_032",
+          "site_034"
+        ],
+        "n_sites_dropped": 0,
+        "aggregation": "site_macro_equal_weight",
+        "resampling": "shared site index applied to both methods per draw",
+        "status": "ok",
+        "mean_a": 0.7077568623830381,
+        "mean_b": 0.0905048038218456,
+        "difference": -0.6172520585611926,
+        "ci95": [
+          -0.8018570260212895,
+          -0.45080678457345547
+        ],
+        "per_site_difference": {
+          "site_010": -1.117656349326264,
+          "site_013": -0.3247176728594096,
+          "site_014": -0.8435235993620727,
+          "site_015": -0.7878198273443509,
+          "site_016": -0.34332318549429,
+          "site_027": -0.4002035694603385,
+          "site_032": -0.5866710747616597,
+          "site_034": -0.5341011898811556
+        }
+      },
+      "domain": "G n P_A n P_B, computed per frame from both prediction masks",
+      "note": "Only pre-specified pairs are intersected. Intersecting the whole model pool would shrink the domain to the weakest method's coverage."
+    }
+  ],
+  "annotation_summary": {
+    "n_records": 800,
+    "roi_status": {
+      "uncertain": 800
+    },
+    "hand_status": {
+      "accepted_ai": 291,
+      "uncertain": 509
+    },
+    "object_status": {
+      "accepted_ai": 257,
+      "uncertain": 543
+    },
+    "motion_status": {
+      "uncertain": 705,
+      "accepted_ai": 95
+    },
+    "motion_label": {
+      "unknown": 705,
+      "active_manipulation": 59,
+      "low_motion": 36
+    },
+    "by_site": {
+      "site_027": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 62,
+        "object_accepted": 45,
+        "motion_accepted": 13,
+        "motion_unknown": 87
+      },
+      "site_010": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 19,
+        "object_accepted": 34,
+        "motion_accepted": 13,
+        "motion_unknown": 87
+      },
+      "site_034": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 11,
+        "object_accepted": 23,
+        "motion_accepted": 11,
+        "motion_unknown": 89
+      },
+      "site_015": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 51,
+        "object_accepted": 41,
+        "motion_accepted": 15,
+        "motion_unknown": 85
+      },
+      "site_013": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 59,
+        "object_accepted": 25,
+        "motion_accepted": 13,
+        "motion_unknown": 87
+      },
+      "site_016": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 23,
+        "object_accepted": 40,
+        "motion_accepted": 10,
+        "motion_unknown": 90
+      },
+      "site_032": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 31,
+        "object_accepted": 23,
+        "motion_accepted": 10,
+        "motion_unknown": 90
+      },
+      "site_014": {
+        "n": 100,
+        "roi_accepted": 0,
+        "roi_uncertain": 100,
+        "roi_failed": 0,
+        "hand_accepted": 35,
+        "object_accepted": 26,
+        "motion_accepted": 10,
+        "motion_unknown": 90
+      }
+    },
+    "n_review_rounds": {
+      "1": 800
+    },
+    "note": "AI-generated and AI-reviewed. Review agreement describes pipeline stability between two related vision-language models; it is not a measured label-accuracy rate and the two models are not statistically independent."
+  },
+  "note": "Tables use result documents; paired, motion, and aligned diagnostics recompute the stated comparisons from archived predictions and reference. Missing results appear as \\pending in the tables and as explicit notices in the figure panels; no value is simulated. Development artifacts are not written into the paper tree.",
+  "complete_final_result_set_verified": true,
+  "final_config": "archive://configuration/release_egodepth_v1_20260914_trained.yaml",
+  "figure4_provenance": "results/paper_artifacts/interaction_diagnostics.json",
+  "contrast_reporting_revision": {
+    "date": "2026-09-16",
+    "audit": "archive://diagnostic-audit/contrast_reporting",
+    "description": "Pool raw contrasts independently; standardized contrasts retain all-cell support requirements.",
+    "methods": [
+      "unidepth_v2",
+      "foundation_stereo",
+      "mapanything_6view_rig"
+    ],
+    "diagnostic_token_set_id": "d4eef59c165bb525",
+    "source_sha256": {
+      "src/egodepth_eval/report/paired_regions.py": "a1f278c36263ce6331a3df15b99a8ba440ef0f6745980ec2ca6494fce8aa9787",
+      "src/egodepth_eval/report/diagnostics.py": "c9a5189f2448ca807a071f657d38e914d7e57a228ecdb44756f99cb95f374b68",
+      "scripts/refresh_diagnostic_contrasts.py": "ccc9b0e60b4120a42510ee39f857b1f2c1fb4298223e9984ecfcf07246a9d308"
+    }
+  }
+}

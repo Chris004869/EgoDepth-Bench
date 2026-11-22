@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+message: "If you use EgoDepth-Bench, please cite the accompanying manuscript."
+type: software
+title: "EgoDepth-Bench"
+version: 1.0.0
+license: Apache-2.0
+repository-code: "https://github.com/Chris004869/EgoDepth-Bench"
+url: "https://chris004869.github.io/EgoDepth-Bench/"
+authors:
+  - family-names: Gao
+    given-names: Yuan
+    affiliation: GenRobot
+  - family-names: Wei
+    given-names: Dongchen
+    affiliation: GenRobot
+  - family-names: Lin
+    given-names: Xinyang
+    affiliation: GenRobot
+  - family-names: Cao
+    given-names: Shuhua
+    affiliation: GenRobot
+  - family-names: Guo
+    given-names: Xueliang
+    affiliation: GenRobot
+  - family-names: Li
+    given-names: Zhuohan
+    affiliation: GenRobot
+  - family-names: Wang
+    given-names: Yihao
+    affiliation: GenRobot
+preferred-citation:
+  type: unpublished
+  title: "EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation"
+  year: 2026
+  authors:
+    - family-names: Gao
+      given-names: Yuan
+    - family-names: Wei
+      given-names: Dongchen
+    - family-names: Lin
+      given-names: Xinyang
+    - family-names: Cao
+      given-names: Shuhua
+    - family-names: Guo
+      given-names: Xueliang
+    - family-names: Li
+      given-names: Zhuohan
+    - family-names: Wang
+      given-names: Yihao

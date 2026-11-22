@@ -1,0 +1,39 @@
+# Local environments and Python build products
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Downloaded datasets, upstream repositories, weights, and generated runs
+/data/
+/third_party/
+/weights/
+/checkpoints/
+/outputs/
+/runs/
+/logs/
+envs/.venvs/
+envs/.conda_envs/
+configs/local*.yaml
+configs/local*.json
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.tar
+*.tar.gz
+*.tar.zst
+
+# Credentials and editor state
+.env
+.env.*
+*.token
+.DS_Store
+.idea/
+.vscode/

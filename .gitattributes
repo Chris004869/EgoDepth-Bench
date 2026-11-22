@@ -1,0 +1,4 @@
+# Preserve provenance hashes and upstream patch/license bytes across checkouts.
+results/** -text -whitespace
+patches/** -text -whitespace
+third_party_licenses/** -text -whitespace
