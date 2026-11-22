@@ -2,145 +2,90 @@
 
 **Benchmarking Metric Depth for Egocentric Manipulation**
 
-Yuan Gao, Dongchen Wei, Xinyang Lin, Shuhua Cao, Xueliang Guo, Zhuohan Li, Yihao Wang · **GenRobot**
+Yuan Gao, Dongchen Wei, Xinyang Lin, Shuhua Cao, Xueliang Guo, Zhuohan Li, Yihao Wang · GenRobot
 
-[Project page](https://chris004869.github.io/EgoDepth-Bench/) · [Paper (PDF)](https://chris004869.github.io/EgoDepth-Bench/site-assets/egodepth-bench.pdf)
+[Paper (PDF)](https://chris004869.github.io/EgoDepth-Bench/site-assets/egodepth-bench.pdf) · [Project page](https://chris004869.github.io/EgoDepth-Bench/) · [Interactive RGB–depth sequences](https://chris004869.github.io/EgoDepth-Bench/#sequence-gallery) · [Paper results](results/README.md)
 
-EgoDepth-Bench evaluates metric depth from head-worn RGB cameras during real
-manipulation. The dataset contains **941,233 synchronized timestamps**, six
-calibrated RGB views per timestamp, and camera-2 fisheye Z-depth across **37
-physical sites**. The benchmark reports depth accuracy together with prediction
-coverage, including on hands and manipulated objects.
+How accurately can a head-worn camera recover the depth of a moving hand and the object it holds? EgoDepth-Bench pairs six synchronized fisheye RGB views with reference depth for camera 2. We report **error and coverage together**. For example, FoundationStereo achieves a mean absolute depth error of 7.35 cm where it predicts, with 35.4% coverage across the test sites.
 
-This repository provides data readers, the official scoring protocol, adapters
-for **18 models / 24 evaluated configurations**, the MapAnything fine-tuning
-recipe, and archived paper results. The paper evaluates **6,574 test anchors from eight physical sites**. An additional
-diagnostic protocol covers **800 of those anchors** with reviewed annotations.
-The [data guide](docs/DATA.md) describes the release format. Model environments
-and checkpoints are documented in the [baseline guide](docs/MODELS.md).
+[![Three egocentric scenes showing matching RGB and reference depth: hands at a mahjong table, a kitchen worktop and a garment rack.](docs/figures/rgb-depth-sequences.webp)](https://chris004869.github.io/EgoDepth-Bench/#sequence-gallery)
 
-## Start here
+*Camera 2 at the same instant in RGB and reference depth. Select the image to play a sequence and move the RGB–depth divider.*
 
-| Goal | Entry point |
-| --- | --- |
-| Check installation without data or a GPU | Synthetic example below |
-| Read the real starter or released dataset | [Data guide](docs/DATA.md) |
-| Evaluate predictions from your own model | `egodepth-score` and [evaluation protocol](docs/EVALUATION.md) |
-| Recreate tables from the archived 24 results | [Archived results](results/README.md) |
-| Re-score saved predictions on the frozen test split | [Evaluation and common-support controls](docs/EVALUATION.md) |
-| Run a supported baseline | [Models and environments](docs/MODELS.md) |
-| Train the MapAnything adaptation | [Training guide](docs/TRAINING.md) |
+The dataset contains **941,233 timestamps across 37 physical sites**. The paper compares **18 models in 24 configurations** on **6,574 test anchors from eight sites**. A subset of 800 test anchors supports interaction diagnostics. This release includes the evaluator, baseline runners, training recipe and archived scores. Download links for the dataset and fine-tuned weights are pending.
 
-## Install and run a CPU example
+## Recreate the paper tables
 
-Use Python 3.10 or newer. From the repository root:
+With Git and Python 3.10+, run:
+
+```bash
+git clone --branch main --single-branch https://github.com/Chris004869/EgoDepth-Bench.git
+cd EgoDepth-Bench
+python scripts/export_archived_results.py --output outputs/tables
+```
+
+This uses the Python standard library and bundled per-site statistics. Open `outputs/tables/all_configurations.md` to compare the 24 configurations, or `outputs/tables/verification.json` to inspect the checks. The exporter runs on CPU without downloading a dataset or a checkpoint.
+
+One comparison from the paper follows. All three MapAnything configurations receive the same six RGB views, calibration and camera-to-rig poses.
+
+| MapAnything configuration | Full-image AbsRel ↓ | Object MAE (cm) ↓ |
+| --- | ---: | ---: |
+| Public checkpoint | 0.708 | 33.81 |
+| Public checkpoint + scale fitted on training data | 0.601 | 29.05 |
+| Fine-tuned on EgoDepth-Bench | 0.091 | 5.21 |
+
+The full-image column uses all test anchors. The object column uses accepted annotations with reference support. The benchmark pools pixels within each site, then weights sites equally. All three configurations cover 100.0% of the evaluated object pixels at the paper's reporting precision. [Archived tables and provenance](results/README.md)
+
+## Score your own predictions
+
+From the code checkout, install the base package and check the scoring path with three synthetic frames:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -e ".[dev,download,plot]"
+python -m pip install -e .
 python examples/synthetic_smoke.py
-python -m pytest -q
 ```
 
-The synthetic example exercises the actual data reader and scorer with known
-geometry and partially missing prediction support. It downloads no model or
-dataset. Its output is an installation check, not a benchmark result.
+Expected output includes **AbsRel 0.1875**, **MAE 12.5 cm** and **coverage 0.75**. You can run this example before obtaining any benchmark data.
 
-The base installation, `python -m pip install -e .`, supports reading data and
-scoring predictions on a CPU. GPU model inference uses separate environments;
-install only the method you intend to run.
+For an official evaluation, restore the v1 release and write one `<sample_token>.npz` per test anchor. Each file contains two arrays on the native camera-2 grid (416 rows × 512 columns):
 
-## Read real data
-
-After obtaining and extracting the starter package:
+| Array | Type | Meaning |
+| --- | --- | --- |
+| `depth_z` | Floating point | Optical-axis Z in meters |
+| `valid` | Boolean | Pixels where your model supplies a prediction |
 
 ```bash
-python examples/read_starter.py --data /path/to/egodepth-starter
+egodepth-score --release-root /path/to/egodepth_v1 \
+  --predictions-dir /path/to/predictions --method my_model \
+  --output outputs/my_model.json
 ```
 
-The reader checks RGB, depth, validity and calibration. For full splits, follow
-the checksum and restoration instructions in [docs/DATA.md](docs/DATA.md).
-Depth is optical-axis **Z in meters**, and released masks use **True = valid**.
+The default scores metric predictions directly. For relative-depth outputs, the guide specifies how to supply the raw representation and label results that use reference depth for alignment. [Evaluation protocol](docs/EVALUATION.md)
 
-## Score your own predictions
+## Reproduce an experiment
 
-Write one `<sample_token>.npz` per official test anchor. Each file contains
-`depth_z` as a floating-point **416 × 512** array in meters and `valid` as a
-boolean array on the same camera-2 grid. Then run:
-
-```bash
-egodepth-score \
-  --release-root /path/to/egodepth_v1 \
-  --predictions-dir /path/to/predictions \
-  --method my_method \
-  --output outputs/my_method.json
-```
-
-The default evaluates metric depth without reference-based alignment. Missing
-files are rejected unless `--allow-missing` is explicitly supplied; with that
-option they remain in the population and contribute zero coverage. See
-[the evaluation guide](docs/EVALUATION.md) for oracle-aligned outputs, ROI
-annotations, aggregation and prediction contracts.
-
-## Recreate the archived result tables
-
-```bash
-python scripts/export_archived_results.py --output outputs/archived_results
-```
-
-This reads the bundled 24 result JSON files and exports tables without data,
-weights or a GPU. It does not rerun inference. The paper's metric MapAnything
-comparison is:
-
-| Six-view, camera-to-rig condition | Full-image AbsRel ↓ |
-| --- | ---: |
-| Public checkpoint | 0.708 |
-| Training-set scale calibration | 0.601 |
-| Fine-tuned | 0.091 |
-
-Values above are rounded as in the paper. Full statistics, supports and
-provenance are retained under [results/](results/README.md).
-
-## Configure baseline inference
-
-```bash
-python scripts/configure.py \
-  --data-root /path/to/egodepth_v1 \
-  --conda-prefix /path/to/miniconda3
-```
-
-This creates `configs/local.yaml` and `configs/local-training.yaml`. The Conda
-prefix is the installation root containing `envs/`. Model source, weight and
-output paths can be configured without editing the adapters. Continue with the
-method-specific instructions in [docs/MODELS.md](docs/MODELS.md).
-
-The scoring implementation preserves site-wise aggregation, coverage, native
-fisheye geometry and the distinction between metric and oracle-aligned methods.
-Do not reuse old predictions after changing their source, checkpoint or
-preprocessing identity. The archived experiments and validation of this public
-package are documented separately in [docs/VALIDATION.md](docs/VALIDATION.md).
+| Task | Guide |
+| --- | --- |
+| Read the 12-anchor starter, restore a split or inspect a calibration | [Data and SDK](docs/DATA.md) |
+| Prepare and run one of the 18 baseline models | [Models, weights and environments](docs/MODELS.md) |
+| Reproduce training-set scale calibration or six-GPU fine-tuning | [MapAnything adaptation](docs/TRAINING.md) |
+| Re-score saved predictions and check the effect of rig poses on common pixels | [Independent verification and rig controls](docs/EVALUATION.md) |
+| See which results were verified from archives, pixels or fresh inference | [Release validation](docs/VALIDATION.md) |
 
 ## Citation
 
 ```bibtex
 @misc{gao2026egodepthbench,
-  title={EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation},
-  author={Yuan Gao and Dongchen Wei and Xinyang Lin and Shuhua Cao and
-          Xueliang Guo and Zhuohan Li and Yihao Wang},
-  year={2026},
-  note={Manuscript}
+  title  = {EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation},
+  author = {Gao, Yuan and Wei, Dongchen and Lin, Xinyang and Cao, Shuhua
+            and Guo, Xueliang and Li, Zhuohan and Wang, Yihao},
+  year   = {2026},
+  url    = {https://chris004869.github.io/EgoDepth-Bench/}
 }
 ```
 
-An arXiv identifier will be added after posting. Machine-readable citation
-metadata is available in [CITATION.cff](CITATION.cff).
+GenRobot's code is licensed under [Apache-2.0](LICENSE). Upstream code, weights and datasets have their own terms. [Third-party notices](docs/THIRD_PARTY.md) · [Citation metadata](CITATION.cff)
 
-## License and contact
-
-First-party code: **Apache-2.0**, copyright **2026 GenRobot**. See [LICENSE](LICENSE)
-and [NOTICE](NOTICE). Third-party projects, patches, weights and datasets retain
-their own terms; consult [docs/THIRD_PARTY.md](docs/THIRD_PARTY.md).
-
-For questions, open an issue in this repository or contact Yuan Gao at
-**gaoyuan100@outlook.com**. See [CONTRIBUTING.md](CONTRIBUTING.md) for contributions.
+For reproducibility questions, [open an issue](https://github.com/Chris004869/EgoDepth-Bench/issues) or contact Yuan Gao at **gaoyuan100@outlook.com**.

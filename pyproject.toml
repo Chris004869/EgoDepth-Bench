@@ -17,6 +17,12 @@ dependencies = [
   "PyYAML>=6",
 ]
 
+[project.urls]
+Homepage = "https://chris004869.github.io/EgoDepth-Bench/"
+Repository = "https://github.com/Chris004869/EgoDepth-Bench"
+Documentation = "https://github.com/Chris004869/EgoDepth-Bench/blob/main/docs/EVALUATION.md"
+Issues = "https://github.com/Chris004869/EgoDepth-Bench/issues"
+
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 plot = ["matplotlib>=3.7"]

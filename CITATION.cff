@@ -30,6 +30,7 @@ authors:
     affiliation: GenRobot
 preferred-citation:
   type: unpublished
+  url: "https://chris004869.github.io/EgoDepth-Bench/site-assets/egodepth-bench.pdf"
   title: "EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation"
   year: 2026
   authors:

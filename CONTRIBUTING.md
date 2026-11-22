@@ -4,13 +4,13 @@ For a bug report, include the command, configuration, package versions, the
 dataset release and annotation version, and the relevant error message. A small
 synthetic reproduction is preferable to uploading dataset frames or checkpoints.
 
-Install the development dependencies and run the CPU tests before submitting a
-change:
+Use the same CPU checks as GitHub Actions before submitting a change. From the code checkout, run
 
 ```bash
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[dev,download,plot]"
 python -m pytest -q
 python examples/synthetic_smoke.py
+python scripts/export_archived_results.py --output outputs/archived_results
 ```
 
 Changes to scoring, camera geometry, masks, alignment, or aggregation should
