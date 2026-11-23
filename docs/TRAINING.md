@@ -116,8 +116,5 @@ The archived identities remain historical evidence rather than being rewritten
 to match the public tree.
 
 The original best checkpoint is an approximately 8.96 GB training recovery file
-containing model, optimizer, scheduler and per-rank RNG states. A separately
-released inference-only weight file does not contain the state needed for exact
-training continuation. Model distribution, model licenses and dataset distribution
-remain separate from this code package; use the published model artifact and its
-model card when available.
+containing model, optimizer, scheduler and per-rank RNG states. For checkpoint
+availability and compatible formats, see the [model guide](MODELS.md).

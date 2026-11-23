@@ -3,8 +3,8 @@
 Each timestamp contains six synchronized fisheye RGB images, six camera
 calibrations, and one reference depth map on camera 2. The [CPU example](../examples/synthetic_smoke.py)
 runs with the code checkout alone. To read real pixels, obtain the starter or
-the full release separately. The dataset license is [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
-Download links will be announced on the [project page](https://egodepth-bench.github.io/).
+the full release from the [private Hugging Face dataset repository](https://huggingface.co/datasets/genrobot2025/EgoDepth-Bench).
+Sign in with an account that has access. The dataset license is [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 | Split | Physical sites | Recordings | Dense timestamps | Official anchors |
 |---|---:|---:|---:|---:|
@@ -19,7 +19,8 @@ fine-tuning; some were seen in earlier public-model development evaluations.
 ## Start with twelve training anchors
 
 The starter contains twelve anchors from four training sites. Place
-`egodepth-starter.tar.gz` and `starter_manifest.json` from the same dataset
+[`egodepth-starter.tar.gz`](https://huggingface.co/datasets/genrobot2025/EgoDepth-Bench/resolve/main/downloads/egodepth-starter.tar.gz?download=true)
+and [`starter_manifest.json`](https://huggingface.co/datasets/genrobot2025/EgoDepth-Bench/resolve/main/downloads/starter_manifest.json?download=true) from the same dataset
 revision in `data/downloads/`. From the root of the code checkout, verify
 the archive before extracting it:
 

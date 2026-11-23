@@ -2,17 +2,17 @@
 
 **Benchmarking Metric Depth for Egocentric Manipulation**
 
-Yuan Gao, Dongchen Wei, Xinyang Lin, Shuhua Cao, Xueliang Guo, Zhuohan Li, Yihao Wang · GenRobot
+Yuan Gao (corresponding author), Dongchen Wei (project lead), Xinyang Lin, Shuhua Cao, Xueliang Guo, Zhuohan Li, Yihao Wang · GenRobot
 
-[Paper (PDF)](https://egodepth-bench.github.io/site-assets/egodepth-bench.pdf) · [Project page](https://egodepth-bench.github.io/) · [Interactive RGB–depth sequences](https://egodepth-bench.github.io/#sequence-gallery) · [Paper results](results/README.md)
+[Paper (PDF)](https://egodepth-bench.github.io/site-assets/egodepth-bench.pdf) · [Project page](https://egodepth-bench.github.io/) · [Dataset (Hugging Face, private)](https://huggingface.co/datasets/genrobot2025/EgoDepth-Bench) · [Interactive RGB–depth sequences](https://egodepth-bench.github.io/#sequence-gallery) · [Paper results](results/README.md)
 
-How accurately can a head-worn camera recover the depth of a moving hand and the object it holds? EgoDepth-Bench pairs six synchronized fisheye RGB views with reference depth for camera 2. We report **error and coverage together**. For example, FoundationStereo achieves a mean absolute depth error of 7.35 cm where it predicts, with 35.4% coverage across the test sites.
+How accurately can a head-worn camera recover the depth of a moving hand and the object it holds? EgoDepth-Bench pairs six synchronized fisheye RGB views with reference depth for camera 2. We report **error and coverage together**. FoundationStereo predicts depth for 35.4% of reference-valid pixels in the 0.25–2.0 m scoring range, with a mean absolute depth error of 7.35 cm on those pixels. Both figures give each test site equal weight.
 
 [![Three egocentric scenes showing matching RGB and reference depth: hands at a mahjong table, a kitchen worktop and a garment rack.](docs/figures/rgb-depth-sequences.webp)](https://egodepth-bench.github.io/#sequence-gallery)
 
 *Camera 2 at the same instant in RGB and reference depth. Select the image to play a sequence and move the RGB–depth divider.*
 
-The dataset contains **941,233 timestamps across 37 physical sites**. The paper compares **18 models in 24 configurations** on **6,574 test anchors from eight sites**. A subset of 800 test anchors supports interaction diagnostics. This release includes the evaluator, baseline runners, training recipe and archived scores. Download links for the dataset and fine-tuned weights are pending.
+The dataset contains **941,233 timestamps across 37 physical sites**. The paper compares **18 models in 24 configurations** on **6,574 test anchors from eight sites**. A subset of 800 test anchors supports interaction diagnostics. This release includes the evaluator, baseline runners, training recipe and archived scores. To download the starter or the full dataset, sign in to Hugging Face with an account that has access to the dataset repository.
 
 ## Recreate the paper tables
 

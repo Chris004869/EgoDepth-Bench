@@ -44,7 +44,8 @@ def main():
         out.write_text(yaml.safe_dump(config, sort_keys=False))
         print(out)
     print('Configs generated. Dataset/model files and CUDA environments are not downloaded or validated by this command.')
-    if not checkpoint: print('FT evaluation needs weights/egodepth/mapanything_rig_ft.pt; supply --ft-checkpoint after downloading the released model.')
+    if not checkpoint:
+        print('To evaluate a local fine-tuned checkpoint, pass --ft-checkpoint PATH or place it at the configured finetuned_state_dict path.')
 
 
 if __name__ == '__main__': main()

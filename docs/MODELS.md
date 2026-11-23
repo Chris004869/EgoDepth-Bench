@@ -122,12 +122,12 @@ weights/
   depth_anything_v2/depth_anything_v2_vitl.pth
   depth_anything_3/                  # full model directory
   geostereo/                        # full model directory
-  egodepth/mapanything_rig_ft.pt     # separately released fine-tuned model
+  egodepth/mapanything_rig_ft.pt     # default path for a local fine-tuned checkpoint
 ```
 
 Metric3D and ZoeDepth use `${TORCH_HOME:-~/.cache/torch}/hub/checkpoints/`, matching their upstream Torch Hub loaders. `prepare_models.py --download-weights` fills these locations for supported official HF/GitHub downloads. It requires `huggingface_hub` in the calling interpreter. It never substitutes an unofficial mirror for a gated model. For manual downloads use [FoundationStereo's official 23-51-11 folder](https://drive.google.com/drive/folders/1VhPebc_mMxWKccrv7pdQLTvXYVcLYpsf?usp=sharing) and [CUT3R's official final checkpoint](https://drive.google.com/file/d/1Asz-ZB3FfpzZYwunhQvNPZEUA8XUNAYD/view?usp=drive_link). After placing the official files, rerun `prepare_models.py --download-weights` for the corresponding models to verify each checkpoint against the archived content ID. FoundationStereo needs the accompanying `cfg.yaml`. Its configuration and DAC’s model JSON are included in the identity of newly generated predictions. VGGT-Omega requires the upstream access grant before downloading with your own HF credentials.
 
-The EgoDepth-Bench fine-tuned model is distributed separately; no model-hosting URL is claimed here until that release exists. The original `checkpoint_best.pt` is a training recovery package, not an inference-only artifact. `--ft-checkpoint` can point at the supported exported model or a compatible recovery checkpoint. The training recipe creates a new run identity; the archived training record must not be relabeled as a run from this cleaned code.
+The original fine-tuned MapAnything weights have no public download. If you already have compatible weights, pass their path with `--ft-checkpoint`. The original `checkpoint_best.pt` contains training recovery state. To train and evaluate a new checkpoint with its own run record, follow the [MapAnything adaptation guide](TRAINING.md).
 
 UniDAC extracts its DINOv3 backbone from the complete released `unidac.pt` into the same local weights directory; it does not require downloading the original authors' private DINOv3 path. GeoStereo needs both DINOv2 code in Torch Hub and pretrained EdgeNeXt Small weights through timm. The first run needs access to their official sources or pre-populated caches. The preparation script configures the two backbone loaders in your pinned checkout and verifies both resulting files against the research SHA-256 digests. The historical revisions of these two transitive assets remain unknown.
 
