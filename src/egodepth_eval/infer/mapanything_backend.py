@@ -1,25 +1,10 @@
-"""MapAnything inference for E1/E3/E4, with the DS rays actually reaching the model.
+"""MapAnything inference on calibrated fisheye views.
 
-THE BUG THIS MODULE EXISTS TO AVOID
-`mapanything.utils.image.preprocess_inputs` accepts `ray_directions`, then calls
-`recover_pinhole_intrinsics_from_ray_directions` and forwards the *fitted pinhole
-K* instead. For a double-sphere lens reaching 90 degrees off-axis, no 3x3 K
-describes the camera, so the whole point of supplying real rays is lost -- and
-nothing warns. This module builds the network's input tensors itself:
-image normalization and resize applied identically to the image and the ray field,
-and `ray_directions_cam` handed straight to `forward`. `verify_rays_reached_model`
-compares what the model received against what was built.
-
-VIEW COUNT AND TARGET SELECTION
-E3 runs 1, 2 and 6 views. The camera-2 output is located by its *position in the
-supplied view list*, not a fixed index -- with `[2, 3]` the target is at position
-0, and reading index 2 would either fail or silently read a different camera.
-
-PROTOCOL FLAGS
-`use_multiview_confidence` is off and no extra confidence/edge filter is added
-beyond the model's own support, per the E3 contract: filtering by multi-view
-consistency would preferentially delete the moving hand and object -- exactly the
-region being measured.
+The upstream image preprocessor fits a pinhole matrix to supplied rays.
+This adapter resizes RGB and double-sphere rays together and passes the
+resulting `ray_directions_cam` tensor directly to the model. It selects
+camera 2 by its position in the supplied view list. Multi-view consistency
+filtering is disabled to preserve support on independently moving objects.
 """
 
 from __future__ import annotations
@@ -274,26 +259,11 @@ def resample_to_scoring_grid(
     depth_z: np.ndarray, support: np.ndarray, grid_hw: tuple,
     require_positive: bool = True,
 ) -> tuple:
-    """Bring a prediction onto the scoring grid using ONE consistent kernel.
+    """Resize values and their support with the same area kernel.
 
-    THE BUG THIS REPLACES
-    Depth used INTER_LINEAR while support used INTER_AREA. Different kernels see
-    different neighbourhoods, so an output pixel could be marked valid by the area
-    test while its depth had been blended with a neighbour the model never
-    supported. The audit's counter-example: a 406x518 map of all 1.0 with row 41
-    unsupported and set to 101.0 produced 512 pixels still marked valid whose depth
-    had become 1.2403846.
-
-    The fix is a weighted resample where the value and the weight go through the
-    SAME kernel: unsupported pixels are zeroed, both the masked values and the mask
-    are resampled with INTER_AREA, and the value is normalized by the resampled
-    mask. An output pixel's depth is then a weighted average of *supported* inputs
-    only. Support is additionally required to be near-complete, so a pixel that
-    only partly overlaps supported input is dropped rather than half-guessed.
-
-    Non-finite and non-positive inputs are folded into the support before
-    resampling, because an inf or a negative in the numerator would poison every
-    output pixel whose kernel touches it.
+    The weighted average uses finite supported inputs and requires nearly full
+    input support for an output pixel. For metric Z, positive depth is also
+    required. Raw affine representations may contain valid nonpositive values.
     """
     import cv2
 

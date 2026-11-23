@@ -370,10 +370,6 @@ class MapAnythingTrainer:
 
         self.previous_geometric_config = set_deterministic_geometric_inputs(model, config.spec.pose_mode)
         self.trainable_summary = select_trainable_parameters(model, config.trainable)
-        # Always defined. Previously this attribute only existed when checkpointing
-        # was enabled, so `gradient_checkpointing: false` made `write_run_record`
-        # raise AttributeError -- a config value that could not actually be turned
-        # off.
         self.gradient_checkpointing_applied: dict = {
             "requested": bool(config.gradient_checkpointing),
             "blocks_wrapped": {},
@@ -612,22 +608,11 @@ class MapAnythingTrainer:
     # ----------------------------------------------------------- validation
 
     def validate(self, val_dataset, val_indices: Optional[Sequence[int]] = None) -> dict:
-        """Site-macro unaligned AbsRel on the VALIDATION population.
+        """Compute site-macro unaligned AbsRel and coverage on validation data.
 
-        WHAT CHANGED
-        This used to be handed a few micro-batches sliced out of the *training*
-        dataset, which meant the "validation" frames had all been trained on. It now
-        takes the validation dataset explicitly -- built from the val split, asserted
-        disjoint from train by `resolve_train_val` -- and iterates all of it (or a
-        declared subset), so selection cannot read a training frame.
-
-        The prediction support is the model's own `non_ambiguous_mask`, obtained the
-        same way inference does, so the P used for selection is the P used for
-        scoring rather than a looser "finite and positive".
-
-        Unaligned on purpose: the criterion must not let a per-frame fit hide a
-        metric-scale regression. Coverage is reported alongside, because a checkpoint
-        can lower AbsRel by predicting fewer pixels.
+        Use the validation split (or its declared subset) and the same model
+        support mask used at inference. Unaligned depth measures metric scale;
+        coverage records how much of the reference domain the model predicted.
         """
         import torch
 

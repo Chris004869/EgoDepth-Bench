@@ -20,10 +20,8 @@ SCORING_GRID_HW = (416, 512)
 class DSCalibration:
     """Double-sphere fisheye intrinsics on a specific pixel grid, plus extrinsics.
 
-    `T_body_cam` is cam-to-world (a camera-to-rig-base transform). It is stored
-    because the manifest describes the rig, but supplying it to a model is a
-    separate decision the E1/E3 protocol makes per experiment -- holding a pose
-    is not permission to feed it.
+    `T_body_cam` transforms camera coordinates into rig coordinates. Each
+    method configuration declares whether the model receives this transform.
     """
 
     camera_id: int
@@ -36,7 +34,7 @@ class DSCalibration:
     width: int
     height: int
     T_body_cam: Optional[list] = None
-    source: str = "336l_pkl_cam_calib"
+    source: str = "unspecified"
 
     @property
     def ds_params(self) -> list:

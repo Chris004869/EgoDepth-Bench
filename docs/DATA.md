@@ -18,22 +18,31 @@ fine-tuning; some were seen in earlier public-model development evaluations.
 
 ## Start with twelve training anchors
 
-The starter contains twelve anchors from four training sites. It occupies
-6,510,607 bytes and can be checked without downloading a full split. From
-the root of the code checkout, with the official archive in the current directory:
+The starter contains twelve anchors from four training sites. Place
+`egodepth-starter.tar.gz` and `starter_manifest.json` from the same dataset
+revision in `data/downloads/`. From the root of the code checkout, verify
+the archive before extracting it:
 
 ```bash
 python -m pip install -e .
-echo 'ca71afbc73ea7805f6dbc123b8ed3d8660856b85acce68d6643e225788fbc54f  egodepth-starter.tar.gz' | sha256sum -c -
-mkdir -p data
-tar -xzf egodepth-starter.tar.gz -C data
+python - <<'PYTHON'
+import hashlib
+import json
+from pathlib import Path
+
+folder = Path("data/downloads")
+manifest = json.loads((folder / "starter_manifest.json").read_text())
+archive = (folder / "egodepth-starter.tar.gz").read_bytes()
+if len(archive) != manifest["bytes"] or hashlib.sha256(archive).hexdigest() != manifest["sha256"]:
+    raise SystemExit("Starter archive differs from its manifest")
+PYTHON
+tar -xzf data/downloads/egodepth-starter.tar.gz -C data
 python examples/read_starter.py --data data/egodepth-starter --output outputs/starter_check.json
 ```
 
 The reader decodes all six views and checks calibrated rays. An identity
 prediction should give AbsRel 0, MAE 0 and coverage 1. This tests the I/O and
-metric conventions. The starter's embedded annotation helpers predate v6;
-use the SDK in this code checkout for the full dataset.
+metric conventions of the published SDK.
 
 ## Full-release layout and restoration
 
@@ -136,10 +145,9 @@ partitions for split-aware consumers and must not be used as one training set.
 
 `annotation_version.json` selects `annotations_v6/` (`ai-rgb-reviewed-v6`). The
 800 fixed diagnostic anchors contain reference-bearing accepted hand masks on
-291 frames and object masks on 257 frames, spanning eight sites. These are
-AI-generated and AI-reviewed diagnostic labels with uncertainty, not independently
-validated human ground truth. Unknown or unaccepted regions stay unknown; an
-unpainted pixel is not automatically background. Use
+291 frames and object masks on 257 frames, spanning eight sites. The v6 records
+document RGB-based mask proposals and AI-assisted visual review, including
+temporal context for motion labels. Unlabeled pixels remain unknown. Use
 `sdk/annotations.py::read_annotation` to enforce per-field acceptance.
 
 For older consumers that require ordinary local mask paths, materialize derived

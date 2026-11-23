@@ -1,26 +1,10 @@
-"""Run the existing `method_runners/run_*.py` under the new contract.
+"""Run third-party depth models in their own Python environments.
 
-WHY AN ADAPTER RATHER THAN A REWRITE
-Seventeen methods each need their own conda environment, upstream repo and
-checkpoint. Rewriting them in-process would mean importing seventeen mutually
-incompatible dependency sets. So each keeps its subprocess runner, and this module
-supplies what the audit found missing (C04):
-
-  - the canonical manifest, exported into the directory layout the old runners
-    expect, built from the resolved population rather than from a stale
-    `data/extracted` tree;
-  - float32 + an independent support mask, by converting the runner's output;
-  - a full prediction contract, including the runner script's own content digest;
-  - a declared per-method input/representation/scale record, so a method's
-    alignment mode and units are stated rather than inherited from an old YAML.
-
-WHAT IT CANNOT DO
-It cannot invent a support mask a runner never produced. A runner that writes only
-depth gets `support_rule="derived_finite_positive"` recorded in its contract, and
-that string is part of the identity — so results from a runner that does declare
-its support are never silently mixed with results from one that does not. Methods
-whose support is genuinely restricted (the stereo pair's rectified cone) must
-declare it, which is why `support_from_runner` is per method and defaults to False.
+Each runner reads staged images and calibration from the selected population.
+The adapter converts predictions to float32 with a separate support mask and
+records the runner digest, input views, representation and scale contract.
+A depth-only runner declares its finite-positive support rule. Methods with a
+restricted field of view can supply their own masks.
 """
 
 from __future__ import annotations
@@ -229,12 +213,10 @@ def export_runner_inputs(
     view_ids: Sequence[int],
     overwrite: bool = False,
 ) -> dict:
-    """Write the directory layout the old runners read, from the canonical manifest.
+    """Stage split-filtered inputs for the selected runner.
 
-    The old runners expect `rgb/cam{i}/{frame_id}.jpg`, `gt_depth/{frame_id}.npz`,
-    `calibration/{scene_id}.json` and a flat `manifest.json`. Building that from the
-    resolved population is what connects them to the split-filtered, site-mapped
-    samples instead of a stale `data/extracted` tree.
+    Runners read `rgb/cam{i}/{frame_id}.jpg`, `gt_depth/{frame_id}.npz`,
+    `calibration/{scene_id}.json` and a flat `manifest.json`.
 
     `scene_id` combines physical site and calibration identity. A site can have
     several calibration sessions; these must never share a geometry cache.

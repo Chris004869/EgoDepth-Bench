@@ -1,25 +1,9 @@
-"""Prediction artifacts: what a runner writes and what the scorer is allowed to read.
+"""Prediction storage and provenance.
 
-WHAT CHANGED FROM THE OLD FORMAT AND WHY
-  float16 -> float32     float16 spacing at 2 m is ~1 mm, and MAE_Z is tabled in
-                         cm to two decimals. Storing the scored array at a
-                         precision coarser than the reported figure is avoidable.
-  no mask -> `valid`     A separate support mask. Previously validity was
-                         re-derived as `pred > 0`, which cannot express "the
-                         rectified stereo cone does not reach here" or "the
-                         reconstruction marked this ambiguous", and silently
-                         turned a model's declared no-output into a scored zero.
-  raw representation     The pre-alignment output is kept alongside metric Z, so
-                         an oracle fit can be re-derived without re-running the
-                         model.
-
-RESUME IS BY RUN IDENTITY, NOT BY FILENAME. A prediction is reusable only if the
-prediction contract that produced it matches: checkpoint, upstream revision, this
-project's code identity (including uncommitted changes), preprocessing, input
-views and scale contract. Changing only aggregation or plotting reuses
-predictions; changing the model, preprocessing or support does not. The old
-"resume if the .npz exists and the method name matches" let a config change go
-unnoticed.
+Store scored Z as float32, with a separate validity mask for prediction
+coverage. An optional raw representation supports fitting oracle alignments
+without rerunning inference. A saved file is reusable only when its recorded
+checkpoint, source, preprocessing, inputs and scoring-grid contract match.
 """
 
 from __future__ import annotations
@@ -59,10 +43,7 @@ def _git_output(args: list, cwd: Path) -> Optional[str]:
     return result.stdout.strip() if result.returncode == 0 else None
 
 
-# Untracked source under these roots is digested by CONTENT. Nearly all of the
-# current implementation is untracked, so recording only file *names* let an edit
-# change the predictions without changing the contract -- which the audit
-# reproduced (C05).
+# Hash implementation files by content, including local edits.
 SOURCE_ROOTS_FOR_DIGEST = ("src/egodepth_eval", "method_runners", "scripts")
 SOURCE_SUFFIXES_FOR_DIGEST = (".py", ".yaml", ".yml")
 
@@ -128,11 +109,7 @@ def source_tree_digest(
 def code_identity(repo_root: Optional[Path] = None) -> dict:
     """Content identity of the code that produces or converts predictions.
 
-    The commit alone is not an identity here: this repository runs with a dirty
-    tree, and almost the entire current implementation is untracked. Recording only
-    filenames for untracked files let a change to a scoring or inference module
-    leave the contract hash unchanged, so an edited implementation would silently
-    reuse predictions produced by the old one.
+    This digest incorporates local edits under the prediction source roots.
     """
     repo_root = Path(repo_root or Path(__file__).resolve().parents[3])
     # Runtime outputs, commit IDs and descriptive dirty-file counts cannot change
@@ -370,10 +347,7 @@ def check_resumable(output_dir: Path, contract: PredictionContract) -> dict:
                 "n_existing_npz": len(existing_npz),
             }
         if existing_npz:
-            # The audit's counter-example: NPZ files present, no contract, and the
-            # old code answered resumable=true with reason "no existing
-            # predictions" -- so inference then skipped every one of them by
-            # filename. Prediction files of unknown provenance are not reusable.
+            # Existing files without a prediction contract have unknown provenance.
             return {
                 "resumable": False,
                 "reason": (

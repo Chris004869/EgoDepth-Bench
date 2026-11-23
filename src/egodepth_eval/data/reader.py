@@ -289,9 +289,8 @@ def stage_assets(
             try:
                 source, _ = resolver.resolve(relative)
             except FileNotFoundError:
-                # A declared-but-absent mask form is expected (the 336L batches
-                # declare packed masks they do not ship), so it is counted
-                # separately from a genuinely missing image or depth file.
+                # A sample may provide either mask encoding. Count a missing
+                # alternative separately from a missing RGB or depth asset.
                 optional = relative in (
                     sample.valid_mask_rel_path, sample.packed_valid_mask_rel_path
                 )

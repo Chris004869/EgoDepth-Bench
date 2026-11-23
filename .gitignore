@@ -5,19 +5,36 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
 .coverage
+.coverage.*
 htmlcov/
 build/
 dist/
 
 # Downloaded datasets, upstream repositories, weights, and generated runs
 /data/
+/datasets/
+/downloads/
+/shards/
+/egodepth_v1_*/
+/egodepth-starter/
+/hf-dataset-*/
 /third_party/
 /weights/
 /checkpoints/
 /outputs/
+/output/
+/predictions/
 /runs/
 /logs/
+/wandb/
+/tmp/
+/scratch/
+.cache/
+*.log
 envs/.venvs/
 envs/.conda_envs/
 configs/local*.yaml
@@ -29,11 +46,19 @@ configs/local*.json
 *.tar
 *.tar.gz
 *.tar.zst
+*.mcap
 
-# Credentials and editor state
+# Local development notes, credentials and editor state
+/docs/internal/
+/AGENTS.md
+/CLAUDE.md
+/.claude/
+/.codex/
 .env
 .env.*
 *.token
+*.pem
+*.key
 .DS_Store
 .idea/
 .vscode/

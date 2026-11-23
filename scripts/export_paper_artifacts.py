@@ -374,7 +374,7 @@ def main() -> int:
     manifest["scored_population"] = population.identity()
     manifest["n_annotation_records"] = len(records)
 
-    # C09: every arm fitted from its own predictions on the shared domain.
+    # Fit each arm using its own predictions on the shared domain.
     aligned_arms = adaptation_arms(config)
     bootstrap_config = config.get("scoring", {}).get("bootstrap", {})
     public_arm, _, ft_arm = adaptation_arms(config)
@@ -443,8 +443,7 @@ def main() -> int:
         export_support_csv(results, out_dir / "support_summary.csv")
     )
 
-    # C07: the annotated frames scored once, so panel (a)'s whole-image and ROI
-    # numbers come from one token set.
+    # Panel (a) uses the same annotated frames for whole-image and ROI scores.
     subset_results = {name: computed['subset:' + name] for name in figure_methods}
     for method, document in subset_results.items():
         write_result(out_dir / "diagnostic_subset" / f"{method}.json", document)
@@ -482,7 +481,7 @@ def main() -> int:
     }
     manifest["figure4_missing_panels"] = figure_record.get("missing_panels", [])
 
-    # C08: pre-specified pairs, intersected on real prediction masks.
+    # Compare each prespecified pair on its common prediction support.
     paired = [computed['pair:' + str(i)] for i in range(len(pairs))]
     manifest["paired_bootstrap"] = paired
 

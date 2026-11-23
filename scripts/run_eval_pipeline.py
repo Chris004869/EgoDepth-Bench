@@ -422,9 +422,7 @@ def build_method_runner(name: str, method: dict, device: str, config: dict, popu
     contract = PredictionContract(
         method=name,
         checkpoint=checkpoint,
-        # The weight FILE's content digest, so two fine-tuned checkpoints -- or the
-        # same path with replaced bytes -- are different runs. Previously the path
-        # lived in `notes`, which is excluded from the identity hash.
+        # Bind predictions to the bytes of the selected weights.
         checkpoint_content_id=(
             weights["digest"]
         ),
@@ -490,9 +488,7 @@ def command_infer(args: argparse.Namespace) -> int:
         method = methods[name]
         out_dir = out_root / name
 
-        # Legacy methods run as a subprocess in their own environment, then their
-        # output is converted into the new artifact format. This is the branch the
-        # audit found missing: previously any non-mapanything kind simply exited.
+        # Each third-party model runs in its configured environment.
         if method.get("kind") == "legacy":
             overall[name] = _infer_legacy(
                 name, method, config, population, reader, out_dir, args

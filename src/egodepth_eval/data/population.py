@@ -672,9 +672,7 @@ def resolve_population(
 def resolve_train_val(config: dict, limit: Optional[int] = None) -> tuple:
     """Train and val populations, asserted disjoint in both samples and sites.
 
-    Model selection reads the val population only. The audit found the previous
-    code slicing four frames out of the *training* dataset and calling them
-    validation, with all four appearing in the training sample order.
+    Model selection uses the validation split.
     """
     manifest_id = manifest_content_id(Path(config["data"]["samples_jsonl"]))
     train = resolve_population(

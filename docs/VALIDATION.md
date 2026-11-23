@@ -19,11 +19,6 @@ runs. Re-scoring saved predictions and rerunning a model are listed separately.
 | Fresh baseline inference | Depth Anything V2 Large was run on CPU using the original upstream revision and weight digest. Four fixed test anchors were scored as a development probe. Compared with re-scoring the saved predictions on those same anchors, support masks matched pixel for pixel, AbsRel differed by 0.00000418 and MAE by 0.00056 cm. |
 | Training code | The five optional PyTorch rig/input and gradient-checkpoint tests passed in a separate environment. The original six-GPU training run and the full 24-configuration inference sweep were outside this release check. |
 
-The SDK also validated the identities of all 6,574 test anchors, read the 12-anchor
-starter and verified 4,862 metadata checksums on the local release. A four-anchor
-development run contains one physical site. A single-method MapAnything export
-also ran against the full test protocol and the 800-anchor diagnostic subset.
-
 ## Repeat the checks
 
 From the repository root, Python 3.10 or newer:

@@ -75,10 +75,8 @@ def supervision_mask(
 def huber_on_log_residual(residual, huber_delta: float):
     """The single Huber-on-log-residual expression used everywhere.
 
-    Fine-tuning and the Scale-only calibration must share the objective, or the
-    Scale-only arm would not be "Public plus one scalar under the same loss". The
-    audit found them differing in reduction and support; this function plus
-    `REDUCTION` below is the shared definition.
+    Fine-tuning and scale-only calibration apply this loss with the same
+    support mask and reduction.
     """
     absolute = residual.abs()
     return (

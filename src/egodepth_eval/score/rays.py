@@ -87,9 +87,8 @@ def build_ray_field(
 ) -> RayField:
     """Unit rays for one camera. `grid_hw` rescales the intrinsics if it differs.
 
-    Each camera gets its own field. In the 336L snapshot the six cameras' principal
-    points differ by up to 9 px, so reusing camera 2's rays for the other five is
-    a real error that no model reports.
+    Each camera has its own intrinsics and principal point. Construct a ray
+    field from that camera's calibration at the requested resolution.
     """
     if grid_hw is not None:
         grid_hw = (int(grid_hw[0]), int(grid_hw[1]))

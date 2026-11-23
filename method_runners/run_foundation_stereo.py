@@ -6,11 +6,9 @@ FoundationStereo needs *rectified* pinhole input, so the fisheye pair has to be
 remapped onto a common virtual pinhole before matching, and the resulting
 disparity converted back to depth on the fisheye GT grid.
 
-NO CIRCULARITY WITH THE GT. The ground truth comes from five 336L active-IR
-modules; this method sees only the ego RGB cameras. The GT pipeline also uses
-FoundationStereo, but on different input pixels (IR, 95 mm baseline, separate
-viewpoints) and gated against independent hardware depth. So this row measures
-RGB stereo in this regime, not the GT reproducing itself.
+The reference pipeline also uses FoundationStereo. Its inputs come from five
+active-IR pairs with 95 mm baselines and its output is checked against
+hardware depth. This runner receives only the egocentric RGB stereo pair.
 
 THE GEOMETRY, IN THE ORDER IT MATTERS
 
@@ -201,7 +199,7 @@ def rect_depth_to_gt_grid(depth_rect, intr, fx_rect, R_rect):
     h_r, w_r = depth_rect.shape
     # ``intr`` comes from calibration/{scene}_depth_info.json and carries the
     # actual evaluation-grid dimensions. Ball-bar remains 648x800 while the
-    # Gold-v0 336L export is 416x512; using a fixed intermediate grid here
+    # The native RGB grid is 416x512; using a fixed intermediate grid here
     # would make the fisheye rays and GT pixels disagree before evaluation.
     target_shape = (int(intr["height"]), int(intr["width"]))
     if any(v <= 0 for v in target_shape):
