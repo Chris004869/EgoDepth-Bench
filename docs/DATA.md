@@ -145,9 +145,10 @@ partitions for split-aware consumers and must not be used as one training set.
 
 `annotation_version.json` selects `annotations_v6/` (`ai-rgb-reviewed-v6`). The
 800 fixed diagnostic anchors contain reference-bearing accepted hand masks on
-291 frames and object masks on 257 frames, spanning eight sites. The v6 records
-document RGB-based mask proposals and AI-assisted visual review, including
-temporal context for motion labels. Unlabeled pixels remain unknown. Use
+291 frames and object masks on 257 frames, spanning eight sites. The workflow
+used RGB-based mask proposals and AI-assisted visual review, with temporal
+context for motion labels. The authors also reviewed the same cases manually.
+Unlabeled pixels remain unknown. Use
 `sdk/annotations.py::read_annotation` to enforce per-field acceptance.
 
 For older consumers that require ordinary local mask paths, materialize derived
