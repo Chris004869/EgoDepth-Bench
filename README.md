@@ -86,6 +86,6 @@ The default scores metric predictions directly. For relative-depth outputs, the 
 }
 ```
 
-GenRobot's code is licensed under [Apache-2.0](LICENSE). Upstream code, weights and datasets have their own terms. [Third-party notices](docs/THIRD_PARTY.md) · [Citation metadata](CITATION.cff)
+GenRobot's code is licensed under [Apache-2.0](LICENSE) and the EgoDepth-Bench dataset under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Third-party code, weights and datasets have their own terms. [Third-party notices](docs/THIRD_PARTY.md) · [Citation metadata](CITATION.cff)
 
 For reproducibility questions, [open an issue](https://github.com/Chris004869/EgoDepth-Bench/issues) or contact Yuan Gao at **gaoyuan100@outlook.com**.

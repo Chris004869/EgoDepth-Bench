@@ -3,8 +3,8 @@
 Each timestamp contains six synchronized fisheye RGB images, six camera
 calibrations, and one reference depth map on camera 2. The [CPU example](../examples/synthetic_smoke.py)
 runs with the code checkout alone. To read real pixels, obtain the starter or
-the full release separately. Dataset availability and terms will be announced
-on the [project page](https://egodepth-bench.github.io/).
+the full release separately. The dataset license is [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+Download links will be announced on the [project page](https://egodepth-bench.github.io/).
 
 | Split | Physical sites | Recordings | Dense timestamps | Official anchors |
 |---|---:|---:|---:|---:|
