@@ -29,8 +29,11 @@ authors:
     given-names: Yihao
     affiliation: GenRobot
 preferred-citation:
-  type: unpublished
-  url: "https://egodepth-bench.github.io/site-assets/egodepth-bench.pdf"
+  type: article
+  status: preprint
+  journal: arXiv
+  doi: "10.48550/arXiv.2611.30734"
+  url: "https://arxiv.org/abs/2611.30734"
   title: "EgoDepth-Bench: Benchmarking Metric Depth for Egocentric Manipulation"
   year: 2026
   authors:

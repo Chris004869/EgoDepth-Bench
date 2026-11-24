@@ -18,6 +18,7 @@ dependencies = [
 ]
 
 [project.urls]
+Paper = "https://arxiv.org/abs/2611.30734"
 Homepage = "https://egodepth-bench.github.io/"
 Repository = "https://github.com/Chris004869/EgoDepth-Bench"
 Documentation = "https://github.com/Chris004869/EgoDepth-Bench/blob/main/docs/EVALUATION.md"

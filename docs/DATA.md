@@ -3,7 +3,7 @@
 Each timestamp contains six synchronized fisheye RGB images, six camera
 calibrations, and one reference depth map on camera 2. The [CPU example](../examples/synthetic_smoke.py)
 runs with the code checkout alone. To read real pixels, obtain the starter or
-the full release from the [private Hugging Face dataset repository](https://huggingface.co/datasets/genrobot2025/EgoDepth-Bench).
+the full release from the [Hugging Face dataset repository](https://huggingface.co/datasets/genrobot2025/EgoDepth-Bench).
 Sign in with an account that has access. The dataset license is [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 | Split | Physical sites | Recordings | Dense timestamps | Official anchors |
@@ -162,4 +162,4 @@ python sdk/local_annotation_records.py /path/to/release outputs/annotation_recor
 The code starts from calibrated RGB, camera-2 Z and released validity masks.
 The paper describes the upstream IR reconstruction and physical validation. Its
 1.27 mm result is the median absolute error in recovered ball-bar center spacing
-over 1,220 accepted measurements. [Paper, Geometric Accuracy Validation](https://egodepth-bench.github.io/site-assets/egodepth-bench.pdf)
+over 1,220 accepted measurements. [Paper, Geometric Accuracy Validation](https://arxiv.org/html/2611.30734v1#S3.SS3)
