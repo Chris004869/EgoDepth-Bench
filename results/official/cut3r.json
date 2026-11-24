@@ -34,7 +34,6 @@
     "formal_ready": true,
     "blockers": [],
     "site_mapping_status": "frozen",
-    "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
     "n_samples_loaded": 6574,
     "recording_prefilter": {
       "split": "test",
@@ -134,7 +133,6 @@
       "formal_ready": true,
       "blockers": [],
       "site_mapping_status": "frozen",
-      "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
       "n_samples_loaded": 6574,
       "recording_prefilter": {
         "split": "test",
@@ -176,7 +174,6 @@
     },
     "environment": {
       "python": "3.11.15",
-      "platform": "Linux-5.15.0-124-generic-x86_64-with-glibc2.39",
       "torch": "2.13.0+cu130",
       "cuda_available": true,
       "gpu_name": "NVIDIA GeForce RTX 4090",
@@ -186,7 +183,7 @@
       "units": "metres",
       "output_is_range": false,
       "declared_status": "wired",
-      "method_notes": "Checkpoint ships via Google Drive (unreachable here); obtained from the ModelScope mirror jhy11111/cut3r and present locally. The six-view question IS now resolved by perturbation on the real checkpoint: state flows forward only, so the target camera is fed LAST and each of the other five then changes its depth by 0.12-1.57 m max. In the natural order the target sat third and was bit-identical when views 3-5 were replaced by noise -- a three-view row labelled six-view."
+      "method_notes": "The checkpoint was obtained from the ModelScope mirror jhy11111/cut3r. CUT3R processes all six views sequentially, with camera 2 last. Perturbations to individual context views produced maximum target-depth differences of 0.12 to 1.57 m. With camera 2 third, perturbing views 3 to 5 left the target prediction identical."
     },
     "schema": "egodepth-prediction-2",
     "contract_hash": "0cfdfd2d67469068"

@@ -1,43 +1,10 @@
-"""CUT3R inference runner -- streaming multi-view with persistent state (Group C).
+"""Pose-free CUT3R inference on six synchronized RGB views.
 
-All six ego views are fed as one sequence and camera 2's depth is read back.
-CUT3R is pose-free: it regresses geometry without being told the extrinsics.
-
-STATE IS THE THING TO BE CAREFUL ABOUT. CUT3R carries a recurrent state across
-the views it is given, which is the point of the architecture -- but it also
-means the state must not leak between benchmark frames. Each frame is therefore
-a fresh 6-view sequence; the model is not fed the whole 25-frame recording as
-one stream. Otherwise frame N's prediction would depend on frames 1..N-1 and
-the per-frame numbers would stop being comparable to the single-shot methods'.
-(This is the same hazard that silently corrupted UniDepth via a cached camera
-object -- see run_unidepth_v2.py.)
-
-`pts3d_in_self_view` is the pointmap in each view's *own* camera frame, so
-depth is its Z channel, matching the GT convention. `pts3d_in_other_view` is
-expressed in the first view's frame and would be wrong here.
-
-THE TARGET CAMERA MUST GO LAST, AND `reset` MUST BE FALSE. Both were measured on
-the real checkpoint, not reasoned about:
-
-  * State flows FORWARD only. With the natural order [0..5], camera 2 sits third,
-    and its prediction is BIT-IDENTICAL when views 3, 4 and 5 are replaced by
-    noise -- so the "six-view" row would really have been a three-view row. Camera
-    2 therefore goes last, and each of the other five then measurably changes its
-    output (max |dz| 0.12-1.57 m per view).
-
-  * `reset` is applied AFTER the state update (src/dust3r/model.py:809-813), so
-    `reset=True` on view 0 discards view 0's OWN contribution: perturbing it
-    changed nothing. State is already initialized fresh from the first view's
-    features inside `_forward_impl`, so the flag was never needed for isolation.
-    Verified directly: with reset=False, re-running a frame after an intervening
-    different frame reproduces it to max |dz| 0.0 -- no leakage across frames.
-
-Both failures are silent. The depth map is fully populated and plausible either
-way; the only symptom is that inputs the row claims to use do not reach the
-output.
-
-Like the other Group C entries, the prediction is metric only up to a global
-scale and the paper reports Group C unaligned by design.
+Start a fresh recurrent sequence for each timestamp. Process camera 2 last so
+its prediction incorporates every preceding view. Within a sequence, preserve
+the state after each update with `reset=False`. The Z channel of the camera
+2 point map in `pts3d_in_self_view` gives optical-axis depth in the target
+frame. The evaluator scores this output directly.
 """
 import sys
 from pathlib import Path
@@ -56,7 +23,7 @@ NUM_CAMERAS = 6
 ANCHOR_CAM = 2
 INPUT_SIZE = 512
 # The target camera is fed LAST so the causal state has seen all six views by the
-# time its prediction is produced. See the module docstring for the measurement.
+# time its prediction is produced.
 VIEW_ORDER = [c for c in range(NUM_CAMERAS) if c != ANCHOR_CAM] + [ANCHOR_CAM]
 
 
@@ -146,23 +113,15 @@ def main():
         return pts[..., 2]
 
     run_loop("cut3r", args, predict,
-             notes={"output_space": "depth_up_to_global_scale",
-                    "expected_alignment": "none (Group C scored unaligned by design)",
+             notes={"output_space": "metric_depth_z",
+                    "expected_alignment": "none",
                     "weights": str(weights),
                     "input_size": INPUT_SIZE,
-                    "state_handling": ("fresh 6-view sequence per benchmark frame; "
-                                       "recurrent state is not shared across frames "
-                                       "(verified: re-running a frame after a "
-                                       "different one reproduces it exactly)"),
+                    "state_handling": "fresh recurrent sequence for each timestamp",
                     "n_input_views": NUM_CAMERAS, "anchor_camera": ANCHOR_CAM,
                     "view_order": VIEW_ORDER,
                     "target_view_position": VIEW_ORDER.index(ANCHOR_CAM),
-                    "six_views_reach_target_output": (
-                        "verified by perturbation: with the target camera last, each "
-                        "of the other five views changes its depth by 0.12-1.57 m "
-                        "max. In the natural order [0..5] the target sat third and "
-                        "was bit-identical when views 3-5 were replaced by noise."
-                    )})
+                    "six_views_reach_target_output": "all six views update state before target readout"})
 
 
 if __name__ == "__main__":

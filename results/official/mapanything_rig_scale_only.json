@@ -34,7 +34,6 @@
     "formal_ready": true,
     "blockers": [],
     "site_mapping_status": "frozen",
-    "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
     "n_samples_loaded": 6574,
     "recording_prefilter": {
       "split": "test",
@@ -140,7 +139,6 @@
       "formal_ready": true,
       "blockers": [],
       "site_mapping_status": "frozen",
-      "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
       "n_samples_loaded": 6574,
       "recording_prefilter": {
         "split": "test",
@@ -182,7 +180,6 @@
     },
     "environment": {
       "python": "3.11.16",
-      "platform": "Linux-5.15.0-124-generic-x86_64-with-glibc2.39",
       "torch": "2.4.1+cu124",
       "cuda_available": true,
       "gpu_name": "NVIDIA GeForce RTX 4090",
@@ -192,7 +189,7 @@
       "finetuned_state_dict": null,
       "use_multiview_confidence": false,
       "extra_edge_or_confidence_filter": false,
-      "calibration_record": "archive://configuration/scale_only_rig_calibration_20260913.json",
+      "calibration_record": "configs/scale_only_rig_calibration.json",
       "calibration_record_digest": "8aa8b06f230fbe45",
       "derivation": "same frozen network predictions; scalar applied after output resampling",
       "source_contract_digest": "30a6ab946b27a780",

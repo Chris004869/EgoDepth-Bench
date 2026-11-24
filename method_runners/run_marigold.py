@@ -1,12 +1,8 @@
-"""Marigold inference runner -- diffusion-based affine-invariant depth (Group D).
+"""Marigold-LCM monocular inference on camera 2.
 
-The pipeline returns affine-invariant *inverse* depth normalized to [0, 1]. As
-with DA v2 it is saved raw and converted by the evaluator's `affine_inverse`
-alignment; see run_depth_anything_v2.py for why.
-
-`ensemble_size` and `num_inference_steps` are the accuracy/time knobs. The
-defaults here follow the Marigold-LCM card (4 steps, ensemble 5), which is the
-configuration the authors report for fast inference.
+The runner saves the normalized depth prediction. The evaluator fits scale
+and shift in depth space. Inference uses four denoising steps and five ensemble
+members.
 """
 import sys
 from pathlib import Path
@@ -52,8 +48,8 @@ def main():
         raise RuntimeError(f"no depth field on Marigold output: {dir(out)}")
 
     run_loop("marigold", args, predict,
-             notes={"output_space": "inverse_depth_normalized",
-                    "expected_alignment": "affine_inverse",
+             notes={"output_space": "depth_affine",
+                    "expected_alignment": "affine_depth",
                     "denoising_steps": 4, "ensemble_size": 5})
 
 

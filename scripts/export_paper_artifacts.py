@@ -490,12 +490,14 @@ def main() -> int:
         records = load_records(Path(annotation["dir"]), annotation.get("version"), annotation.get("asset_root"))
         manifest["annotation_summary"] = summarize_statuses(list(records.values()))
 
+    # Keep the index usable when the exported directory is moved or shared.
+    manifest["artifacts"] = {
+        key: Path(value).relative_to(out_dir).as_posix() if value else None
+        for key, value in manifest["artifacts"].items()
+    }
     manifest["note"] = (
-        "Tables use result documents; paired, motion, and aligned diagnostics "
-        "recompute the stated comparisons from archived predictions and reference. "
-        "Missing results appear as \\pending "
-        "in the tables and as explicit notices in the figure panels; no value is "
-        "simulated. Development artifacts are not written into the paper tree."
+        "Tables use scored results. Paired, motion, and aligned diagnostics are "
+        "computed from saved predictions and reference depths."
     )
     (out_dir / "export_manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False, default=str) + "\n"

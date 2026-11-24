@@ -34,7 +34,6 @@
     "formal_ready": true,
     "blockers": [],
     "site_mapping_status": "frozen",
-    "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
     "n_samples_loaded": 6574,
     "recording_prefilter": {
       "split": "test",
@@ -129,7 +128,6 @@
       "formal_ready": true,
       "blockers": [],
       "site_mapping_status": "frozen",
-      "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
       "n_samples_loaded": 6574,
       "recording_prefilter": {
         "split": "test",
@@ -171,7 +169,6 @@
     },
     "environment": {
       "python": "3.11.15",
-      "platform": "Linux-5.15.0-124-generic-x86_64-with-glibc2.39",
       "torch": "2.13.0+cu130",
       "cuda_available": true,
       "gpu_name": "NVIDIA GeForce RTX 4090",

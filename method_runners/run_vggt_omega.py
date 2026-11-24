@@ -1,18 +1,9 @@
-"""VGGT-Omega inference runner -- feed-forward multi-view, pose-free (Group C).
+"""Pose-free VGGT-Omega inference on six synchronized RGB views.
 
-Gated upstream weights. facebook/VGGT-Omega requires an approved access
-request; an unauthenticated fetch returns HTTP 401. Request access at
-https://huggingface.co/facebook/VGGT-Omega, then either
-
-  - set HF_TOKEN to an account that has been granted access, or
-  - download vggt_omega_1b_512.pt manually and pass --checkpoint /path/to/it
-    (or place it in weights/vggt_omega/).
-
-Everything else in the runner is ready, so the method only needs the file.
-
-Same two hazards as VGGT (see run_vggt.py): preprocessing must not centre-crop
-the fisheye periphery away, and the prediction is depth up to an unknown global
-scale, which the formal protocol scores with per-sample positive Z-scale alignment.
+Obtain the checkpoint from https://huggingface.co/facebook/VGGT-Omega under
+the upstream access terms. Pass its local file with `--checkpoint` or install
+it under the configured weights directory. The evaluator fits one positive
+scale to camera 2 depth per timestamp.
 """
 import sys
 from pathlib import Path
@@ -122,7 +113,7 @@ def main():
 
     run_loop("vggt_omega", args, predict,
              notes={"output_space": "depth_up_to_global_scale",
-                    "expected_alignment": "none (Group C scored unaligned by design)",
+                    "expected_alignment": "positive_scale",
                     "checkpoint": str(checkpoint),
                     "image_resolution": IMAGE_RESOLUTION,
                     "n_input_views": NUM_CAMERAS, "anchor_camera": ANCHOR_CAM})

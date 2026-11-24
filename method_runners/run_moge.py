@@ -6,7 +6,7 @@ swapping it in would move the method into Group A and change what the
 comparison means, so the version is pinned here deliberately.
 
 The Z channel of the recovered point map is depth-like up to one unknown
-global scale, hence `alignment: median_scale` rather than the affine fit the
+global scale, hence `alignment: positive_scale` rather than the affine fit the
 inverse-depth models need. Masked (unreliable) pixels come back as `inf`,
 which is preserved: the evaluator drops non-finite predictions, so those
 pixels are excluded rather than being scored against a fabricated value.
@@ -57,7 +57,7 @@ def main():
     run_loop("moge", args, predict,
              notes={"model": "Ruicheng/moge-vitl (MoGe-1, affine-invariant)",
                     "output_space": "pointmap_z_up_to_scale",
-                    "expected_alignment": "median_scale"})
+                    "expected_alignment": "positive_scale"})
 
 
 if __name__ == "__main__":

@@ -3,11 +3,10 @@
   "snapshot": "paper-final-20260916",
   "data_version": "egodepth_v1_20260912",
   "n_official_configurations": 24,
-  "policy": "Finite scientific values, sample identifiers and recorded content identities are unchanged. Machine hostnames/process IDs are removed and resource locations rewritten. Six undefined NaN diagnostic cells are represented as JSON null. Original identities describe the original experiment, not the public source tree.",
+  "policy": "The archive preserves benchmark measurements, sample identities, training settings and original content digests. Public copies omit machine and loader diagnostics, training performance traces and internal workflow notes. Resource locations use public paths or logical identifiers. Six undefined diagnostic cells are represented as JSON null.",
   "logical_resources": {
     "dataset://": "Path relative to the named dataset release; obtain separately.",
     "artifact://": "External model artifact; not bundled here.",
-    "archive://": "Original experiment configuration or audit artifact; identifier, not a download URL.",
     "model://": "Original model artifact name; use the published model registry for acquisition."
   },
   "files": [
@@ -15,7 +14,7 @@
       "path": "results/official/cut3r.json",
       "source_artifact": "results/cut3r.json",
       "source_sha256": "a4efa5f2cea4830507f39c3a188daf5c52ef24ec791c9081ffce077f47402ab8",
-      "public_sha256": "48142e8207cf029fbc0ad91b604a4fd9b9542b0ac97fc4b27ac477415449aaa9",
+      "public_sha256": "ffba7064bd448be33dcd5837cd58694311db9c4bf154a01c04366873dec767ee",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -40,6 +39,22 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/notes/method_notes",
+          "operation": "summarize_method_notes"
         }
       ]
     },
@@ -47,7 +62,7 @@
       "path": "results/official/dac.json",
       "source_artifact": "results/dac.json",
       "source_sha256": "285a8fb9e2f4781f2a7c48634b2433b2ac02dca5046147eb0166b44eebb9ea19",
-      "public_sha256": "bca55506540e4753421088b3100bd7a0f7362a9a54aae75d65db3d8a3a145061",
+      "public_sha256": "66077a5f48ffb690ab51548093f1a90022c4f79874e16f6a26a0032ebfb07469",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -68,6 +83,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -75,7 +102,7 @@
       "path": "results/official/depth_anything_3.json",
       "source_artifact": "results/depth_anything_3.json",
       "source_sha256": "a733d0ec222fbea948c4937da60cf18df0ea8d540050b0981ae7456c2621bd60",
-      "public_sha256": "393569a36d846a69b9f7bb04a555002fe1a464ff1a28fe9698208c4dde990163",
+      "public_sha256": "185f9c0aa405a2701a7fa1a6f6230fc0352cd1974578552419f07b2c7ee6b56a",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -96,6 +123,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -103,7 +142,7 @@
       "path": "results/official/depth_anything_v2.json",
       "source_artifact": "results/depth_anything_v2.json",
       "source_sha256": "da0bfc3e9efd83bf8c2782281645a395cd2b3607e85d5d492241c7272768bb15",
-      "public_sha256": "bad65f977c77dec894a59decadf017f50fac4d8c2ba17ac9c43e395f613a65f8",
+      "public_sha256": "45979122672b264dfcfa9dc48161a015e1cf0af2f34fbab73d51664ee9383298",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -124,6 +163,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -131,7 +182,7 @@
       "path": "results/official/depth_pro.json",
       "source_artifact": "results/depth_pro.json",
       "source_sha256": "3d4aab2db941ebbaeb5690e69c07406d8ac2dc51152073d003db8cb7c26e023a",
-      "public_sha256": "49489cd877833433f7d22c49dc58ff1d41e5eeb30957afdfb3d7d4fb440b084e",
+      "public_sha256": "77ae7f357ae3c26a7e212662657f20c29101fc4769c0e208ffd771a3a1ca59fd",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -152,6 +203,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -159,7 +222,7 @@
       "path": "results/official/foundation_stereo.json",
       "source_artifact": "results/foundation_stereo.json",
       "source_sha256": "6de161f977fc354595c7b6ce37d9ff93c4ff6d32e7047fc1545a5acfc4c5ebb8",
-      "public_sha256": "a4fa70bc4d622d5a4e680d7f13e71b794c15404efc0a054bdc193b6579fcf049",
+      "public_sha256": "cfd33645c032127f899ba288f950b33109e3617aff21c4e996e4e2cbbc82d4cd",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -180,6 +243,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -187,7 +262,7 @@
       "path": "results/official/geostereo.json",
       "source_artifact": "results/geostereo.json",
       "source_sha256": "159776bab571a8a4c8f9f53c4254721043b3d5a75bc7c75830f678bded1c859a",
-      "public_sha256": "4177ff060acd53b791bd111b2ab04dd38cee6b2966db479ab4b9c89d5963bfde",
+      "public_sha256": "f93be1bb8d5f988e23eee9ed2835b0148da6c7af33baff2a12c74be99d80c4ac",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -208,6 +283,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -215,7 +302,7 @@
       "path": "results/official/mapanything_1view.json",
       "source_artifact": "results/mapanything_1view.json",
       "source_sha256": "d25efdb364b068373ba23ffb2f205eb47e1373c8692e48d1428a83719dda450c",
-      "public_sha256": "0bb68831f51cac24654503dde368f0179a992c6db369dd0c756babd2cf5af814",
+      "public_sha256": "8d5781af2745eb4510877b577295f099d821645ec90d44a5bfd8bc06c55b7519",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -236,6 +323,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -243,7 +342,7 @@
       "path": "results/official/mapanything_2view.json",
       "source_artifact": "results/mapanything_2view.json",
       "source_sha256": "e89da746e39a819aad2c0b92b6435db929c9a64da888c997c7355e0545012dfe",
-      "public_sha256": "97639bde2ae3290b3f5100ee468a9221e848e9076b4d4f8560b15518e57fa4b5",
+      "public_sha256": "85162be5027b108ffa25fda21c5965bc7f47b2bfc706407bad8988818b261085",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -264,6 +363,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -271,7 +382,7 @@
       "path": "results/official/mapanything_6view.json",
       "source_artifact": "results/mapanything_6view.json",
       "source_sha256": "29f699e10ae7ed957f3bd48d4b79c23d594fecbaa59e03058fd497baacc6f241",
-      "public_sha256": "ba248b7cf89267323032a8d5fa95547b2d725d24f4d619090eaa6ebff28192be",
+      "public_sha256": "731caefe92ab03cffebe4d0e09a193e1ef4dbd0c2891983fea881ca0e16c0097",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -292,6 +403,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -299,7 +422,7 @@
       "path": "results/official/mapanything_6view_rig.json",
       "source_artifact": "results/mapanything_6view_rig.json",
       "source_sha256": "2e8105ff2891855c3893c4a3f6857ad1884e76deb59676057f2998ffdca35ec7",
-      "public_sha256": "9762bd26eaf4f9ad1bc1ae6cad537f6986bc4b2cc9f22f39afec48fc98f017de",
+      "public_sha256": "a35c140e392e30cce309e2d0a33c1bb8305373459968c42fdb5680803d7ca2a8",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -320,6 +443,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -327,7 +462,7 @@
       "path": "results/official/mapanything_rig_ft.json",
       "source_artifact": "results/mapanything_rig_ft.json",
       "source_sha256": "de98f6ac5305fb74d3ac78135d06e1104d8411bc4c796a3c752b601f5ec5db1e",
-      "public_sha256": "74bc131ddc587928770a9b1823d3a6560f9aca9b6923f8cd3cda746424896505",
+      "public_sha256": "aea720406ac00b0571a5d8b0cb3659e28f54d599f45e1ea8580fba9fb7853fd3",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -352,6 +487,18 @@
         {
           "field": "/prediction_contract/notes/finetuned_state_dict",
           "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -359,7 +506,7 @@
       "path": "results/official/mapanything_rig_scale_only.json",
       "source_artifact": "results/mapanything_rig_scale_only.json",
       "source_sha256": "51b977484f3b25f4cf1c83c35df13123f395849aee246f0ce704100e3110abed",
-      "public_sha256": "b569d11d6b6619790931ec6f62279d353b88b111dfcc48af10f60ba9559b6bc8",
+      "public_sha256": "d7c71077c452d88126b4094281e216c91dcf8f6a23bdb8704baff503e60e9571",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -384,6 +531,18 @@
         {
           "field": "/prediction_contract/notes/calibration_record",
           "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -391,7 +550,7 @@
       "path": "results/official/mapanything_scale_only.json",
       "source_artifact": "results/mapanything_scale_only.json",
       "source_sha256": "69cf4275514d4db515b30989f5bf81b677f7f4f975adf5a9a49f6a1a9e53d355",
-      "public_sha256": "4f628a6bede3d92580e7d477370059f351f89ae13b35198bcfd27e3232aa8f54",
+      "public_sha256": "6256b3a46df64989e61b49016c4288fdd210aa7fe506651abcda3de16fc3ec19",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -416,6 +575,18 @@
         {
           "field": "/prediction_contract/notes/calibration_record",
           "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -423,7 +594,7 @@
       "path": "results/official/marigold.json",
       "source_artifact": "results/marigold.json",
       "source_sha256": "b41f3414499c79f644927dcb8b68c4abdfa8c0d1f7d48c4847fc933e8d3a353c",
-      "public_sha256": "0565e790da1a8315e236c05ba64d4ae70abdfbdedc06006cb3380b84f3a38a54",
+      "public_sha256": "3462eb51ab5f7153fad0b65725589c5d7d1616dfab73f1b2ea4523ad5b8ab557",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -444,6 +615,22 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/notes/method_notes",
+          "operation": "summarize_method_notes"
         }
       ]
     },
@@ -451,7 +638,7 @@
       "path": "results/official/mast3r.json",
       "source_artifact": "results/mast3r.json",
       "source_sha256": "46a112f504f23c92d1e5210dfbf3328655941d51e8dc2ac50f8551e714c64ae8",
-      "public_sha256": "aba53c0f3cde4cda055765f75275be2c67001d0356464c93936a016a483f7a02",
+      "public_sha256": "ae2e01860e331438d09aef4cf79ddaf025d7be846d6af31ccac53e27da79184b",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -472,6 +659,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -479,7 +678,7 @@
       "path": "results/official/metric3d_v2.json",
       "source_artifact": "results/metric3d_v2.json",
       "source_sha256": "d0096fd744d0df0f2b705ebf8bae1534b7ac615bb33da06357fc930c4ead08ee",
-      "public_sha256": "4584a44a54121b6e79f5fdc8af8adcce68f2a9dbb255417dadfcfd111fc08cbd",
+      "public_sha256": "b964517e0ae151c5e673b083c04fd39e3d73008187ecdf2f3827ee9e05ae96c4",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -500,6 +699,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -507,7 +718,7 @@
       "path": "results/official/moge.json",
       "source_artifact": "results/moge.json",
       "source_sha256": "55f4b70369a7fb5b66f47e54fc01609cd6dce2915791e0b575bc1679596b8c1a",
-      "public_sha256": "3f1780bc97cc168e2001ec46b1c46a3021733aa9cf627aa9782ff7e947b9791b",
+      "public_sha256": "16e26c1609ba6f225e362ad6a4eff79f7c08a335f9b5e78e8e1aae0f72ce9c3c",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -528,6 +739,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -535,7 +758,7 @@
       "path": "results/official/unidac.json",
       "source_artifact": "results/unidac.json",
       "source_sha256": "f129402e1e2c6373a482470268251546d6b401fb1024d0fdf083c97847741b19",
-      "public_sha256": "1096bb82ee0703f5579fe9be9319cc4228750063af6fb961ed20bbc171b0e65a",
+      "public_sha256": "768e3a2e926bf7f8ef31c2a6ec3b52fcfaa300687ef2b9b98e0d396770070d4a",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -556,6 +779,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -563,7 +798,7 @@
       "path": "results/official/unidepth_v2.json",
       "source_artifact": "results/unidepth_v2.json",
       "source_sha256": "32f7be2adefcba5e1864106e7c4904bc9d5a4c678ee4d177600b4c58ede848e6",
-      "public_sha256": "f08191209a9b7a6f4d4e49f2eee3cfa4c179a3942aaee69aaf3833202a04d627",
+      "public_sha256": "54854e1566382fcd872f5db91aa308dea92dbaca7325783264154bc53c639ebf",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -584,6 +819,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -591,7 +838,7 @@
       "path": "results/official/unik3d.json",
       "source_artifact": "results/unik3d.json",
       "source_sha256": "17392107733f55f8cd4d2fd2a27a60c0adaf1af9676001cec1780d5ec023431e",
-      "public_sha256": "022ecbde7bf9cd5bcc99cf3d4853d9916d800b029fbda05ceb2da487fcd7cd33",
+      "public_sha256": "2a5756aceaddd9fe7336983a72fdbac8f8f7f68c42b45dbe137a4657c126b874",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -612,6 +859,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -619,7 +878,7 @@
       "path": "results/official/vggt.json",
       "source_artifact": "results/vggt.json",
       "source_sha256": "b4776e7b135221a60984992211a583cc3f55f2bb8a3897ca20f6049cac6ffcb5",
-      "public_sha256": "3c64992268226b4ed1a246a94a85b322ad0f05ceac66ef357d9bb835ff3f13d5",
+      "public_sha256": "a917d02ef1efa02f5340bd6b17f9f0d96cd68003aa6d32c6c637d6ebb85bd981",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -640,6 +899,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -647,7 +918,7 @@
       "path": "results/official/vggt_omega.json",
       "source_artifact": "results/vggt_omega.json",
       "source_sha256": "e1bf721e31b83ebc2aaab1cdb8e9717a6e697a1ed56ced704b93a8086e8dd487",
-      "public_sha256": "d2e534c78e31a875e406949c2eaed156a68a40e09eed0b42c5a10c3fb610cda8",
+      "public_sha256": "a12b2e3259fcb72c63af8754c265f1b4f466fff4123b08d2bba4dfebb4b72263",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -672,6 +943,22 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/notes/method_notes",
+          "operation": "omit_development_notes"
         }
       ]
     },
@@ -679,7 +966,7 @@
       "path": "results/official/zoedepth.json",
       "source_artifact": "results/zoedepth.json",
       "source_sha256": "9c7362216ec8b5188c9db0519e918c4b1f95911847e9c1c0d396c6282bf5447b",
-      "public_sha256": "2bc57a37ad513dc61f0ccf1910032df409603637e6eb7c6c05645e6fb0bcafa2",
+      "public_sha256": "dd92601e96df0cc36d853f78a1ac20f86f8fb3441e54c75a888e41b4b15704ce",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -700,6 +987,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -714,7 +1013,7 @@
       "path": "results/paper_artifacts/diagnostic_subset/foundation_stereo.json",
       "source_artifact": "paper_artifacts/diagnostic_subset/foundation_stereo.json",
       "source_sha256": "05a8a9a7904592dae390dc36b0dea63b9953293a2182428db99c48ab6c3e19c7",
-      "public_sha256": "26eea677a1ea9e6226256df3bbe6229ccb6b9218c9ff8b660a2e35d594f1fc88",
+      "public_sha256": "011e3db316820bca6cabe421c55868df8072a834f901c1d0de555b3a4e502a9b",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -735,6 +1034,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -742,7 +1053,7 @@
       "path": "results/paper_artifacts/diagnostic_subset/mapanything_6view.json",
       "source_artifact": "paper_artifacts/diagnostic_subset/mapanything_6view.json",
       "source_sha256": "ab3a41d79f3521baf0eecacea954e64fd2f1d5b5649b7289268eb3401ef1379c",
-      "public_sha256": "f6eaee3a76145f569cf4ca3f8436ec3f0520dad138bd8ed6c1a80531e7f7c62e",
+      "public_sha256": "d524c53d703a48ee359e2bfffa1f697da6982b07c1784ab73ca679fec1a29c3d",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -763,6 +1074,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -770,7 +1093,7 @@
       "path": "results/paper_artifacts/diagnostic_subset/mapanything_6view_rig.json",
       "source_artifact": "paper_artifacts/diagnostic_subset/mapanything_6view_rig.json",
       "source_sha256": "44e2675501f84e592126f7989c3fa4b1deddbba18c915fd6acdde617bb543a97",
-      "public_sha256": "5fe37dcdf0979d327f96732db825b7ae412810bf2f5c62a5f9ae04010637eb19",
+      "public_sha256": "d735262122a5cb7d9286ec13cf93f75c0617e7b18cff11d1891a5cc46d2e7d30",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -791,6 +1114,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -798,7 +1133,7 @@
       "path": "results/paper_artifacts/diagnostic_subset/mapanything_rig_ft.json",
       "source_artifact": "paper_artifacts/diagnostic_subset/mapanything_rig_ft.json",
       "source_sha256": "d86fe6c07052ad091214293d4db02d32665e8a8fcdd6f28bd8f224d72a40d4a5",
-      "public_sha256": "2ba97d1f9c4d2cb5684b3aea8721d06c8cd3a62f54489fdc62afb3352bfaa595",
+      "public_sha256": "165d1721df619c78983626a329757a6f1dcdec8fd30594adfca4d9fd5b290e9c",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -823,6 +1158,18 @@
         {
           "field": "/prediction_contract/notes/finetuned_state_dict",
           "operation": "relocate_path"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -830,7 +1177,7 @@
       "path": "results/paper_artifacts/diagnostic_subset/unidepth_v2.json",
       "source_artifact": "paper_artifacts/diagnostic_subset/unidepth_v2.json",
       "source_sha256": "f5ffd823c8066f672fd69330bcaf6412ac2e3bb1c5b868710f7efb12104cc672",
-      "public_sha256": "97aeb3389e0d8dbe69ed15143694f7d9dc23d07b6c1ea06dbde06427c71a5e9a",
+      "public_sha256": "f159aeac2839ff710d354ef8b368f7b3b1991af9a7429b17e74117a204627caa",
       "changes": [
         {
           "field": "/population/manifest_path",
@@ -851,6 +1198,18 @@
         {
           "field": "/prediction_contract/environment/pid",
           "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/prediction_contract/environment/platform",
+          "operation": "remove_machine_identity"
+        },
+        {
+          "field": "/population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/prediction_contract/population_identity/sample_storage",
+          "operation": "omit_loader_diagnostic"
         }
       ]
     },
@@ -858,7 +1217,7 @@
       "path": "results/paper_artifacts/export_manifest.json",
       "source_artifact": "paper_artifacts/export_manifest.json",
       "source_sha256": "c10d6a3ae7b6cf06655630282c66dca1e1947a48300b40bca2528972bb6a2d79",
-      "public_sha256": "edf403d662e0e45f3e88f96ba126f464af38be0ad49ffaa9af8a2a26041520d6",
+      "public_sha256": "6724858f75e0588bbcf877451b86ca69345c243538f1cc8f625f6bf6f5959caa",
       "changes": [
         {
           "field": "/artifacts/main_table",
@@ -886,7 +1245,7 @@
         },
         {
           "field": "/final_config",
-          "operation": "relocate_path"
+          "operation": "omit_internal_resource"
         },
         {
           "field": "/figure4_provenance",
@@ -894,7 +1253,23 @@
         },
         {
           "field": "/contrast_reporting_revision/audit",
-          "operation": "relocate_path"
+          "operation": "omit_internal_resource"
+        },
+        {
+          "field": "/scored_population/sample_storage",
+          "operation": "omit_loader_diagnostic"
+        },
+        {
+          "field": "/contrast_reporting_revision/source_sha256",
+          "operation": "label_internal_source_by_role"
+        },
+        {
+          "field": "/rig_control_extension/reason",
+          "operation": "summarize_method_notes"
+        },
+        {
+          "field": "/note",
+          "operation": "summarize_method_notes"
         }
       ]
     },
@@ -973,8 +1348,29 @@
       "path": "results/training_run.json",
       "source_artifact": "training/seed20260912/training_run.json",
       "source_sha256": "d393f51ceb27b8dc837ef6482ae8aca0ed5b07b312738e155aceb2a175888cf1",
-      "public_sha256": "d393f51ceb27b8dc837ef6482ae8aca0ed5b07b312738e155aceb2a175888cf1",
-      "changes": []
+      "public_sha256": "43419164dfa6b01e81bb30d04c3b29bb5a53c1b18a2afb7be08ae80156bed7cf",
+      "changes": [
+        {
+          "field": "/steady_step_p50_s",
+          "operation": "omit_runtime_diagnostic"
+        },
+        {
+          "field": "/steady_step_p90_s",
+          "operation": "omit_runtime_diagnostic"
+        },
+        {
+          "field": "/validation_seconds",
+          "operation": "omit_runtime_diagnostic"
+        },
+        {
+          "field": "/trainable/example_trainable_names",
+          "operation": "omit_debug_sample"
+        },
+        {
+          "field": "/note",
+          "operation": "omit_runtime_diagnostic"
+        }
+      ]
     }
   ]
 }

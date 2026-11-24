@@ -123,7 +123,7 @@ class Population:
             "sites": self.sites,
             "mask_profile": self.mask_profile_name,
             "data_version": self.data_version,
-            "manifest_path": self.manifest_path,
+            "manifest_path": Path(self.manifest_path).name,
             "manifest_content_id": self.manifest_content_id,
             "token_set_id": self.token_set_id(),
             "annotation_version": self.annotation_version,
@@ -482,17 +482,10 @@ def resolve_population(
         samples = IndexBackedSampleList(
             index_dir, tokens, mapping=mapping, recording_filter=keep
         )
-        notes["sample_storage"] = (
-            f"sqlite-backed: {len(tokens)} tokens retained, samples decoded on access"
-        )
         recording_source = "sqlite"
     else:
         lines = load_manifest_lines(manifest_path, keep_recordings=keep)
         samples = LazySampleList(lines, mapping=mapping)
-        notes["sample_storage"] = (
-            f"jsonl-backed: {len(lines)} raw lines retained "
-            f"({sum(len(line) for line in lines) / 1e6:.0f} MB), decoded on access"
-        )
         recording_source = "jsonl"
 
     notes["n_samples_loaded"] = len(samples)
@@ -514,7 +507,7 @@ def resolve_population(
                 raise FormalRunBlocked(str(exc)) from exc
     else:
         blockers.append(
-            f"no site mapping at {site_map_path!r}: recording IDs are not physical "
+            "no site mapping supplied: recording IDs are not physical "
             "sites and cannot be substituted"
         )
         if not any(s.physical_site_id for s in samples):
@@ -541,7 +534,7 @@ def resolve_population(
     annotation_version = annotation.get("version")
     if require_annotations:
         if not (annotation.get("dir") and Path(annotation["dir"]).exists()):
-            blockers.append(f"no annotation directory at {annotation.get('dir')!r}")
+            blockers.append("no annotation directory available")
         if str(annotation.get("status")) != "frozen":
             blockers.append(
                 f"annotation status is {annotation.get('status')!r}, not 'frozen'"

@@ -1,25 +1,8 @@
-"""VGGT inference runner -- feed-forward multi-view, pose-free (Group C).
+"""Pose-free VGGT inference on six synchronized RGB views.
 
-All six ego cameras go in; camera 2's depth comes out. VGGT regresses camera
-parameters itself, so no extrinsics are supplied (that is the point of the
-pose-free half of Group C).
-
-TWO THINGS THAT WOULD SILENTLY CORRUPT THIS
-
-1. Preprocessing. `load_and_preprocess_images` defaults to mode="crop", which
-   fixes width at 518 px and *centre-crops the height*. Our frames are
-   1600x1296 (aspect 1.23), so cropping would discard the top and bottom of the
-   fisheye circle -- precisely the periphery the paper's radial analysis is
-   about -- and the surviving map would then be scored against GT pixels the
-   model never saw. mode="pad" is used instead, and the padding is removed
-   afterwards so the returned map covers the full frame.
-
-2. Depth convention. VGGT's depth head predicts depth along the optical axis in
-   its own normalized frame, and the whole prediction is metric only up to an
-   unknown global scale (a pose-free method cannot recover absolute scale from
-   images alone). The paper evaluates Group C without alignment, so this runner
-   saves the raw prediction: whether VGGT's implied scale is right is a finding,
-   not something to correct away.
+Pad each image for inference and remove the padding from the target prediction
+to preserve the native field of view. The runner saves camera 2 optical-axis
+depth. The evaluator fits one positive scale per timestamp.
 """
 import sys
 from pathlib import Path
@@ -104,7 +87,7 @@ def main():
 
     run_loop("vggt", args, predict,
              notes={"output_space": "depth_up_to_global_scale",
-                    "expected_alignment": "none (Group C scored unaligned by design)",
+                    "expected_alignment": "positive_scale",
                     "preprocess_mode": "pad (not crop) so the fisheye periphery survives",
                     "n_input_views": NUM_CAMERAS, "anchor_camera": ANCHOR_CAM})
 

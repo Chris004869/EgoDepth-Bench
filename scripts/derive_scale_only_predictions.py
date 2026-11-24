@@ -80,7 +80,7 @@ def main():
         public, method=scale_name, scale_contract=f"fixed positive scalar s_C={factor:.9f} from train",
         notes={
             **public.notes,
-            "calibration_record": str(calibration_path),
+            "calibration_record": calibration_path.name,
             "calibration_record_digest": file_content_digest(calibration_path),
             "derivation": "same frozen network predictions; scalar applied after output resampling",
             "source_contract_digest": file_content_digest(source_contract),

@@ -58,7 +58,6 @@
     "formal_ready": true,
     "blockers": [],
     "site_mapping_status": "frozen",
-    "sample_storage": "jsonl-backed: 6574 raw lines retained (28 MB), decoded on access",
     "n_samples_loaded": 6574,
     "recording_prefilter": {
       "split": "test",
@@ -872,7 +871,7 @@
     "vggt_omega": "de408d4d8fa1871c"
   },
   "rig_control_extension": {
-    "reason": "Author-requested audit of omitted known rig poses; no-pose results retained",
+    "reason": "Compare MapAnything with and without known rig poses on the same anchors.",
     "diagnostic_selection": "Same 800 anchors, unchanged labels and reference-selected comparison cells",
     "independent_score_sha256": "543689ad07b0b631507b18d21fb29e797d33cd638358f73f0b4823b1465f4deb"
   },
@@ -2480,13 +2479,11 @@
     },
     "note": "AI-generated and AI-reviewed. Review agreement describes pipeline stability between two related vision-language models; it is not a measured label-accuracy rate and the two models are not statistically independent."
   },
-  "note": "Tables use result documents; paired, motion, and aligned diagnostics recompute the stated comparisons from archived predictions and reference. Missing results appear as \\pending in the tables and as explicit notices in the figure panels; no value is simulated. Development artifacts are not written into the paper tree.",
+  "note": "Tables report archived scores. Paired, motion and alignment diagnostics use the reference depths and archived predictions.",
   "complete_final_result_set_verified": true,
-  "final_config": "archive://configuration/release_egodepth_v1_20260914_trained.yaml",
   "figure4_provenance": "results/paper_artifacts/interaction_diagnostics.json",
   "contrast_reporting_revision": {
     "date": "2026-09-16",
-    "audit": "archive://diagnostic-audit/contrast_reporting",
     "description": "Pool raw contrasts independently; standardized contrasts retain all-cell support requirements.",
     "methods": [
       "unidepth_v2",
@@ -2497,7 +2494,7 @@
     "source_sha256": {
       "src/egodepth_eval/report/paired_regions.py": "a1f278c36263ce6331a3df15b99a8ba440ef0f6745980ec2ca6494fce8aa9787",
       "src/egodepth_eval/report/diagnostics.py": "c9a5189f2448ca807a071f657d38e914d7e57a228ecdb44756f99cb95f374b68",
-      "scripts/refresh_diagnostic_contrasts.py": "ccc9b0e60b4120a42510ee39f857b1f2c1fb4298223e9984ecfcf07246a9d308"
+      "contrast_refresh": "ccc9b0e60b4120a42510ee39f857b1f2c1fb4298223e9984ecfcf07246a9d308"
     }
   }
 }

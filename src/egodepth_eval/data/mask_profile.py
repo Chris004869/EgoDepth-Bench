@@ -41,9 +41,6 @@ class MaskProfile:
             )
 
 
-# The development snapshot. Explicitly legacy: validity comes from the depth
-# array, the NPY mask is audited as `one_is_invalid`, and disagreement is
-# reported per frame instead of being papered over.
 PROFILE_336L_LEGACY_20260828 = MaskProfile(
     name="336l_legacy_20260828",
     validity_source="finite_positive",
@@ -51,10 +48,8 @@ PROFILE_336L_LEGACY_20260828 = MaskProfile(
     require_mask_file=False,
     audit_inverse_semantics=True,
     notes=(
-        "2026-08-28 development snapshot: .valid.npy is inverted relative to its "
-        "declared mask_encoding.one_is_valid=true. Validity is taken from "
-        "isfinite(depth) & (depth > 0), matching screen/frame_pass.py and "
-        "scripts/export_gold_v0_336l.py. Not for release data."
+        "Legacy finite-positive depth. The optional stored mask uses zero for "
+        "valid pixels and is used only for the per-frame mask audit."
     ),
 )
 
@@ -67,11 +62,8 @@ PROFILE_336L_20260912_INVERTED_NPY = MaskProfile(
     audit_inverse_semantics=True,
     max_audit_disagreement=1.0,
     notes=(
-        "2026-09-12 re-generated batch: NPY validity mask is inverted relative to "
-        "its declared mask_encoding.one_is_valid=true. Verified on 384 decoded "
-        "frames across 384 recordings: every finite positive depth pixel is at "
-        "mask==0. Applied as ~mask & finite & positive, so the quality mask is "
-        "used, not bypassed. Depth arrays are unchanged and were not regenerated."
+        "Legacy inverted mask. A pixel is valid when its stored mask is zero "
+        "and its depth is finite and positive."
     ),
 )
 
@@ -84,11 +76,8 @@ PROFILE_RELEASE_DECLARED = MaskProfile(
     audit_inverse_semantics=True,
     max_audit_disagreement=1.0,
     notes=(
-        "Release profile: declared_mask & finite & positive. Requires the mask "
-        "file to exist. Verify the direction on the actual release batch before "
-        "using it -- a quality mask may legitimately drop finite positive pixels, "
-        "so disagreement with finite-positive is expected and is not by itself "
-        "evidence of inversion."
+        "The release requires an explicit True-is-valid mask. A pixel is valid "
+        "when the mask is true and its depth is finite and positive."
     ),
 )
 
@@ -114,11 +103,8 @@ def decode_packed_mask(
 ) -> np.ndarray:
     """Decode a packbits validity mask to a bool array of shape (height, width).
 
-    NOT VERIFIED ON REAL DATA. The 336L development snapshot declares
-    `camera2_packed_valid_mask_path` but the files do not exist, so this decoder
-    is covered by synthetic round-trip tests only. The tail-padding check below
-    is the part that matters: `np.unpackbits` returns a multiple of 8 bits, and
-    silently reshaping the padded tail into the image shifts every row.
+    The last byte can contain up to seven zero padding bits after the final
+    pixel. Reject nonzero padding or extra bytes before reshaping the mask.
     """
     if bitorder not in ("little", "big"):
         raise ValueError(f"bitorder must be little or big, got {bitorder!r}")

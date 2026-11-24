@@ -18,18 +18,9 @@ Completion
   {output_dir}/metadata.json    timings, per-frame errors, and the geometry
                                 contract that was actually applied
 
-THE ALIGNMENT CONTRACT
-Predictions are scored per pixel against a GT map that covers the *whole*
-native fisheye frame. The evaluation grid is dataset-dependent (the Ball-bar
-smoke data is 800x648, while Gold-v0 is 512x416), so a prediction is only
-comparable if it covers the whole frame and is resampled to that frame's actual
-GT shape. Several repos' convenience
-loaders centre-crop to a square or to a fixed width, which silently throws
-away the periphery -- exactly the region the paper's radial analysis is about,
-and the resulting map would be scored against GT pixels it never saw. Runners
-must therefore feed the full frame and call `save_depth`, which resamples back
-onto the GT grid. Where a repo's own preprocessing is used, the runner is
-responsible for undoing its crop/pad before saving.
+Predictions cover the full native fisheye frame and are resampled to each
+reference map's grid. Undo padding after upstream preprocessing so that the
+predicted and reference image coordinates agree at the periphery.
 """
 
 import sys
@@ -135,7 +126,7 @@ def pinhole_K_for_model(data_dir: Path, scene_id: str, shape_hw: tuple) -> np.nd
         raise FileNotFoundError(
             f"No depth-grid intrinsics for scene {scene_id}: expected "
             f"{data_dir / 'calibration' / f'{scene_id}_depth_info.json'}. "
-            "Re-run Stage 1 extraction to generate it."
+            "Include the depth-grid intrinsics for this scene."
         )
     sx, sy = w / intr["width"], h / intr["height"]
     return np.array([
@@ -203,11 +194,7 @@ def run_loop(
     if notes:
         metadata.update(notes)
 
-    # Resume only over predictions this same method wrote. A stale metadata.json
-    # naming a different method means the directory holds someone else's output
-    # (or synthetic test data), and silently skipping those files would score
-    # them as if they were this method's -- which is how a run once reported an
-    # AbsRel of 0.0003. Refuse instead of guessing.
+    # Resume only over predictions from the same method.
     existing_meta = output_dir / "metadata.json"
     if existing_meta.exists():
         try:
@@ -296,8 +283,6 @@ def run_loop(
           + (f", {n_err} failed" if n_err else "")
           + (f", median {metadata['median_ms']:.0f} ms/frame" if metadata["timings"] else ""))
 
-    # A method that produced nothing is a failure, and the exit code has to say
-    # so or the Stage 2 runner will report it as a success.
     if n_done == 0:
         raise SystemExit(f"{method}: no frames produced ({n_err} errors)")
     return metadata

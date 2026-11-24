@@ -10,6 +10,17 @@ import pytest
 from scripts.export_archived_results import verify_provenance
 
 
+def test_public_results_omit_machine_identifiers_and_raw_training_logs():
+    results = Path(__file__).resolve().parents[1] / "results"
+    for directory in [results / "official", results / "paper_artifacts/diagnostic_subset"]:
+        for path in directory.glob("*.json"):
+            contract = json.loads(path.read_text())["prediction_contract"]
+            assert {"platform", "hostname", "pid"}.isdisjoint(contract["environment"]), path.name
+
+    training = json.loads((results / "training_run.json").read_text())
+    assert {"hostname", "pid", "step_log", "validation_seconds"}.isdisjoint(training)
+
+
 def test_roi_coverage_and_common_support_values_reach_the_archive_tables(tmp_path):
     root = Path(__file__).resolve().parents[1]
     subprocess.run([sys.executable, root / "scripts/export_archived_results.py",

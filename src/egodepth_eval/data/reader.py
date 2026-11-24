@@ -3,10 +3,8 @@
 Used identically by inference, AI annotation, training and scoring, so a
 resize/crop convention cannot drift between them.
 
-ROOT RELOCATION. Relative asset paths are resolved against an ordered list of
-roots, so a read-only cache holding a development subset can sit in front of the
-privileged source directory without rewriting the manifest. The first root that
-holds the file wins, and which root served each file is recorded.
+Manifest paths are relative to the dataset. The reader searches the roots in
+order and records the root that supplied each file.
 """
 
 from __future__ import annotations
@@ -75,8 +73,7 @@ class AssetResolver:
                 if candidate.exists():
                     return candidate, root
             except PermissionError:
-                # A root this process cannot traverse is skipped, not fatal: the
-                # usual setup is a readable cache in front of a privileged source.
+                # Another root may contain a readable copy.
                 continue
         self._misses[relative] = self._misses.get(relative, 0) + 1
         raise FileNotFoundError(
@@ -93,7 +90,6 @@ class AssetResolver:
 
         Locator: relative/archive.tar::byte_offset:byte_length. Offsets are
         generated from the actual tar writer and covered by shard checksums.
-        No extraction, privileged worker, or absolute source path is needed.
         """
         if '::' not in relative:
             path, root = self.resolve(relative)
@@ -259,9 +255,7 @@ def stage_assets(
 ) -> dict:
     """Copy a subset's assets into a user-readable cache, preserving relative paths.
 
-    The source directory needs privileged access on this host, so development
-    work runs against a cache. Relative paths are preserved exactly, which is
-    what lets the same manifest resolve against either root.
+    The same manifest can resolve files against either the cache or the source.
     """
     import shutil
 

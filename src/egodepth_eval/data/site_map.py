@@ -1,17 +1,7 @@
-"""Recording -> physical_site_id mapping and split assignment.
+"""Map recordings to physical sites and assign each site to one split.
 
-THE POINT OF THIS FILE IS TO REFUSE TO GUESS.
-The author has confirmed 37 distinct physical locations. The development PKL has
-2,276 recording (bag) IDs. There is no derivable function from one to the other:
-recording IDs, capture-date batches and the legacy `scene_id` are all different
-things from a site, and grouping by bag-name prefix would invent sites that the
-paper then reports as independent locations.
-
-So: a formal run requires an explicit mapping file. Without one, only a
-development manifest can be produced, it is stamped `development` and
-`site_assignment: recording_as_pseudo_site`, and `require_formal_sites`
-rejects it. That keeps "we don't know the sites yet" from silently becoming
-"unseen-site generalization measured".
+Formal runs require an explicit physical-site mapping. Development manifests
+may group samples by recording for testing without claiming site generalization.
 """
 
 from __future__ import annotations
@@ -36,8 +26,7 @@ class SiteMapping:
     site_to_split: dict
     source: str
     status: str = "draft"
-    # Sites already used for development/tuning. Gold-v0 touched some, and a
-    # tuned site presented as a fully unseen test site overstates the result.
+    # Track previous use when validating held-out test sites.
     development_history: dict = field(default_factory=dict)
     notes: str = ""
     history_policy: str = "fully_unseen"

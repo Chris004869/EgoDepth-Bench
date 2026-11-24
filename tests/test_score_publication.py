@@ -9,7 +9,7 @@ import pytest
 from examples.synthetic_smoke import create_synthetic_fixture
 from egodepth_eval.data.population import PopulationRole, resolve_population
 from egodepth_eval.score.external import score_predictions
-from egodepth_eval.score.prediction_io import PredictionContract
+from egodepth_eval.score.prediction_io import PredictionContract, default_environment
 from egodepth_eval.score.scorer import write_result
 
 
@@ -66,3 +66,22 @@ def test_external_contract_population_conflicts_are_rejected(tmp_path, key, inva
     with pytest.raises(ValueError, match=rf"population_identity\.{key}"):
         score_predictions(config, predictions, tmp_path / "bad.json", method="synthetic", contract_path=path)
     assert not (tmp_path / "bad.json").exists()
+
+
+def test_scoring_legacy_contract_omits_machine_identifiers(tmp_path):
+    config, predictions = create_synthetic_fixture(tmp_path)
+    contract = PredictionContract("synthetic", scoring_grid_hw=(16, 16))
+    legacy = contract.to_dict()
+    legacy["environment"] = {
+        "hostname": "example-host", "pid": 42, "platform": "example-kernel",
+        "python": "3.11.0", "gpu_name": "Example GPU",
+    }
+    path = tmp_path / "legacy.json"
+    path.write_text(json.dumps(legacy))
+    result = score_predictions(config, predictions, tmp_path / "score.json",
+                               method="synthetic", contract_path=path)
+    published = result["prediction_contract"]
+    assert published["contract_hash"] == legacy["contract_hash"]
+    assert published["environment"] == {"python": "3.11.0", "gpu_name": "Example GPU"}
+    assert result["population"]["manifest_path"] == "synthetic_manifest.jsonl"
+    assert not {"platform", "pid", "hostname"}.intersection(default_environment())

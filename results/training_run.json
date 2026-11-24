@@ -20,29 +20,7 @@
     ],
     "n_parameters_total": 1228491222,
     "n_parameters_trainable": 505696595,
-    "trainable_share": 0.41164038126110436,
-    "example_trainable_names": [
-      "scale_token",
-      "ray_dirs_encoder.conv_in.weight",
-      "ray_dirs_encoder.conv_in.bias",
-      "ray_dirs_encoder.encoder.0.conv1.weight",
-      "ray_dirs_encoder.encoder.0.conv1.bias",
-      "ray_dirs_encoder.encoder.0.conv2.weight",
-      "ray_dirs_encoder.encoder.0.conv2.bias",
-      "ray_dirs_encoder.encoder.0.shortcut.weight",
-      "ray_dirs_encoder.encoder.0.shortcut.bias",
-      "ray_dirs_encoder.encoder.1.conv1.weight",
-      "ray_dirs_encoder.encoder.1.conv1.bias",
-      "ray_dirs_encoder.encoder.1.conv2.weight",
-      "ray_dirs_encoder.encoder.1.conv2.bias",
-      "ray_dirs_encoder.encoder.1.shortcut.weight",
-      "ray_dirs_encoder.encoder.1.shortcut.bias",
-      "ray_dirs_encoder.encoder.2.weight",
-      "ray_dirs_encoder.encoder.2.bias",
-      "ray_dirs_encoder.norm_layer.weight",
-      "ray_dirs_encoder.norm_layer.bias",
-      "fusion_norm_layer.weight"
-    ]
+    "trainable_share": 0.41164038126110436
   },
   "identity": {
     "optimization": {
@@ -92,25 +70,8 @@
     "torch": "2.4.1+cu124"
   },
   "wall_seconds": 43412.65653542802,
-  "steady_step_p50_s": 6.730875492095947,
-  "steady_step_p90_s": 6.73683614730835,
-  "validation_seconds": [
-    231.26268082484603,
-    230.79726290516555,
-    230.80572850443423,
-    230.74511948414147,
-    233.1770994439721,
-    231.16596588864923,
-    231.13430999219418,
-    230.7182226255536,
-    230.71209840290248,
-    230.88687835261226,
-    231.00276018120348,
-    230.97888751886785
-  ],
   "hardware": "NVIDIA GeForce RTX 4090",
   "validation_frame_count": 4491,
   "torch": "2.4.1+cu124",
-  "peak_gpu_gb": 20.622879232,
-  "note": "Benchmark timings are hardware-specific; no formal metric is inferred from a benchmark."
+  "peak_gpu_gb": 20.622879232
 }

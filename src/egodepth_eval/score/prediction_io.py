@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import platform
 import subprocess
 from dataclasses import dataclass, field, asdict
@@ -164,6 +163,14 @@ class PredictionContract:
 
     def to_dict(self) -> dict:
         payload = asdict(self)
+        # Older manifests may carry machine identifiers in descriptive metadata.
+        # Re-serializing one for scoring should preserve the scientific fields.
+        environment = payload["environment"]
+        if isinstance(environment, dict):
+            for key in ("hostname", "pid", "platform"):
+                environment.pop(key, None)
+        else:
+            payload["environment"] = {}
         payload["input_views"] = list(self.input_views)
         payload["scoring_grid_hw"] = list(self.scoring_grid_hw)
         payload["schema"] = PREDICTION_SCHEMA
@@ -194,10 +201,8 @@ class PredictionContract:
 
 def default_environment() -> dict:
     environment = {
-        "hostname": platform.node(),
         "python": platform.python_version(),
-        "platform": platform.platform(),
-        "pid": os.getpid(),
+        "os": platform.system(),
     }
     try:
         import torch
@@ -273,9 +278,7 @@ def load_prediction(path: Path) -> LoadedPrediction:
     """Read a prediction, accepting the legacy float16 `depth`-only layout.
 
     Legacy files have no support mask, so validity falls back to finite-and-
-    positive and `raw` is absent. Kept readable so existing Ball-bar and Gold-v0
-    predictions stay usable for aggregation work, but a legacy file cannot supply
-    a real support mask and the scorer records that.
+    positive and `raw` is absent. The scorer records this inferred support.
     """
     with np.load(str(path), allow_pickle=False) as payload:
         keys = set(payload.files)

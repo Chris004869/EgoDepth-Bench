@@ -41,23 +41,15 @@ The exporter reads those diagnostic values from the [archived export manifest](p
 [Pixel-level verification](../docs/EVALUATION.md) uses the data and saved predictions.
 The table export alone checks archived statistics.
 
-## Provenance and public metadata
+## Provenance
 
-`provenance.json` maps each original artifact SHA256 to its public derivative
-SHA256 and lists every modified field. All finite scientific values, sample
-identifiers, model/input contracts and recorded content identities are preserved.
-Machine hostnames and process IDs are removed; internal absolute paths are replaced
-by public relative paths or logical resource identifiers. Six undefined `NaN`
-stereo diagnostic cells are encoded as JSON `null` so standard JSON readers can
-load the file. They have not been filled or estimated.
+[provenance.json](provenance.json) records the SHA-256 of each archived source
+and its public copy, together with the metadata fields changed for release.
+The public copies retain the benchmark measurements, sample identities,
+training settings, software versions and original experiment digests. Six
+undefined stereo diagnostic cells use JSON `null`.
 
-`dataset://`, `artifact://`, `model://` and `archive://` values identify resources;
-they are not live download URLs. Recorded code identities, checkpoint digests and
-contract hashes still describe the **original experiment**. Metadata redaction
-does not recreate that original byte sequence, and these historical identities
-are not rewritten to pretend that the current public source produced the scores.
-
-**Do not use this public archive as a resumable inference run.** Start a new output
-directory for current-code inference or training, which creates its own contracts
-and identities. The archive is for inspecting, tabulating and tracing the reported
-statistics. Model weights and dataset assets are not bundled here.
+Paths beginning with `dataset://`, `artifact://` or `model://` identify the
+input resources for a run. Historical contract hashes and checkpoint digests
+refer to the original experiment. Use a fresh output directory for new
+inference and training runs so each run records its own identities.

@@ -421,7 +421,7 @@ def build_method_runner(name: str, method: dict, device: str, config: dict, popu
     upstream=upstream_identity(name, config["paths"]["third_party_dir"])
     contract = PredictionContract(
         method=name,
-        checkpoint=checkpoint,
+        checkpoint=Path(checkpoint).name if Path(checkpoint).exists() else checkpoint,
         # Bind predictions to the bytes of the selected weights.
         checkpoint_content_id=(
             weights["digest"]
@@ -454,7 +454,7 @@ def build_method_runner(name: str, method: dict, device: str, config: dict, popu
         scoring_grid_hw=tuple(config["data"].get("scoring_grid_hw", (416, 512))),
         code_identity=code_identity(),
         data_version=config["data"].get("data_version"),
-        manifest_id=str(config["data"]["samples_jsonl"]),
+        manifest_id=Path(config["data"]["samples_jsonl"]).name,
         manifest_content_id=population.manifest_content_id if population else None,
         population_identity=(
             {k: v for k, v in population.identity().items() if k != "sites"}
@@ -462,7 +462,7 @@ def build_method_runner(name: str, method: dict, device: str, config: dict, popu
         ),
         environment=default_environment(),
         notes={
-            "finetuned_state_dict": state_path,
+            "finetuned_state_dict": Path(state_path).name if state_path else None,
             "use_multiview_confidence": False,
             "extra_edge_or_confidence_filter": False,
         },
@@ -573,16 +573,7 @@ def command_infer(args: argparse.Namespace) -> int:
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.write_text(json.dumps(overall, indent=2, default=str) + "\n")
 
-    # A method that produced NOTHING must not exit 0. Measured on a rehearsal run:
-    # 206,999 of 206,999 samples failed on a missing asset root and the command still
-    # exited 0 with `n_written: 0`. In a batch sweep that reads as a completed step,
-    # and the problem only resurfaces much later as an empty table cell -- by which
-    # point the cause is many runs away. The failures were printed per sample, but a
-    # scripted sweep checks the exit code, not the scrollback.
-    # Legacy methods report `n_converted` rather than `n_written`, and both paths can
-    # end in a status that produced nothing at all (`runner_failed`, `no_runner`,
-    # `contract_mismatch`). All of them have to reach the exit code, or a sweep that
-    # silently skipped a method still looks like it ran.
+    # Propagate failed or incomplete inference to batch callers.
     BAD_STATUSES = {
         "runner_failed", "no_runner", "env_unavailable", "no_output",
         "contract_mismatch", "weights_missing", "dependency_missing",
@@ -631,10 +622,7 @@ def _infer_legacy(
     staging = Path(config["run"]["out_dir"]) / "legacy_staging" / name
 
     if args.dry_run:
-        # A dry run must not write a contract. It did, and the contract it left
-        # behind then made the real run refuse to resume against itself -- a
-        # self-inflicted mismatch, since a dry run produces no predictions for the
-        # contract to describe.
+        # A dry run has no predictions to bind to a contract.
         result = run_legacy_method(
             spec, config, population, reader, staging, out_dir,
             device=args.device, limit=args.limit, dry_run=True,

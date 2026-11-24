@@ -35,6 +35,12 @@ dist/
 /scratch/
 .cache/
 *.log
+nohup.out
+slurm-*.out
+slurm-*.err
+events.out.tfevents.*
+steps.jsonl
+validation.jsonl
 envs/.venvs/
 envs/.conda_envs/
 configs/local*.yaml
@@ -59,6 +65,10 @@ configs/local*.json
 *.token
 *.pem
 *.key
+.netrc
+.git-credentials
+id_rsa
+id_ed25519
 .DS_Store
 .idea/
 .vscode/

@@ -25,7 +25,6 @@ augmentation stream, so a resumed run would not be the run it claims to continue
 from __future__ import annotations
 
 import json
-import platform
 import random
 import time
 from dataclasses import dataclass, field, asdict
@@ -702,7 +701,6 @@ class MapAnythingTrainer:
             "trainable_summary": self.trainable_summary,
             "rng_state": rng_state(),
             "environment": {
-                "hostname": platform.node(),
                 "torch": torch.__version__,
                 "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
             },
@@ -769,7 +767,6 @@ class MapAnythingTrainer:
             "best_step": self.best_step,
             "step_log": self.step_log,
             "environment": {
-                "hostname": platform.node(),
                 "torch": torch.__version__,
                 "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
                 "peak_gpu_gb": (

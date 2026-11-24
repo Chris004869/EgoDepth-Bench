@@ -85,9 +85,7 @@ class LegacyMethodSpec:
         }
 
 
-# The E1 pool. `alignment` and `output_space` are the protocol's declared handling
-# for each method, not whatever an older YAML happened to say -- note Marigold is
-# `affine_depth` here, fitted in depth space, per the 2026-09-12 protocol.
+# Each method declares the representation consumed by the scorer and its alignment.
 E1_METHODS: dict = {
     # Metric monocular, camera 2 only.
     "unidepth_v2": LegacyMethodSpec(
@@ -170,12 +168,8 @@ E1_METHODS: dict = {
         "metric_depth_z", "none",
         checkpoint=None,
         notes=(
-            "Use the official CUT3R checkpoint. The six-view "
-            "question IS now resolved by perturbation on the real checkpoint: state "
-            "flows forward only, so the target camera is fed LAST and each of the "
-            "other five then changes its depth by 0.12-1.57 m max. In the natural "
-            "order the target sat third and was bit-identical when views 3-5 were "
-            "replaced by noise -- a three-view row labelled six-view."
+            "Each timestamp starts a fresh recurrent sequence. Camera 2 is processed "
+            "last so its optical-axis depth can use all six RGB views."
         )),
     # Oracle multi-view: one positive Z scale per synchronized inference call.
     "vggt": LegacyMethodSpec(
@@ -196,8 +190,7 @@ E1_METHODS: dict = {
         "marigold", "marigold", "egodepth_group_d", (2,),
         "depth_affine", "affine_depth",
         notes=(
-            "fitted in DEPTH space per the 2026-09-12 protocol; the older config "
-            "used affine_inverse"
+            "The evaluator fits scale and shift in depth space."
         )),
     "moge": LegacyMethodSpec(
         "moge", "moge", "egodepth_moge", (2,),
@@ -366,7 +359,7 @@ def build_legacy_contract(
         scoring_grid_hw=tuple(config["data"].get("scoring_grid_hw", (416, 512))),
         code_identity=code_identity(),
         data_version=config["data"].get("data_version"),
-        manifest_id=str(config["data"]["samples_jsonl"]),
+        manifest_id=Path(config["data"]["samples_jsonl"]).name,
         manifest_content_id=population.manifest_content_id,
         population_identity={
             k: v for k, v in population.identity().items() if k != "sites"
@@ -486,14 +479,7 @@ def run_legacy_method(
         population, reader, staging_dir, spec.input_views, overwrite=overwrite
     )
     legacy_out = Path(out_dir).parent / f".legacy_{spec.name}"
-    # `run_loop` in every runner resumes by SKIPPING existing .npz files, which is
-    # what makes a long sweep restartable. But it also means a fixed runner, or a
-    # fixed third-party file the runner imports, re-reports the OLD predictions:
-    # only metadata.json gets rewritten, so the run looks fresh and the metrics are
-    # byte-identical to the buggy ones. That is exactly how a corrected UniDAC
-    # reverse-projection reproduced its pre-fix AbsRel to 16 decimals here.
-    # `--overwrite` must therefore reach the raw staging, not just the converted
-    # predictions.
+    # Overwrite both the raw cache and the converted predictions.
     if overwrite and legacy_out.exists():
         removed = 0
         for stale in sorted(legacy_out.glob("*.npz")):

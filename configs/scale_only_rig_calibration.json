@@ -137,7 +137,6 @@
     "formal_ready": true,
     "blockers": [],
     "site_mapping_status": "frozen",
-    "sample_storage": "jsonl-backed: 61085 raw lines retained (262 MB), decoded on access",
     "n_samples_loaded": 61085,
     "recording_prefilter": {
       "split": "train",
